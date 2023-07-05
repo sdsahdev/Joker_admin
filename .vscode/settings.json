@@ -2,5 +2,6 @@
     "java.configuration.updateBuildConfiguration": "automatic",
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
-    "editor.formatOnType": true
+    "editor.formatOnType": true,
+    "color-pick.analytics": true
 }
