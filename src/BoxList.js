@@ -1,70 +1,42 @@
-import React, { Component } from 'react';
+import React, { useRef, useEffect } from 'react';
+import imagesClass from '../asserts/imagepath';
 import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import {
-    widthPercentageToDP as wp,
-    heightPercentageToDP as hp,
-} from 'react-native-responsive-screen';
-
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import SwipList from '../Components/SwipList';
+import BackgroundSvg from '../asserts/svgs/BgImg.js';
 
 const BoxList = () => {
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.backgroundContainer}>
+        <BackgroundSvg width="20%" height="100%" />
+          </View>
+          <View  style={{marginLeft:wp(6),marginTop:wp(10)}}>
+            
+          <Text >
+              Hey, Jolly
+          </Text>
+          <Text style={{fontWeight:'bold', color:'#000', fontSize:wp(6), marginBottom:wp(5)}}>
+          Find ground nearby you    
+              </Text>
+          </View>
 
-
-    const data = [
-        { id: '1', image: require('../asserts/Images/pic1.jpeg') },
-        { id: '2', image: require('../asserts/Images/pic2.jpeg') },
-        { id: '3', image: require('../asserts/Images/pic1.jpeg') },
-        { id: '4', image: require('../asserts/Images/pic2.jpeg') },
-
-
-    ];
-    const renderItem = ({ item }) => (
-
-        <Image source={item.image} style={styles.image} />
-    );
-    return (
-        <SafeAreaView style={styles.container}>
-            <Text >Hey, Jolly{'\n'}
-                Find ground near by you</Text>
-
-            <View style={styles.container}>
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    horizontal
-                    pagingEnabled
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.contentContainer}
-                />
-            </View>
-        </SafeAreaView>
-    );
+          <SwipList  />
+            <Text  style={{backgroundColor:'#000'}}>
+              Hey, Jowbdbdwdlly
+          </Text>
+    </SafeAreaView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'column'
-    }, banners: {
-        width: wp(90),
-        height: hp(25),
-        alignSelf: 'center',
-        borderRadius: wp(1.5),
-        backgroundColor: '#000'
-    },
-    imageContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
-    image: {
-        width: 200,
-        height: 200,
-
-        backgroundColor: '#000',
-        margin: 4
-    },
+  container: {
+    flex: 1,
+  },
+  backgroundContainer: {
+    ...StyleSheet.absoluteFillObject,
+  },
 });
 
 export default BoxList;
