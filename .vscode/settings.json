@@ -1,7 +1,11 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "editor.formatOnSave": true,
-    "editor.formatOnPaste": true,
-    "editor.formatOnType": true,
-    "color-pick.analytics": true
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "color-pick.analytics": true,
+  "prettier.arrowParens": "avoid",
+  "prettier.enableDebugLogs": false,
+  "prettier.enable": false,
+  "prettier.bracketSpacing": true
 }

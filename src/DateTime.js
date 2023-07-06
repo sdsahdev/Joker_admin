@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 const CalendarStripComponent = () => {
   const today = moment().startOf('day');
@@ -18,17 +19,21 @@ const CalendarStripComponent = () => {
   //     console.log(today, '--date--');
   //     console.log(new Date(), '--date--');
   //   });
+
   const formatDate = date => {
     return moment(date).format('D MMMM');
   };
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CalendarStrip
         startingDate={Date()}
-        scrollable
-        style={{height: hp(14), paddingTop: 30, paddingBottom: 20}} // Adjust paddingTop and paddingBottom as needed
+        style={{height: hp(14), paddingTop: 30, paddingBottom: 20, }} // Adjust paddingTop and paddingBottom as needed
         calendarColor={'white'}
-        calendarHeaderStyle={{color: 'blue', fontSize: wp(4)}}
+        calendarHeaderStyle={{
+          color: 'blue',
+          fontSize: wp(4),
+          paddingBottom: wp(5),
+        }}
         dateNumberStyle={{color: 'grey', fontSize: wp(3.5)}}
         dateNameStyle={{color: 'grey', fontSize: wp(3.5)}}
         iconContainer={{flex: 0.1}}
@@ -38,6 +43,7 @@ const CalendarStripComponent = () => {
           color: 'blue',
           fontSize: wp(4),
         }} // Adjust the paddingTop value as needed
+        scrollable={false}
         borderHighlightColor={'grey'}
         maxDate={maxSelectableDate}
         daySelectionAnimation={{
@@ -63,7 +69,7 @@ const CalendarStripComponent = () => {
           Selected Date: {formatDate(selectedDate)}
         </Text>
       )}
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
