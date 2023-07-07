@@ -7,7 +7,7 @@ import { SvgXml } from 'react-native-svg';
 
 const SwipList = () => {
   const data = [
-    { id: '1', image: imagesClass.banner1 },
+    { id: '1', image: imagesClass.pic2 },
     { id: '2', image: imagesClass.banner2 },
     { id: '3', image: imagesClass.pic1 },
     { id: '4', image: imagesClass.pic2 },
@@ -33,7 +33,7 @@ const SwipList = () => {
   const renderItem = ({ item }) => (
     <View style={styles.imageContainer}>
       <Image source={item.image} style={styles.image} resizeMode='contain' />
-    </View>   
+    </View>
   );
 
   return (

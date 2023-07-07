@@ -7,5 +7,6 @@
   "prettier.arrowParens": "avoid",
   "prettier.enableDebugLogs": false,
   "prettier.enable": false,
-  "prettier.bracketSpacing": true
+  "prettier.bracketSpacing": true,
+  "java.compile.nullAnalysis.mode": "automatic"
 }

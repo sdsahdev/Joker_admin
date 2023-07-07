@@ -1,4 +1,4 @@
-import { Svg, Rect, LinearGradient, Stop,Defs } from 'react-native-svg';
+import { Svg, Rect, LinearGradient, Stop, Defs } from 'react-native-svg';
 
 const BackgroundSvg = () => {
   return (
