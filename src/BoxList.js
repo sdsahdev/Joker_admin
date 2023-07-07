@@ -11,21 +11,28 @@ const BoxList = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.backgroundContainer}>
         <BackgroundSvg width="20%" height="100%" />
-          </View>
-          <View  style={{marginLeft:wp(6),marginTop:wp(10)}}>
-            
-          <Text >
-              Hey, Jolly
-          </Text>
-          <Text style={{fontWeight:'bold', color:'#000', fontSize:wp(6), marginBottom:wp(5)}}>
-          Find ground nearby you    
-              </Text>
-          </View>
+      </View>
 
-          <SwipList  />
-            <Text  style={{backgroundColor:'#000'}}>
-              Hey, Jowbdbdwdlly
-          </Text>
+      <View style={styles.topTexts}>
+
+        <Text >
+          Hey, Jolly
+        </Text>
+        <Text style={{ fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5) }}>
+          Find ground nearby you
+        </Text>
+
+      </View>
+
+      <View style={{ width: "100%", height: wp(50), }}>
+        <SwipList />
+      </View>
+
+      <Text style={styles.bottomTexts}>
+        Hey, Jowbdbdwdlly
+      </Text>
+
+
     </SafeAreaView>
   );
 };
@@ -37,6 +44,8 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     ...StyleSheet.absoluteFillObject,
   },
+  topTexts: { marginLeft: wp(6), marginTop: wp(10), },
+  bottomTexts: { marginLeft: wp(6), marginTop: wp(5), }
 });
 
 export default BoxList;

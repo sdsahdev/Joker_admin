@@ -32,8 +32,8 @@ const SwipList = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.imageContainer}>
-      <Image source={item.image} style={styles.image} />
-    </View>
+      <Image source={item.image} style={styles.image} resizeMode='contain' />
+    </View>   
   );
 
   return (
@@ -61,23 +61,28 @@ const SwipList = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
   },
   imageContainer: {
 
-      justifyContent: 'center',
-      alignItems: 'center',
-    height: "30%", 
-    
+    justifyContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    alignContent: 'center',
+
+
   },
   image: {
     width: wp(90),
-    height: 200,
+    height: hp(23),
     backgroundColor: '#000',
-      marginHorizontal: wp(1),
-    borderRadius:wp(2)
+    marginHorizontal: wp(1),
+    borderRadius: wp(6),
+
   },
   contentContainer: {
     paddingHorizontal: wp(4),
+    borderRadius: wp(4),
   },
 });
 
