@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import imagesClass from '../asserts/imagepath';
-import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import SwipList from '../Components/SwipList';
@@ -12,41 +12,39 @@ import NoticationSvg from '../asserts/svgs/NoticationSvg';
 const BoxList = () => {
   return (
     <SafeAreaView style={styles.container}>
-
-      <View style={styles.backgroundContainer}>
-        <BackgroundSvg width="20%" height="100%" />
-      </View>
-      <View style={{ bottom: 0, position: 'absolute' }}>
-        <BackgroundSvg width="20%" height="100%" />
-      </View>
-
-
-
-      <View style={styles.topTexts}>
-        <View>
-          <Text >
-            Hey, Jolly
-          </Text>
-          <Text style={{ fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5) }}>
-            Find ground nearby you
-          </Text>
+      <ScrollView>
+        <View style={styles.backgroundContainer}>
+          <BackgroundSvg width="20%" height="100%" />
+        </View>
+        <View style={{ bottom: 0, position: 'absolute' }}>
+          <BackgroundSvg width="20%" height="100%" />
         </View>
 
-        <View>
-          <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
+        <View style={styles.topTexts}>
+          <View>
+            <Text>
+              Hey, Jolly
+            </Text>
+            <Text style={{ fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5) }}>
+              Find ground nearby you
+            </Text>
+          </View>
 
+          <View>
+            <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
+          </View>
         </View>
-      </View>
 
-      <View style={{ width: "100%", height: wp(50), }}>
-        <SwipList />
-      </View>
+        <View style={{ width: "100%", height: wp(50), }}>
+          <SwipList />
+        </View>
 
-      <BoxeItems />
-
+        <BoxeItems />
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
