@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import CalendarStrip from 'react-native-calendar-strip';
 import moment from 'moment-timezone'; // only if timezone is needed
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const CalendarStripComponent = () => {
+const DateTime = () => {
   const today = moment().startOf('day');
   const maxSelectableDate = moment().add(1, 'month').endOf('day');
   const [selectedDate, setSelectedDate] = useState(null);
@@ -27,18 +27,18 @@ const CalendarStripComponent = () => {
     <SafeAreaView style={styles.container}>
       <CalendarStrip
         startingDate={Date()}
-        style={{height: hp(14), paddingTop: 30, paddingBottom: 20, }} // Adjust paddingTop and paddingBottom as needed
+        style={{ height: hp(14), paddingTop: 30, paddingBottom: 20, }} // Adjust paddingTop and paddingBottom as needed
         calendarColor={'white'}
         calendarHeaderStyle={{
           color: 'blue',
           fontSize: wp(4),
           paddingBottom: wp(5),
         }}
-        dateNumberStyle={{color: 'grey', fontSize: wp(3.5)}}
-        dateNameStyle={{color: 'grey', fontSize: wp(3.5)}}
-        iconContainer={{flex: 0.1}}
+        dateNumberStyle={{ color: 'grey', fontSize: wp(3.5) }}
+        dateNameStyle={{ color: 'grey', fontSize: wp(3.5) }}
+        iconContainer={{ flex: 0.1 }}
         minDate={Date()}
-        highlightDateNumberStyle={{color: 'blue', fontSize: wp(5)}}
+        highlightDateNumberStyle={{ color: 'blue', fontSize: wp(5) }}
         highlightDateNameStyle={{
           color: 'blue',
           fontSize: wp(4),
@@ -73,7 +73,7 @@ const CalendarStripComponent = () => {
   );
 };
 const styles = StyleSheet.create({
-  container: {flex: 1},
-  selectedDateText: {marginTop: 20, textAlign: 'center'},
+  container: { flex: 1 },
+  selectedDateText: { marginTop: 20, textAlign: 'center' },
 });
-export default CalendarStripComponent;
+export default DateTime;

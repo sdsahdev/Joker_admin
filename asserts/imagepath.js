@@ -9,7 +9,11 @@ const imagesClass = {
   user: require('./Images/user.png'),
   document: require('./Images/document.png'),
   customer: require('./Images/customer.png'),
-
+  GroudDetails: require('./Images/GroudDetails.jpg'),
+  bluerike: require('./Images/blueTike.png'),
+  backbig: require('./Images/backbg.png'),
+  share: require('./Images/share.png'),
+  clock: require('./Images/clock.png'),
 };
 
 export default imagesClass;
