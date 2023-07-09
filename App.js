@@ -2,14 +2,23 @@ import React, { useRef, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
 import * as Animatable from 'react-native-animatable';
 import imagesClass from './asserts/imagepath';
 import BoxList from './src/BoxList';
 import DateTime from './src/DateTime';
 import loginSceen from './src/loginScreen';
 import Details from './src/Details';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import TimeComp from './Components/TimeComp';
+import Rules from './src/Rules';
+import Inbox from './src/Inbox';
+import ProfileScreen from './src/ProfileScreen';
+import About from './src/About';
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
 const TabButton = ({ item, onPress, accessibilityState }) => {
   const focused = accessibilityState.selected;
@@ -30,7 +39,7 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={1}
-      style={[styles.container, { flex: focused ? 1 : 0.65 }]}
+      style={[styles.container, { flex: focused ? 1 : 0.50 }]}
     >
       <View>
         <Animatable.View
@@ -42,10 +51,11 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
         <View style={[styles.btn, { backgroundColor: focused ? null : item.alphaClr }]}>
 
           <Image source={item.type} style={{
-            width: 24,
-            height: 24,
-            marginRight: 8,
-            tintColor: focused ? "#fff" : "#256D85",
+            width: wp(6),
+            height: hp(4),
+            marginHorizontal: wp(2),
+            tintColor: focused ? "#fff" : "#027850",
+            justifyContent: 'center', alignItems: 'center', alignSelf: 'center'
           }} resizeMode="contain" />
 
 
@@ -60,6 +70,17 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
   );
 };
 
+
+const MainTabNavigator = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Details" component={Details} />
+      <Tab.Screen name="About" component={AboutScreen} />
+      <Tab.Screen name="Inbox" component={InboxScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} /> */}
+    </Tab.Navigator>
+  );
+};
 const App = () => {
   const TabArr = [
     {
@@ -68,34 +89,43 @@ const App = () => {
       type: imagesClass.home, // Replace with actual image paths
       icon: 'home',
       component: BoxList,
-      color: '#256D85',
+      color: '#027850',
       alphaClr: '#C3EDC0',
     },
     {
-      route: 'Search',
-      label: 'Search',
-      type: imagesClass.customer, // Replace with actual image paths
-      icon: 'search',
-      component: Details,
-      color: '#256D85',
-      alphaClr: '#C3EDC0',
-    },
-    {
-      route: 'Add',
-      label: 'Add New',
+      route: 'Rules',
+      label: 'Rules',
       type: imagesClass.document, // Replace with actual image paths
-      icon: 'plus-square',
-      component: loginSceen,
-      color: '#256D85',
+      icon: 'search',
+      component: Rules,
+      color: '#027850',
       alphaClr: '#C3EDC0',
     },
     {
-      route: 'Account',
-      label: 'Account',
+      route: 'About us',
+      label: 'About us',
+      type: imagesClass.customer, // Replace with actual image paths
+      icon: 'plus-square',
+      component: About,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'Inbox',
+      label: 'Inbox',
       type: imagesClass.history, // Replace with actual image paths
       icon: 'user-circle-o',
-      component: BoxList,
-      color: '#256D85',
+      component: Inbox,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'Profile',
+      label: 'Profile',
+      type: imagesClass.user, // Replace with actual image paths
+      icon: 'user-circle-o',
+      component: ProfileScreen,
+      color: '#027850',
       alphaClr: '#C3EDC0',
     },
   ];
@@ -106,15 +136,18 @@ const App = () => {
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
-            height: 60,
+            height: hp(7),
             position: 'absolute',
-            bottom: 16,
-            right: 16,
-            left: 16,
-            borderRadius: 16,
+            bottom: wp(7),
+            right: wp(4),
+            left: wp(4),
+            borderRadius: wp(3),
+            alignSelf: 'center',
+            // backgroundColor: '#  '
           },
         }}
       >
+
         {TabArr.map((item, index) => (
           <Tab.Screen
             key={index}
@@ -141,12 +174,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 8,
-    borderRadius: 16,
+    padding: wp(1.5),
+    borderRadius: wp(3),
   },
   imageStyle: {
-    width: 24,
-    height: 24,
+    width: wp(4),
+    height: hp(6),
     marginRight: 8,
 
   },

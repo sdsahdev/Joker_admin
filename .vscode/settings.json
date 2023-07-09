@@ -4,11 +4,14 @@
   "editor.formatOnPaste": true,
   "editor.formatOnType": true,
   "color-pick.analytics": true,
-  "prettier.arrowParens": "avoid",
-  "prettier.enableDebugLogs": false,
-  "prettier.enable": false,
+  "prettier.arrowParens": "always",
+  "prettier.enableDebugLogs": true,
+  "prettier.enable": true,
   "prettier.bracketSpacing": true,
   "java.compile.nullAnalysis.mode": "automatic",
   "colorize.decoration_type": "background",
-  "colorize.hide_current_line_decorations": true
+  "colorize.hide_current_line_decorations": true,
+  "editor.mouseWheelZoom": true,
+  "prettier.bracketSameLine": true,
+  "prettier.jsxSingleQuote": true
 }

@@ -15,10 +15,7 @@ const DateTime = () => {
   const handleDateSelected = date => {
     setSelectedDate(date);
   };
-  //   useEffect(() => {
-  //     console.log(today, '--date--');
-  //     console.log(new Date(), '--date--');
-  //   });
+
 
   const formatDate = date => {
     return moment(date).format('D MMMM');
@@ -27,40 +24,21 @@ const DateTime = () => {
     <SafeAreaView style={styles.container}>
       <CalendarStrip
         startingDate={Date()}
-        style={{ height: hp(14), paddingTop: 30, paddingBottom: 20, }} // Adjust paddingTop and paddingBottom as needed
+        style={styles.maincalanedr} // Adjust paddingTop and paddingBottom as needed
         calendarColor={'white'}
-        calendarHeaderStyle={{
-          color: 'blue',
-          fontSize: wp(4),
-          paddingBottom: wp(5),
-        }}
-        dateNumberStyle={{ color: 'grey', fontSize: wp(3.5) }}
-        dateNameStyle={{ color: 'grey', fontSize: wp(3.5) }}
+        calendarHeaderStyle={styles.calheader}
+        dateNumberStyle={styles.numdate}
+        dateNameStyle={styles.datename}
         iconContainer={{ flex: 0.1 }}
         minDate={Date()}
-        highlightDateNumberStyle={{ color: 'blue', fontSize: wp(5) }}
-        highlightDateNameStyle={{
-          color: 'blue',
-          fontSize: wp(4),
-        }} // Adjust the paddingTop value as needed
+        highlightDateNumberStyle={styles.highDate}
+        highlightDateNameStyle={styles.hightname} // Adjust the paddingTop value as needed
         scrollable={false}
         borderHighlightColor={'grey'}
         maxDate={maxSelectableDate}
-        daySelectionAnimation={{
-          type: 'border',
-          borderWidth: 0, // Adjust the borderWidth as desired
-          borderHighlightColor: 'blue',
-
-          // Add padding to create space between the border and content
-        }}
+        daySelectionAnimation={styles.dateselect}
         useIsoWeekday={false}
-        locale={{
-          name: 'en', // Set the locale to English
-          config: {
-            months: moment.localeData('en').months(), // Use English months
-            weekdaysShort: moment.localeData('en').weekdaysShort(), // Use English weekdays
-          },
-        }}
+        locale={styles.localestyle}
         onDateSelected={handleDateSelected}
       />
 
@@ -73,6 +51,33 @@ const DateTime = () => {
   );
 };
 const styles = StyleSheet.create({
+  localestyle: {
+    name: 'en', // Set the locale to English
+    config: {
+      months: moment.localeData('en').months(), // Use English months
+      weekdaysShort: moment.localeData('en').weekdaysShort(), // Use English weekdays
+    },
+  },
+  dateselect: {
+    type: 'border',
+    borderWidth: 0, // Adjust the borderWidth as desired
+    borderHighlightColor: 'blue',
+
+    // Add padding to create space between the border and content
+  },
+  hightname: {
+    color: 'blue',
+    fontSize: wp(4),
+  },
+  highDate: { color: 'blue', fontSize: wp(5) },
+  datename: { color: 'grey', fontSize: wp(3.5) },
+  numdate: { color: 'grey', fontSize: wp(3.5) },
+  calheader: {
+    color: 'blue',
+    fontSize: wp(4),
+    paddingBottom: wp(5),
+  },
+  maincalanedr: { height: hp(14), paddingTop: 30, paddingBottom: 20, },
   container: { flex: 1 },
   selectedDateText: { marginTop: 20, textAlign: 'center' },
 });

@@ -7,12 +7,13 @@ import Icon from '../asserts/svgs/Back';
 import { Svg, G, Rect, Path, Defs, Filter, FeFlood, FeGaussianBlur, FeComposite, FeBlend, Stop, LinearGradient } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import TimeComp from './TimeComp';
-import TitelText from './Titels';
 import Titels from './Titels';
+import Facilities from './Facilities';
 
 const DetailsCompo = () => {
     return (
         <SafeAreaView style={styles.container}>
+
 
             <View style={styles.imageContainer}>
                 <Image
@@ -33,41 +34,68 @@ const DetailsCompo = () => {
                     />
                 </View>
             </View>
-            <Titels />
-            <Titels />
-            <Titels />
-            <Titels />
-            <Titels />
-            <Titels />
-            <Titels />
-            <Titels />
-            <SafeAreaView style={{ width: "100%", height: hp(3), flexDirection: 'row', justifyContent: 'space-between', marginVertical: wp(2), marginHorizontal: wp(4) }}>
+            <Titels text1={"Sports academy"} text2={"$600/hr"} />
 
-                <Text style={{
-                    width: 'auto',
-                    height: 'auto',
-                    fontSize: 18,
-                    color: '#000',
-                }}>Sports academy</Text>
-                <Text style={{
-                    width: 'auto',
-                    height: 'auto',
-                    fontSize: 18,
-                    color: '#000',
-                    paddingRight: wp(10)
-                }}>$600/hr</Text>
-            </SafeAreaView>
+
+
             <TimeComp img={imagesClass.clock} text={"Open: 24 hours"} />
             <TimeComp img={imagesClass.bluerike} text={"2 Slot available"} />
 
+            <Titels text1={"Location"} />
+            <View style={styles.locationview}>
+
+                <Text style={styles.addrestxt}> surat , gujrat</Text>
+                <Image
+                    source={imagesClass.location
+                    }
+                    style={styles.mapimage}
+                    resizeMode="cover"
+                />
+            </View>
+            <Titels text1={"Facilities provided"} />
+            <SafeAreaView style={styles.facilityView}>
+                <SafeAreaView>
+                    <Facilities img={imagesClass.parking} text3={"Parking"} />
+                    <Facilities img={imagesClass.bat} text3={"bat"} />
+
+
+                </SafeAreaView>
+                <SafeAreaView>
+                    <Facilities img={imagesClass.Locaker} text3={"Locaker"} />
+                    <Facilities img={imagesClass.waiting} text3={"Waiting Room"} />
+
+                </SafeAreaView>
+                <SafeAreaView>
+                    <Facilities img={imagesClass.water} text3={"Water"} />
+                    <Facilities img={imagesClass.bat} text3={"bat"} />
+
+                </SafeAreaView>
+            </SafeAreaView>
+            <View style={styles.bookbtn}>
+                <Text style={styles.booktxt}>
+                    Book Now
+                </Text>
+            </View>
         </SafeAreaView >
+
+
     );
 };
 
 const styles = StyleSheet.create({
+    booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
+    bookbtn: { backgroundColor: '#027850', height: hp(6), width: "90%", alignSelf: 'center', borderRadius: wp(2), marginTop: wp(5) },
+    facilityView: { flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: wp(2) },
+    addrestxt: { marginLeft: wp(5), marginVertical: wp(1) },
+    locationview: {
+        height: hp(18.5), width: "90%", backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4), paddingBottom: 8
+    },
+    mapimage: {
+        width: "90%", height: hp(15), alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4),
+    },
     container: {
-        flex: 1,
-        width: '100%', height: '100%'
+        width: '100%',
+        // backgroundColor: '#fff'
     },
     imageContainer: {
         position: 'relative',
@@ -86,7 +114,6 @@ const styles = StyleSheet.create({
         top: 0,
         left: 0,
         width: '100%',
-        height: '100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginTop: hp(4)

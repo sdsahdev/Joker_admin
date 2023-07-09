@@ -1,48 +1,50 @@
 import React from 'react';
-import { View, FlatList, Image, StyleSheet, Text } from 'react-native';
+import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 const data = [
     { id: '1', image: imagesClass.banner2, leftText: 'Box 1', rightText: '$100/hr' },
-    { id: '2', image: imagesClass.pic1, leftText: 'Box 2', rightText: '$200/hr' },
-    { id: '3', image: imagesClass.pic2, leftText: 'Box 3', rightText: '$300/hr' },
+    { id: '2', image: imagesClass.box2, leftText: 'Box 2', rightText: '$200/hr' },
+    { id: '3', image: imagesClass.box3, leftText: 'Box 3', rightText: '$300/hr' },
+    { id: '4', image: imagesClass.box4, leftText: 'Box 3', rightText: '$300/hr' },
 
     // Add more items as needed
 ];
 
-const FullWidthImageWithText = ({ image, leftText, rightText }) => {
-    return (
-        <View style={styles.container}>
-            <Image
-                source={image}
-                style={styles.image}
-                resizeMode="cover"
-            />
-            <View style={styles.textContainer}>
-                <Text style={styles.textLeft}>{leftText}</Text>
-                <Text style={styles.textRight}>{rightText}</Text>
-            </View>
-        </View>
-    );
-};
 
-const renderItem = ({ item }) => (
-    <FullWidthImageWithText
-        image={item.image}
-        leftText={item.leftText}
-        rightText={item.rightText}
-    />
-);
+
+
 
 
 
 const BoxeItems = () => {
+    const navigation = useNavigation();
+
+    const renderItem = ({ item }) => (
+
+        <View style={styles.container}>
+            <TouchableOpacity  >
+                <Image
+                    source={item.image}
+                    style={styles.image}
+                    resizeMode="cover"
+                />
+                <View style={styles.textContainer}>
+                    <Text style={styles.textLeft}>{item.leftText}</Text>
+                    <Text style={styles.textRight}>{item.rightText}</Text>
+                </View>
+            </TouchableOpacity>
+
+        </View>
+    );
     return (
         <View style={styles.container}>
             <FlatList
+                style={{ marginBottom: wp(19) }}
                 data={data}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         padding: wp(1),
-        marginVertical: wp(2)
+        marginVertical: wp(2),
 
     },
     image: {
