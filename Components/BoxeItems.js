@@ -2,7 +2,7 @@ import React from 'react';
 import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, } from '@react-navigation/native';
 
 
 
@@ -17,17 +17,15 @@ const data = [
 
 
 
-
-
-
-
-const BoxeItems = () => {
-    const navigation = useNavigation();
+const BoxeItems = ({ navigation }) => {
+    // const navigation = useNavigation();
 
     const renderItem = ({ item }) => (
 
         <View style={styles.container}>
-            <TouchableOpacity  >
+            <TouchableOpacity
+                onPress={() => navigation.navigate("Details")}
+            >
                 <Image
                     source={item.image}
                     style={styles.image}
