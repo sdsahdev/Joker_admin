@@ -1,89 +1,188 @@
-// In App.js in a new project
-
-import * as React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { View, TouchableOpacity, StyleSheet, Image, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import loginSceen from './src/loginScreen';
-import DateTime from './src/DateTime';
-import BoxList from './src/BoxList';
-import BoxeItems from './Components/BoxeItems';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import * as Animatable from 'react-native-animatable';
 import imagesClass from './asserts/imagepath';
-const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+import BoxList from './src/BoxList';
+import DateTime from './src/DateTime';
+import loginSceen from './src/loginScreen';
+import Details from './src/Details';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import SwipList from './Components/SwipList';
+import TimeComp from './Components/TimeComp';
+import Rules from './src/Rules';
+import Inbox from './src/Inbox';
+import ProfileScreen from './src/ProfileScreen';
+import About from './src/About';
 
-import { LogBox } from 'react-native';
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-LogBox.ignoreAllLogs();
-function App() {
+const TabButton = ({ item, onPress, accessibilityState }) => {
+  const focused = accessibilityState.selected;
+  const viewRef = useRef(null);
+  const textViewRef = useRef(null);
+
+  useEffect(() => {
+    if (focused) {
+      viewRef.current.animate({ 0: { scale: 0 }, 1: { scale: 1 } });
+      textViewRef.current.animate({ 0: { scale: 0 }, 1: { scale: 1 } });
+    } else {
+      viewRef.current.animate({ 0: { scale: 1 }, 1: { scale: 0 } });
+      textViewRef.current.animate({ 0: { scale: 1 }, 1: { scale: 0 } });
+    }
+  }, [focused]);
+
   return (
-    // <NavigationContainer>
-    //   <Stack.Navigator
-    //     screenOptions={{ headerShown: false }}
-    //     initialRouteName='"BoxList'>
-    //     <Stack.Screen name="BoxList" component={BoxList} />
-    //     <Stack.Screen name="BoxeItems" component={BoxeItems} />
-    //     <Stack.Screen name="DateTime" component={DateTime} />
-    //     <Stack.Screen name="loginSceen" component={loginSceen} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    <TouchableOpacity
+      onPress={onPress}
+      activeOpacity={1}
+      style={[styles.container, { flex: focused ? 1 : 0.50 }]}
+    >
+      <View>
+        <Animatable.View
+          ref={viewRef}
+          style={[StyleSheet.absoluteFillObject, { backgroundColor: item.color, borderRadius: 16 }]}
+        >
 
+        </Animatable.View>
+        <View style={[styles.btn, { backgroundColor: focused ? null : item.alphaClr }]}>
+
+          <Image source={item.type} style={{
+            width: wp(6),
+            height: hp(4),
+            marginHorizontal: wp(2),
+            tintColor: focused ? "#fff" : "#027850",
+            justifyContent: 'center', alignItems: 'center', alignSelf: 'center'
+          }} resizeMode="contain" />
+
+
+          <Animatable.View ref={textViewRef}>
+            {focused && (
+              <Text style={{ color: '#fff', paddingHorizontal: 8 }}>{item.label}</Text>
+            )}
+          </Animatable.View>
+        </View>
+      </View>
+    </TouchableOpacity>
+  );
+};
+
+
+const MainTabNavigator = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Details" component={Details} />
+      <Tab.Screen name="About" component={AboutScreen} />
+      <Tab.Screen name="Inbox" component={InboxScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} /> */}
+    </Tab.Navigator>
+  );
+};
+const App = () => {
+  const TabArr = [
+    {
+      route: 'Home',
+      label: 'Home',
+      type: imagesClass.home, // Replace with actual image paths
+      icon: 'home',
+      component: BoxList,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'Rules',
+      label: 'Rules',
+      type: imagesClass.document, // Replace with actual image paths
+      icon: 'search',
+      component: Rules,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'About us',
+      label: 'About us',
+      type: imagesClass.customer, // Replace with actual image paths
+      icon: 'plus-square',
+      component: About,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'Inbox',
+      label: 'Inbox',
+      type: imagesClass.history, // Replace with actual image paths
+      icon: 'user-circle-o',
+      component: Inbox,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+    {
+      route: 'Profile',
+      label: 'Profile',
+      type: imagesClass.user, // Replace with actual image paths
+      icon: 'user-circle-o',
+      component: ProfileScreen,
+      color: '#027850',
+      alphaClr: '#C3EDC0',
+    },
+  ];
+
+  return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="BoxList" component={BoxList} options={{
+      <Tab.Navigator
+        screenOptions={{
           headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={imagesClass.home} style={styles.imageStyle} resizeMode='contain' />
-          ),// Hide the header for this screen
-        }} />
-        <Tab.Screen name="BoxeItems" component={BoxeItems} options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={imagesClass.document} style={styles.imageStyle} resizeMode='contain' />
-          ),
-          // Hide the header for this screen
-        }} />
-        <Tab.Screen name="loginSceen" component={loginSceen} options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={imagesClass.history} style={styles.imageStyle} resizeMode='contain' />
-          ),
-          // Hide the header for this screen
-        }} />
-        <Tab.Screen name="DateTime" component={DateTime} options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={imagesClass.customer} style={styles.imageStyle} resizeMode='contain' />
-          ),
-          // Hide the header for this screen
-        }} />
-        <Tab.Screen name="SwipList" component={SwipList} options={{
-          headerShown: false,
-          tabBarIcon: ({ color, size }) => (
-            <Image source={imagesClass.user} style={styles.imageStyle} resizeMode='contain' />
-          ),
-          // Hide the header for this screen
-        }} />
+          tabBarStyle: {
+            height: hp(7),
+            position: 'absolute',
+            bottom: wp(7),
+            right: wp(4),
+            left: wp(4),
+            borderRadius: wp(3),
+            alignSelf: 'center',
+            // backgroundColor: '#  '
+          },
+        }}
+      >
+
+        {TabArr.map((item, index) => (
+          <Tab.Screen
+            key={index}
+            name={item.route}
+            component={item.component}
+            options={{
+              tabBarShowLabel: false,
+              tabBarButton: (props) => <TabButton {...props} item={item} />,
+            }}
+          />
+        ))}
       </Tab.Navigator>
     </NavigationContainer>
   );
-}
+};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  backgroundContainer: {
-    ...StyleSheet.absoluteFillObject,
+  btn: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: wp(1.5),
+    borderRadius: wp(3),
   },
-  topTexts: { marginLeft: wp(6), marginTop: wp(10), flexDirection: 'row', justifyContent: 'space-between', padding: wp(4) },
-  bottomTexts: { marginLeft: wp(6), marginTop: wp(5), },
   imageStyle: {
-    width: wp(5),
-    height: hp(4),
-  }
+    width: wp(4),
+    height: hp(6),
+    marginRight: 8,
+
+  },
 });
 
 export default App;

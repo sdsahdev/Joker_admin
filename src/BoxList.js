@@ -16,17 +16,17 @@ const BoxList = () => {
         <View style={styles.backgroundContainer}>
           <BackgroundSvg width="20%" height="100%" />
         </View>
-        <View style={{ bottom: 0, position: 'absolute' }}>
+
+        <View style={styles.botttombg}>
           <BackgroundSvg width="20%" height="100%" />
         </View>
-
         <View style={styles.topTexts}>
-          <View>
+
+          <View style={styles.toptxt}>
             <Text>
-              Hey, Jolly
-            </Text>
-            <Text style={{ fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5) }}>
-              Find ground nearby you
+              Hey, Jolly </Text>
+            <Text style={styles.maintxt}>
+              Here is best criket box nearby you
             </Text>
           </View>
 
@@ -35,11 +35,12 @@ const BoxList = () => {
           </View>
         </View>
 
-        <View style={{ width: "100%", height: wp(50), }}>
+        <View style={styles.swipest}>
           <SwipList />
         </View>
 
         <BoxeItems />
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -53,15 +54,22 @@ const styles = StyleSheet.create({
   backgroundContainer: {
     ...StyleSheet.absoluteFillObject,
   },
-  topTexts: { marginLeft: wp(6), marginTop: wp(10), flexDirection: 'row', justifyContent: 'space-between', padding: wp(4) },
-  bottomTexts: { marginLeft: wp(6), marginTop: wp(5), },
+  topTexts: { marginLeft: wp(6), marginTop: wp(10), flexDirection: 'row', justifyContent: 'space-between', padding: wp(4), },
   imageStyle: {
     width: wp(8),
     height: hp(4),
     justifyContent: 'center',
     alignSelf: 'center', marginTop: wp(2), marginRight: wp(3), color: 'yellow'
 
-  }
+  }, botttombg: {
+    bottom: 0, position: 'absolute', transform: [{ rotate: '180deg' }],
+
+  },
+  toptxt: { width: "85%" }, maintxt: { fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5), fontSize: wp(5) },
+  swipest: { width: "100%", height: wp(50), },
+
+
+
 });
 
 export default BoxList;
