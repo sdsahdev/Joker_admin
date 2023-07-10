@@ -9,6 +9,8 @@ const imagesClass = {
   user: require('./Images/user.png'),
   document: require('./Images/document.png'),
   customer: require('./Images/customer.png'),
+  ground: require('./Images/ground.jpg'),
+  ball: require('./Images/ball.jpg'),
 
 };
 

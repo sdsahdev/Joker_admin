@@ -7,10 +7,10 @@ import { SvgXml } from 'react-native-svg';
 
 const SwipList = () => {
   const data = [
-    { id: '1', image: imagesClass.pic2 },
+    { id: '1', image: imagesClass.ball },
     { id: '2', image: imagesClass.banner2 },
-    { id: '3', image: imagesClass.pic1 },
-    { id: '4', image: imagesClass.pic2 },
+    { id: '3', image: imagesClass.ground },
+    { id: '4', image: imagesClass.ball },
   ];
 
   const flatListRef = useRef(null);

@@ -7,8 +7,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 const data = [
     { id: '1', image: imagesClass.banner2, leftText: 'Box 1', rightText: '$100/hr' },
-    { id: '2', image: imagesClass.pic1, leftText: 'Box 2', rightText: '$200/hr' },
-    { id: '3', image: imagesClass.pic2, leftText: 'Box 3', rightText: '$300/hr' },
+    { id: '2', image: imagesClass.ball, leftText: 'Box 2', rightText: '$200/hr' },
+    { id: '3', image: imagesClass.ground, leftText: 'Box 3', rightText: '$300/hr' },
 
     // Add more items as needed
 ];
