@@ -9,7 +9,7 @@ import BoxeItems from '../Components/BoxeItems';
 import NoticationSvg from '../asserts/svgs/NoticationSvg';
 
 
-const BoxList = () => {
+const BoxList = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -39,7 +39,7 @@ const BoxList = () => {
           <SwipList />
         </View>
 
-        <BoxeItems />
+        <BoxeItems navigation={navigation} />
 
       </ScrollView>
     </SafeAreaView>
