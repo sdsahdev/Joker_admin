@@ -7,6 +7,7 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import BackgroundSvg from '../asserts/svgs/BgImg.js';
 
 const DateTime = () => {
   const today = moment().startOf('day');
@@ -22,35 +23,51 @@ const DateTime = () => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <CalendarStrip
-        startingDate={Date()}
-        style={styles.maincalanedr} // Adjust paddingTop and paddingBottom as needed
-        calendarColor={'white'}
-        calendarHeaderStyle={styles.calheader}
-        dateNumberStyle={styles.numdate}
-        dateNameStyle={styles.datename}
-        iconContainer={{ flex: 0.1 }}
-        minDate={Date()}
-        highlightDateNumberStyle={styles.highDate}
-        highlightDateNameStyle={styles.hightname} // Adjust the paddingTop value as needed
-        scrollable={false}
-        borderHighlightColor={'grey'}
-        maxDate={maxSelectableDate}
-        daySelectionAnimation={styles.dateselect}
-        useIsoWeekday={false}
-        locale={styles.localestyle}
-        onDateSelected={handleDateSelected}
-      />
 
-      {selectedDate && (
-        <Text style={styles.selectedDateText}>
-          Selected Date: {formatDate(selectedDate)}
-        </Text>
-      )}
+      <View style={styles.backgroundContainer}>
+        <BackgroundSvg />
+      </View>
+      <Text style={{ color: '#000', fontSize: wp(7), marginTop: wp(10), position: 'absolute', marginLeft: wp(10) }}>
+        Book Your Slot
+      </Text>
+      <View style={styles.calView}>
+
+        <CalendarStrip
+          startingDate={Date()}
+          style={styles.maincalanedr} // Adjust paddingTop and paddingBottom as needed
+          highlightDateContainerStyle={styles.con}
+          calendarHeaderStyle={styles.calheader}
+          dateNumberStyle={styles.numdate}
+          dateNameStyle={styles.datename}
+          iconContainer={{ flex: 0.1 }}
+          minDate={Date()}
+          highlightDateNumberStyle={styles.highDate}
+          highlightDateNameStyle={styles.hightname} // Adjust the paddingTop value as needed
+          scrollable={false}
+          borderHighlightColor={'grey'}
+          maxDate={maxSelectableDate}
+          daySelectionAnimation={styles.dateselect}
+          useIsoWeekday={false}
+          locale={styles.localestyle}
+          onDateSelected={handleDateSelected}
+        />
+
+        {selectedDate && (
+          <Text style={styles.selectedDateText}>
+            Selected Date: {formatDate(selectedDate)}
+          </Text>
+        )}
+      </View>
+
     </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({
+  calView: { marginTop: hp(10) },
+  con: {
+    backgroundColor: '#E3EFEB',
+    width: wp(12), height: wp(15), borderRadius: wp(2)
+  },
   localestyle: {
     name: 'en', // Set the locale to English
     config: {
@@ -61,24 +78,30 @@ const styles = StyleSheet.create({
   dateselect: {
     type: 'border',
     borderWidth: 0, // Adjust the borderWidth as desired
-    borderHighlightColor: 'blue',
+    borderHighlightColor: '#027850',
 
     // Add padding to create space between the border and content
   },
   hightname: {
-    color: 'blue',
+    color: '#027850',
     fontSize: wp(4),
   },
-  highDate: { color: 'blue', fontSize: wp(5) },
+  highDate: { color: '#027850', fontSize: wp(5), },
   datename: { color: 'grey', fontSize: wp(3.5) },
   numdate: { color: 'grey', fontSize: wp(3.5) },
   calheader: {
-    color: 'blue',
-    fontSize: wp(4),
+    color: '#027850',
+    fontSize: wp(5),
     paddingBottom: wp(5),
+
+    // right: 2, alignSelf: 'flex-end'
   },
-  maincalanedr: { height: hp(14), paddingTop: 30, paddingBottom: 20, },
-  container: { flex: 1 },
+  maincalanedr: { height: hp(14), paddingTop: 30, paddingBottom: 20, position: 'relative' },
+  container: { flex: 1, position: 'relative' },
   selectedDateText: { marginTop: 20, textAlign: 'center' },
+  backgroundContainer: {
+    ...StyleSheet.absoluteFillObject,
+
+  },
 });
 export default DateTime;

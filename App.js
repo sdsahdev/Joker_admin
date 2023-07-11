@@ -18,6 +18,8 @@ import ProfileScreen from './src/ProfileScreen';
 import About from './src/About';
 import BottomTab from './BottomTab';
 import BoxeItems from './Components/BoxeItems';
+import DetailsCompo from './Components/DetailsCompo';
+import Otp from './src/Otp';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -32,7 +34,11 @@ const App = () => {
         <Stack.Screen name="BoxList" component={BottomTab} />
         <Stack.Screen name="BoxeItems" component={BoxeItems} />
         <Stack.Screen name="Details" component={Details} />
+        <Stack.Screen name="DateTime" component={DateTime} />
 
+        <Stack.Screen name="DetailsCompo" component={DetailsCompo} />
+        <Stack.Screen name="loginSceen" component={loginSceen} />
+        <Stack.Screen name="Otp" component={Otp} />
 
       </Stack.Navigator>
     </NavigationContainer>

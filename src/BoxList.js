@@ -7,6 +7,7 @@ import SwipList from '../Components/SwipList';
 import BackgroundSvg from '../asserts/svgs/BgImg.js';
 import BoxeItems from '../Components/BoxeItems';
 import NoticationSvg from '../asserts/svgs/NoticationSvg';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const BoxList = ({ navigation }) => {
@@ -14,11 +15,11 @@ const BoxList = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.backgroundContainer}>
-          <BackgroundSvg width="20%" height="100%" />
+          <BackgroundSvg />
         </View>
 
         <View style={styles.botttombg}>
-          <BackgroundSvg width="20%" height="100%" />
+          <BackgroundSvg />
         </View>
         <View style={styles.topTexts}>
 
@@ -31,7 +32,10 @@ const BoxList = ({ navigation }) => {
           </View>
 
           <View>
-            <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
+            <TouchableOpacity onPress={() => navigation.navigate("loginSceen")} >
+
+              <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -53,6 +57,7 @@ const styles = StyleSheet.create({
   },
   backgroundContainer: {
     ...StyleSheet.absoluteFillObject,
+    width: '100%'
   },
   topTexts: { marginLeft: wp(6), marginTop: wp(10), flexDirection: 'row', justifyContent: 'space-between', padding: wp(4), },
   imageStyle: {

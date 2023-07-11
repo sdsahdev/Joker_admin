@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import imagesClass from '../asserts/imagepath'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -10,11 +10,9 @@ import TimeComp from './TimeComp';
 import Titels from './Titels';
 import Facilities from './Facilities';
 
-const DetailsCompo = () => {
+const DetailsCompo = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
-
-
             <View style={styles.imageContainer}>
                 <Image
                     source={imagesClass.GroudDetails}
@@ -22,16 +20,22 @@ const DetailsCompo = () => {
                     resizeMode="cover"
                 />
                 <View style={styles.imagesOverlay}>
-                    <Image
-                        source={imagesClass.backbig}
-                        style={styles.image1}
-                        resizeMode="cover"
-                    />
-                    <Image
-                        source={imagesClass.share}
-                        style={styles.image2}
-                        resizeMode="cover"
-                    />
+                    <TouchableOpacity onPress={() => navigation.pop()}>
+
+                        <Image
+                            source={imagesClass.backbig}
+                            style={styles.image1}
+                            resizeMode="cover"
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity>
+
+                        <Image
+                            source={imagesClass.share}
+                            style={styles.image2}
+                            resizeMode="cover"
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
             <Titels text1={"Sports academy"} text2={"$600/hr"} />
@@ -71,11 +75,11 @@ const DetailsCompo = () => {
 
                 </SafeAreaView>
             </SafeAreaView>
-            <View style={styles.bookbtn}>
+            <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
                 <Text style={styles.booktxt}>
                     Book Now
                 </Text>
-            </View>
+            </TouchableOpacity>
         </SafeAreaView >
 
 

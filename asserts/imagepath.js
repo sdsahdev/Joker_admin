@@ -26,6 +26,8 @@ const imagesClass = {
   box3: require('./Images/box3.jpg'),
   box4: require('./Images/box4.jpg'),
 
+  telephone: require('./Images/telephone.png'),
+
 };
 
 export default imagesClass;
