@@ -23,7 +23,7 @@ const loginSceen = ({ navigation }) => {
   const [formattedValue, setFormattedValue] = useState("");
   const [valid, setValid] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const phoneInput = useRef < PhoneInput > (null);
+  // const phoneInput = useRef < PhoneInput > (null);
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -31,8 +31,6 @@ const loginSceen = ({ navigation }) => {
           Hi~{'\n'}
           Signup to get started
         </Text>
-
-
 
         <View style={styles.fillDetails}>
 
