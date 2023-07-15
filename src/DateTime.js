@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   StyleSheet,
@@ -21,6 +21,8 @@ import TopHeader from '../Components/TopHeader.js';
 
 const DateTime = () => {
   const [numColumns, setNumColumns] = useState(4);
+  const [selectedItems, setSelectedItems] = useState({});
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const data = [
     {
@@ -106,67 +108,67 @@ const DateTime = () => {
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '2',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '3',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '4',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '5',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '6',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '7',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '8',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '9',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '10',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '11',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
     {
-      id: '1',
+      id: '12',
       image: imagesClass.banner2,
       leftText: '01:00 pm ',
       rightText: '$100/hr',
@@ -175,6 +177,50 @@ const DateTime = () => {
   const today = moment().startOf('day');
   const maxSelectableDate = moment().add(1, 'month').endOf('day');
   const [selectedDate, setSelectedDate] = useState(null);
+
+  const handleItemPress = (id) => {
+    console.log("Single-click selection for item with ID:", id);
+    setSelectedItems((prevSelectedItems) => {
+      const isSelected = prevSelectedItems[id];
+      const updatedSelectedItems = { ...prevSelectedItems };
+      updatedSelectedItems[id] = !isSelected;
+      return updatedSelectedItems;
+    });
+  };
+
+  // Function to handle item selection on long press
+  const handleItemLongPress = (id) => {
+    console.log("Long-press selection for item with ID:", id);
+    setSelectedItems((prevSelectedItems) => {
+      const isSelected = prevSelectedItems[id];
+      const updatedSelectedItems = { ...prevSelectedItems };
+      updatedSelectedItems[id] = !isSelected;
+      return updatedSelectedItems;
+    });
+  };
+  // Calculate the total price based on selected items and their prices
+  useMemo(() => {
+    const pricePerItem = 100;
+    const selectedItemCount = Object.values(selectedItems).filter((selected) => selected).length;
+    const total = pricePerItem * selectedItemCount;
+
+    let sum = 0;
+    for (const id in selectedItems) {
+      if (selectedItems[id]) {
+        // Find the item with the corresponding ID from the data array
+        const selectedItem = data.find((item) => item.id === id);
+        if (selectedItem) {
+          // Calculate the total price for the selected item
+          const price = parseFloat(selectedItem.rightText.substring(1));
+          sum += price;
+        }
+      }
+    }
+    setTotalPrice(total); // Update the totalPrice state here
+  }, [selectedItems]);
+
+
+
   const handleDateSelected = date => {
     setSelectedDate(date);
   };
@@ -184,18 +230,30 @@ const DateTime = () => {
   };
 
   const renderItem2 = ({ item }) => (
-    <View style={styles.timeSlot}>
-      <Text style={styles.textLeft}>{item.leftText}</Text>
-    </View>
+    <TouchableOpacity
+      onPress={() => handleItemPress(item.id)}
+      onLongPress={() => handleItemLongPress(item.id)}
+    >
+      <View style={[styles.timeSlot, selectedItems[item.id] && styles.selectedItem]}>
+        {/* ... other item content ... */}
+        <Text style={styles.textRight}>{item.rightText}</Text>
+      </View>
+    </TouchableOpacity>
   );
   const renderItem = ({ item }) => (
     <View style={styles.timeSlot}>
+
       <Text style={styles.textLeft}>{item.leftText}</Text>
     </View>
   );
   return (
     <SafeAreaView style={styles.container}>
-      <TopHeader name={"Book Your Slot"} />
+      <View >
+
+        <TopHeader name={"Book Your Slot"} />
+      </View>
+      <Text>Total Price: ${totalPrice.toFixed(2)}</Text>
+
       <View style={styles.calView}>
         <CalendarStrip
           startingDate={Date()}
@@ -217,11 +275,11 @@ const DateTime = () => {
           onDateSelected={handleDateSelected}
         />
 
-        {selectedDate && (
+        {/* {selectedDate && (
           <Text style={styles.selectedDateText}>
             Selected Date: {formatDate(selectedDate)}
           </Text>
-        )}
+        )} */}
       </View>
       <View style={{ alignItems: 'center' }}>
         <Text style={styles.slotTxt}>Day Slot</Text>
@@ -247,14 +305,18 @@ const DateTime = () => {
   );
 };
 const styles = StyleSheet.create({
+  selectedItem: {
+    // Add styles to indicate the selected item (e.g., change the background color)
+    backgroundColor: 'blue',
+  },
   slotTxt: {
     color: '#000',
-    margin: wp(2),
     borderWidth: wp(0.3),
     borderColor: '#027850',
     padding: wp(3),
     borderRadius: wp(2),
     fontSize: wp(4),
+    marginBottom: wp(1)
   },
   textLeft: { textAlignVertical: 'center', flex: 1 },
   timeSlot: {
@@ -296,7 +358,7 @@ const styles = StyleSheet.create({
   datename: { color: 'grey', fontSize: wp(3.5) },
   numdate: { color: 'grey', fontSize: wp(3.5) },
   calheader: {
-    color: '#027850',
+    color: '#000',
     fontSize: wp(5),
     paddingBottom: wp(5),
 
@@ -304,14 +366,11 @@ const styles = StyleSheet.create({
   },
   maincalanedr: {
     height: hp(14),
-    paddingTop: 30,
     paddingBottom: 20,
     position: 'relative',
   },
   container: { flex: 1, position: 'relative' },
-  selectedDateText: { marginTop: 20, textAlign: 'center' },
-  backgroundContainer: {
-    ...StyleSheet.absoluteFillObject,
-  },
+  selectedDateText: { textAlign: 'center' },
+
 });
 export default DateTime;

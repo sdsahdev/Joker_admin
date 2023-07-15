@@ -27,6 +27,7 @@ const imagesClass = {
   box4: require('./Images/box4.jpg'),
 
   telephone: require('./Images/telephone.png'),
+  Arrow: require('./Images/Group.png'),
 
 };
 
