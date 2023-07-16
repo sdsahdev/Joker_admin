@@ -7,6 +7,7 @@ import Icon from '../asserts/svgs/Back';
 import { Svg, G, Rect, Path, Defs, Filter, FeFlood, FeGaussianBlur, FeComposite, FeBlend, Stop, LinearGradient } from 'react-native-svg';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import moment from 'moment';
 
 const CalanderFile = () => {
     const [selectedDates, setSelectedDates] = useState({});
@@ -19,17 +20,25 @@ const CalanderFile = () => {
         if (updatedSelectedDates[selectedDay]) {
             delete updatedSelectedDates[selectedDay];
         } else {
-            updatedSelectedDates[selectedDay] = { selected: true };
+            updatedSelectedDates[moment(selectedDay).format('dddd, MMMM Do YYYY')];
         }
 
         setSelectedDates(updatedSelectedDates);
+        const formattedDate1 = moment(selectedDay).format('YYYY-MM-DD'); // Format: 'YYYY-MM-DD'
+        const formattedDate2 = moment(selectedDay).format('DD/MM/YYYY'); // Format: 'DD/MM/YYYY'
+        const formattedDate3 = moment(selectedDay).format('dddd, MMMM Do YYYY'); // Format: 'Wednesday, July 20th 2023'
+
+        console.log('Formatted Date 1:', formattedDate1);
+        console.log('Formatted Date 2:', formattedDate2);
+        console.log('Formatted Date 3:', formattedDate3);
     };
     useEffect(() => {
-        console.log(selectedDates, "====dates=====");
+        console.log(selectedDates, "==dates==");
     }, [selectedDates]);
     return (
         <SafeAreaView style={styles.container}>
             <Calendar
+
                 style={{
                     borderWidth: 1,
                     borderColor: 'gray',

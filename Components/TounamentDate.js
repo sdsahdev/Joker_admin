@@ -6,8 +6,8 @@ import {
 } from 'react-native-responsive-screen';
 import moment from 'moment';
 import CalanderFile from '../Components/CalanderFile';
-// nornmal and for bulk booking  comppoonent 
-const About = () => {
+
+const TounamentDate = () => {
     const [numColumns, setNumColumns] = useState(4);
     const [selectedItems, setSelectedItems] = useState({});
     const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -22,26 +22,29 @@ const About = () => {
         { id: '6', time: '06:00-07:00 pm', price: 100 },
         { id: '7', time: '07:00-08:00 pm', price: 100 },
         { id: '8', time: '08:00-09:00 pm', price: 100 },
-        { id: '9', time: '09:00-010:00 pm', price: 100 },
-        { id: '10', time: '10:00-011:00 pm', price: 100 },
+        { id: '9', time: '09:00-10:00 pm', price: 100 },
+        { id: '10', time: '10:00-11:00 pm', price: 100 },
     ];
 
     const handleTimePress = time => {
+        const [startTime, endTime] = time.split('-');
+
         if (!selectedStartTime) {
-            setSelectedStartTime(time);
+
             setSelectedEndTime(null);
         } else if (!selectedEndTime) {
             if (time > selectedStartTime) {
-                setSelectedEndTime(time);
+                setSelectedEndTime(endTime);
             } else {
                 setSelectedEndTime(selectedStartTime);
-                setSelectedStartTime(time);
+                setSelectedStartTime(startTime);
             }
         } else {
-            setSelectedStartTime(time);
+            setSelectedStartTime(startTime);
             setSelectedEndTime(null);
         }
     };
+
 
     const handleItemPress = id => {
         setSelectedItems(prevSelectedItems => {
@@ -211,4 +214,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default About;
+export default TounamentDate;

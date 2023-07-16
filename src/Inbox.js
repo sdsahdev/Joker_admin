@@ -1,10 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import TounamentDate from '../Components/TounamentDate'
 
 const Inbox = () => {
     return (
-        <View>
-            <Text>Inbox</Text>
+        <View style={{ flex: 1 }}>
+            <TounamentDate />
         </View>
     )
 }

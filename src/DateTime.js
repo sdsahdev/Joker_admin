@@ -18,88 +18,89 @@ import BackgroundSvg from '../asserts/svgs/BgImg.js';
 import imagesClass from '../asserts/imagepath.js';
 import PaymentBtn from '../Components/PaymentBtn.js';
 import TopHeader from '../Components/TopHeader.js';
+import About from './About.js';
 
 const DateTime = () => {
   const [numColumns, setNumColumns] = useState(4);
   const [selectedItems, setSelectedItems] = useState({});
   const [totalPrice, setTotalPrice] = useState(0);
 
-  const data = [
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
-    {
-      id: '1',
-      image: imagesClass.banner2,
-      leftText: '01:00 pm ',
-      rightText: '$100/hr',
-    },
+  // const data = [
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
+  //   {
+  //     id: '1',
+  //     image: imagesClass.banner2,
+  //     leftText: '01:00 pm ',
+  //     rightText: '$100/hr',
+  //   },
 
-    // Add more items as needed
-  ];
+  //   // Add more items as needed
+  // ];
   const data2 = [
     {
       id: '1',
@@ -173,6 +174,78 @@ const DateTime = () => {
       leftText: '01:00 pm ',
       rightText: '$100/hr',
     },
+    {
+      id: '13',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '14',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '15',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '16',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '17',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '18',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '19',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '20',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '21',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '22',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '23',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
+    {
+      id: '24',
+      image: imagesClass.banner2,
+      leftText: '01:00 pm ',
+      rightText: '$100/hr',
+    },
   ];
   const today = moment().startOf('day');
   const maxSelectableDate = moment().add(1, 'month').endOf('day');
@@ -208,7 +281,7 @@ const DateTime = () => {
     for (const id in selectedItems) {
       if (selectedItems[id]) {
         // Find the item with the corresponding ID from the data array
-        const selectedItem = data.find((item) => item.id === id);
+        const selectedItem = data2.find((item) => item.id === id);
         if (selectedItem) {
           // Calculate the total price for the selected item
           const price = parseFloat(selectedItem.rightText.substring(1));
@@ -218,7 +291,6 @@ const DateTime = () => {
     }
     setTotalPrice(total); // Update the totalPrice state here
   }, [selectedItems]);
-
 
 
   const handleDateSelected = date => {
@@ -281,24 +353,25 @@ const DateTime = () => {
           </Text>
         )} */}
       </View>
-      <View style={{ alignItems: 'center' }}>
-        <Text style={styles.slotTxt}>Day Slot</Text>
+      <View style={{ alignItems: 'center', flex: 1 }}>
+        {/* <Text style={styles.slotTxt}>Day Slot</Text>
         <FlatList
           data={data}
           numColumns={numColumns}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={renderItem}
-        />
+        /> */}
         {/* <View style={{ borderWidth: wp(0.3), borderColor: '#027850', width: '90%', marginTop: wp(4) }} /> */}
-        <Text style={styles.slotTxt}>Night Slot</Text>
-        <FlatList
+        {/* <Text style={styles.slotTxt}>Night Slot</Text> */}
+        {/* <FlatList
           data={data2}
           numColumns={numColumns}
           showsVerticalScrollIndicator={false}
           keyExtractor={item => item.id}
           renderItem={renderItem2}
-        />
+        /> */}
+        <About />
       </View>
       <PaymentBtn txt={'Advance Payment'} txt2={'Full Payment'} />
     </SafeAreaView>
@@ -307,7 +380,7 @@ const DateTime = () => {
 const styles = StyleSheet.create({
   selectedItem: {
     // Add styles to indicate the selected item (e.g., change the background color)
-    backgroundColor: 'blue',
+    backgroundColor: 'green',
   },
   slotTxt: {
     color: '#000',
