@@ -26,7 +26,7 @@ const PaymentBtn = ({ txt, txt2 }) => {
 export default PaymentBtn
 
 const styles = StyleSheet.create({
-    mainView: { flexDirection: 'row', flex: 1 },
+    mainView: { flexDirection: 'row', },
     payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
 
 

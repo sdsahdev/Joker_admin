@@ -347,33 +347,19 @@ const DateTime = () => {
           onDateSelected={handleDateSelected}
         />
 
-        {/* {selectedDate && (
+        {selectedDate && (
           <Text style={styles.selectedDateText}>
             Selected Date: {formatDate(selectedDate)}
           </Text>
-        )} */}
+        )}
       </View>
-      <View style={{ alignItems: 'center', flex: 1 }}>
-        {/* <Text style={styles.slotTxt}>Day Slot</Text>
-        <FlatList
-          data={data}
-          numColumns={numColumns}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={renderItem}
-        /> */}
-        {/* <View style={{ borderWidth: wp(0.3), borderColor: '#027850', width: '90%', marginTop: wp(4) }} /> */}
-        {/* <Text style={styles.slotTxt}>Night Slot</Text> */}
-        {/* <FlatList
-          data={data2}
-          numColumns={numColumns}
-          showsVerticalScrollIndicator={false}
-          keyExtractor={item => item.id}
-          renderItem={renderItem2}
-        /> */}
+      <View style={{ alignItems: 'center', flex: 1, }}>
+
         <About />
       </View>
-      <PaymentBtn txt={'Advance Payment'} txt2={'Full Payment'} />
+      <View style={{ flex: 0.2 }}>
+        <PaymentBtn txt={'Advance Payment'} txt2={'Full Payment'} />
+      </View>
     </SafeAreaView>
   );
 };
@@ -408,6 +394,8 @@ const styles = StyleSheet.create({
     width: wp(12),
     height: wp(15),
     borderRadius: wp(2),
+    borderWidth: wp(0.3),
+    borderColor: '#027850',
   },
   localestyle: {
     name: 'en', // Set the locale to English
@@ -434,7 +422,6 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: wp(5),
     paddingBottom: wp(5),
-
     // right: 2, alignSelf: 'flex-end'
   },
   maincalanedr: {
