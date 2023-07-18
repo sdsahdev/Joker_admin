@@ -10,48 +10,64 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment';
 
 const CalanderFile = () => {
+
     const [selectedDates, setSelectedDates] = useState({});
+    const [calendarTheme, setCalendarTheme] = useState({
+        calendarBackground: '#027850',
+        textSectionTitleColor: 'white',
+        dayTextColor: 'white',
+        todayTextColor: 'white',
+        selectedDayTextColor: 'white',
+        selectedDayBackgroundColor: 'white',
+        arrowColor: 'orange',
+        textDisabledColor: 'tranferant'
+
+    });
+    useEffect(() => {
+        console.log(selectedDates, "==dates==");
+    }, [selectedDates]);
 
     const onDayPress = (day) => {
-        // Handle the selection of multiple dates
-        const selectedDay = day.dateString;
-        const updatedSelectedDates = { ...selectedDates };
-
-        if (updatedSelectedDates[selectedDay]) {
-            delete updatedSelectedDates[selectedDay];
+        const selectedDate = day.dateString;
+        const updatedDates = { ...selectedDates };
+        if (selectedDates[selectedDate]) {
+            // Date is already selected, so deselect it
+            delete updatedDates[selectedDate];
         } else {
-            updatedSelectedDates[moment(selectedDay).format('dddd, MMMM Do YYYY')];
+            // Date is not selected, so mark it as selected
+            updatedDates[selectedDate] = { selected: true, selectedColor: 'blue' };
         }
+        setSelectedDates(updatedDates);
 
-        setSelectedDates(updatedSelectedDates);
-        const formattedDate1 = moment(selectedDay).format('YYYY-MM-DD'); // Format: 'YYYY-MM-DD'
-        const formattedDate2 = moment(selectedDay).format('DD/MM/YYYY'); // Format: 'DD/MM/YYYY'
-        const formattedDate3 = moment(selectedDay).format('dddd, MMMM Do YYYY'); // Format: 'Wednesday, July 20th 2023'
+        const formattedDate1 = moment(selectedDate).format('YYYY-MM-DD'); // Format: 'YYYY-MM-DD'
+        const formattedDate2 = moment(selectedDate).format('DD/MM/YYYY'); // Format: 'DD/MM/YYYY'
+        const formattedDate3 = moment(selectedDate).format('dddd, MMMM Do YYYY'); // Format: 'Wednesday, July 20th 2023'
 
         console.log('Formatted Date 1:', formattedDate1);
         console.log('Formatted Date 2:', formattedDate2);
         console.log('Formatted Date 3:', formattedDate3);
     };
-    useEffect(() => {
-        console.log(selectedDates, "==dates==");
-    }, [selectedDates]);
+
+    const markedDates = {
+        ...selectedDates,
+        // You can add more marked dates here with custom text
+        // Example:
+        // 'YYYY-MM-DD': { marked: true, dotColor: 'red', text: 'Custom Text' },
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <Calendar
-
                 style={{
                     borderWidth: 1,
                     borderColor: 'gray',
-                    height: 350
+                    backgroundColor: '#027850',
                 }}
-                // Customize the appearance of the calendar
-                markedDates={selectedDates}
+                markedDates={markedDates}
                 onDayPress={onDayPress}
                 minDate={Date()} // Disable past dates
-                maxDate={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)}
-            // Show up to 1 year ahead
-            />
-        </SafeAreaView>
+                maxDate={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)} // Show up to 1 year ahead
+            />  </SafeAreaView>
     );
 };
 

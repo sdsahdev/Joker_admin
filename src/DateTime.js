@@ -355,7 +355,7 @@ const DateTime = () => {
       </View>
       <View style={{ alignItems: 'center', flex: 1, }}>
 
-        <About />
+        <About tor={true} />
       </View>
       <View style={{ flex: 0.2 }}>
         <PaymentBtn txt={'Advance Payment'} txt2={'Full Payment'} />
