@@ -64,7 +64,7 @@ const Rules = () => {
                     </View>
 
                     <View>
-                        <Text style={{ color: '#000', marginTop: hp(15), fontSize: wp(6), marginHorizontal: wp(5) }}>
+                        <Text style={{ color: '#000', marginTop: hp(8), fontSize: wp(6), marginHorizontal: wp(5) }}>
                             Genral Rules
                         </Text>
                     </View>

@@ -7,7 +7,7 @@ import {
 import moment from 'moment';
 import CalanderFile from '../Components/CalanderFile';
 // nornmal and for bulk booking  comppoonent 
-const About = () => {
+const About = ({ onStartTimeChange, onEndTimeChange }) => {
     const [numColumns, setNumColumns] = useState(4);
     const [selectedItems, setSelectedItems] = useState({});
     const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -46,16 +46,23 @@ const About = () => {
         if (!selectedStartTime) {
             setSelectedStartTime(time);
             setSelectedEndTime(null);
+            onStartTimeChange(time)
+            onEndTimeChange(null)
         } else if (!selectedEndTime) {
             if (time > selectedStartTime) {
+                onEndTimeChange(time)
                 setSelectedEndTime(time);
             } else {
                 setSelectedEndTime(selectedStartTime);
                 setSelectedStartTime(time);
+                onEndTimeChange(selectedStartTime)
+                onStartTimeChange(time)
             }
         } else {
+            onStartTimeChange(time)
             setSelectedStartTime(time);
             setSelectedEndTime(null);
+            onEndTimeChange(null)
         }
     };
 
@@ -130,8 +137,8 @@ const About = () => {
 
     return (
         <View style={styles.container}>
-            {console.log(selectedStartTime, "===== start time ==")}
-            {console.log(selectedEndTime, "===End time==")}
+            {/* {console.log(selectedStartTime, "===== start time ==")}
+            {console.log(selectedEndTime, "===End time==")} */}
 
             {renderSelectedItemsText()}
             <FlatList

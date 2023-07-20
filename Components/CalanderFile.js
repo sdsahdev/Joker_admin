@@ -8,12 +8,13 @@ import { Svg, G, Rect, Path, Defs, Filter, FeFlood, FeGaussianBlur, FeComposite,
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import moment from 'moment';
+import PaymentBtn from './PaymentBtn';
 
-const CalanderFile = () => {
+const CalanderFile = ({ datesselect }) => {
 
     const [selectedDates, setSelectedDates] = useState({});
     const [calendarTheme, setCalendarTheme] = useState({
-        calendarBackground: '#027850',
+        calendarBackground: 'white',
         textSectionTitleColor: 'white',
         dayTextColor: 'white',
         todayTextColor: 'white',
@@ -24,7 +25,7 @@ const CalanderFile = () => {
 
     });
     useEffect(() => {
-        console.log(selectedDates, "==dates==");
+        // console.log(selectedDates, "==dates==");
     }, [selectedDates]);
 
     const onDayPress = (day) => {
@@ -35,17 +36,17 @@ const CalanderFile = () => {
             delete updatedDates[selectedDate];
         } else {
             // Date is not selected, so mark it as selected
-            updatedDates[selectedDate] = { selected: true, selectedColor: 'blue' };
+            updatedDates[selectedDate] = { selected: true };
         }
         setSelectedDates(updatedDates);
-
+        datesselect(updatedDates);
         const formattedDate1 = moment(selectedDate).format('YYYY-MM-DD'); // Format: 'YYYY-MM-DD'
         const formattedDate2 = moment(selectedDate).format('DD/MM/YYYY'); // Format: 'DD/MM/YYYY'
         const formattedDate3 = moment(selectedDate).format('dddd, MMMM Do YYYY'); // Format: 'Wednesday, July 20th 2023'
 
-        console.log('Formatted Date 1:', formattedDate1);
-        console.log('Formatted Date 2:', formattedDate2);
-        console.log('Formatted Date 3:', formattedDate3);
+        // console.log('Formatted Date 1:', formattedDate1);
+        // console.log('Formatted Date 2:', formattedDate2);
+        // console.log('Formatted Date 3:', formattedDate3);
     };
 
     const markedDates = {
@@ -61,13 +62,15 @@ const CalanderFile = () => {
                 style={{
                     borderWidth: 1,
                     borderColor: 'gray',
-                    backgroundColor: '#027850',
+                    backgroundColor: 'white',
                 }}
                 markedDates={markedDates}
                 onDayPress={onDayPress}
                 minDate={Date()} // Disable past dates
                 maxDate={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)} // Show up to 1 year ahead
-            />  </SafeAreaView>
+            />
+
+        </SafeAreaView>
     );
 };
 

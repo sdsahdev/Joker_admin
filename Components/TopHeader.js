@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         color: '#000',
         fontSize: wp(7),
         marginTop: wp(10),
-        position: 'absolute',
+
         marginLeft: wp(10),
     },
     container: { flex: 1, position: 'relative' },
