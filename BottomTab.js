@@ -91,15 +91,6 @@ const BottomTab = () => {
             alphaClr: '#C3EDC0',
         },
         {
-            route: 'About us',
-            label: 'About us',
-            type: imagesClass.customer, // Replace with actual image paths
-            icon: 'plus-square',
-            component: About,
-            color: '#027850',
-            alphaClr: '#C3EDC0',
-        },
-        {
             route: 'Inbox',
             label: 'Inbox',
             type: imagesClass.history, // Replace with actual image paths

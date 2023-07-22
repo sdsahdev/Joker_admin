@@ -6,45 +6,65 @@ import {
 } from 'react-native-responsive-screen';
 import moment from 'moment';
 import CalanderFile from '../Components/CalanderFile';
-
-const TounamentDate = () => {
+// nornmal and for bulk booking  comppoonent 
+const SlotTime = ({ onStartTimeChange, onEndTimeChange }) => {
     const [numColumns, setNumColumns] = useState(4);
     const [selectedItems, setSelectedItems] = useState({});
     const [selectedStartTime, setSelectedStartTime] = useState(null);
     const [selectedEndTime, setSelectedEndTime] = useState(null);
+    // const [torna, settoyna] = useState(tor);
 
     const data = [
-        { id: '1', time: '01:00-02:00 pm', price: 100 },
-        { id: '2', time: '02:00-03:00 pm', price: 100 },
-        { id: '3', time: '03:00-04:00 pm', price: 100 },
-        { id: '4', time: '04:00-05:00 pm', price: 100 },
-        { id: '5', time: '05:00-06:00 pm', price: 100 },
-        { id: '6', time: '06:00-07:00 pm', price: 100 },
-        { id: '7', time: '07:00-08:00 pm', price: 100 },
-        { id: '8', time: '08:00-09:00 pm', price: 100 },
-        { id: '9', time: '09:00-10:00 pm', price: 100 },
-        { id: '10', time: '10:00-11:00 pm', price: 100 },
+
+        { id: '1', time: '01-02 am', price: 100 },
+        { id: '2', time: '02-03 am', price: 100 },
+        { id: '3', time: '03-04 am', price: 100 },
+        { id: '4', time: '04-05 am', price: 100 },
+        { id: '5', time: '05-06 am', price: 100 },
+        { id: '6', time: '06-07 am', price: 100 },
+        { id: '7', time: '07-08 am', price: 100 },
+        { id: '8', time: '08-09 am', price: 100 },
+        { id: '9', time: '09-10 am', price: 100 },
+        { id: '10', time: '10-11 am', price: 100 },
+        { id: '11', time: '11-12 am', price: 100 },
+        { id: '12', time: '12-13 am', price: 100 },
+        { id: '13', time: '13-14 pm', price: 100 },
+        { id: '14', time: '14-15 pm', price: 100 },
+        { id: '15', time: '15-16 pm', price: 100 },
+        { id: '16', time: '16-17 pm', price: 100 },
+        { id: '17', time: '17-18 pm', price: 100 },
+        { id: '18', time: '18-19 pm', price: 100 },
+        { id: '19', time: '19-20 pm', price: 100 },
+        { id: '20', time: '20-21 pm', price: 100 },
+        { id: '21', time: '21-22 pm', price: 100 },
+        { id: '22', time: '22-23 pm', price: 100 },
+        { id: '23', time: '23-24 pm', price: 100 },
+        { id: '24', time: '24-01 pm', price: 100 },
     ];
 
     const handleTimePress = time => {
-        const [startTime, endTime] = time.split('-');
-
         if (!selectedStartTime) {
-
+            setSelectedStartTime(time);
             setSelectedEndTime(null);
+            onStartTimeChange(time);
+            onEndTimeChange(null);
         } else if (!selectedEndTime) {
             if (time > selectedStartTime) {
-                setSelectedEndTime(endTime);
+                onEndTimeChange(time)
+                setSelectedEndTime(time);
             } else {
                 setSelectedEndTime(selectedStartTime);
-                setSelectedStartTime(startTime);
+                setSelectedStartTime(time);
+                onEndTimeChange(selectedStartTime)
+                onStartTimeChange(time)
             }
         } else {
-            setSelectedStartTime(startTime);
+            onStartTimeChange(time)
+            setSelectedStartTime(time);
             setSelectedEndTime(null);
+            onEndTimeChange(null)
         }
     };
-
 
     const handleItemPress = id => {
         setSelectedItems(prevSelectedItems => {
@@ -106,7 +126,7 @@ const TounamentDate = () => {
         const selectedItemsCount = Object.keys(selectedItems).length;
         return (
             <View>
-                {totalDuration > 4 ? console.log(totalDuration, "first") : (
+                {totalDuration > 3 ? console.log(totalDuration, "first") : (
                     <Text style={styles.minHoursText}>
                         Please select  minimum {totalDuration} hours
                     </Text>
@@ -117,12 +137,12 @@ const TounamentDate = () => {
 
     return (
         <View style={styles.container}>
-            <Text>Selected Start Time: {selectedStartTime}</Text>
-            <Text>Selected End Time: {selectedEndTime}</Text>
+            {/* {console.log(selectedStartTime, "===== start time ==")}
+            {console.log(selectedEndTime, "===End time==")} */}
 
             {renderSelectedItemsText()}
             <FlatList
-                style={{ flex: 1 }} // Set flex: 1 to occupy the remaining space
+                style={{ flex: 1, alignSelf: 'center' }} // Set flex: 1 to occupy the remaining space
                 data={data}
                 numColumns={numColumns}
                 renderItem={renderItem}
@@ -139,7 +159,7 @@ const styles = StyleSheet.create({
         color: 'red',
         marginTop: 10,
     },
-    timeText: { alignSelf: 'center', textAlign: 'center', flex: 1 },
+    timeText: { alignSelf: 'center', textAlign: 'center', flex: 1, fontWeight: 'bold', },
     selectedtext: { color: '#fff' },
     selectedItem: {
         // Add styles to indicate the selected item (e.g., change the background color)
@@ -214,4 +234,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default TounamentDate;
+export default SlotTime;

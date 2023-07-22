@@ -1,80 +1,88 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import TounamentDate from '../Components/TounamentDate'
-import About from './About'
-import CalanderFile from '../Components/CalanderFile'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Facilities from '../Components/Facilities'
-import BackgroundSvg from '../asserts/svgs/BgImg'
+import React, { useEffect, useState } from 'react';
 import TopHeader from '../Components/TopHeader'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import {
+    widthPercentageToDP as wp,
+    heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import {
+    View,
+    StyleSheet,
+    Text,
+    FlatList,
+    TouchableOpacity,
+    Image,
+} from 'react-native';
+import imagesClass from '../asserts/imagepath';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Inbox = () => {
-    const [startTime, setStartTime] = useState(null);
-    const [endTime, setEndTime] = useState(null);
-    const [caldate, setcalldat] = useState({});
-    const handleDateSelect = date => {
-        // Reset startTime and endTime to null when the date is removed
+    const rulesData = [
+        { id: '0', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
+        { id: '1', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
+        { id: '2', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
+        { id: '3', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
+        { id: '4', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
+        { id: '5', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
 
-        setcalldat(date);
+        // for admin
+        // { id: '5', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' , username:'kevin', phone:'1234567890'},
 
-    };
+    ];
 
+    const renderItem = ({ item }) => (
+        <View style={styles.timeSlot}>
 
-    const BookingPro = () => {
-        console.log("preess");
-    }
-    const handleStartTimeChange = time => {
-        setStartTime(time);
-        // console.log(time, "++++start Times++++++++");
-    };
-
-    const handleEndTimeChange = time => {
-        setEndTime(time);
-        // console.log(time, "++++end Times++++++++");
-
-    };
-
-
-
-    return (
-        <View style={{ flex: 1, marginBottom: hp(13), }}>
-            <ScrollView>
-
-                <View >
-                    <TopHeader name={"Rules"} />
-                </View>
-                <View style={{ flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignSelf: 'center', marginTop: hp(4) }}>
-                    <About onStartTimeChange={handleStartTimeChange} onEndTimeChange={handleEndTimeChange} />
-                </View>
-                <View style={{ margin: wp(10) }} >
-                    <CalanderFile datesselect={handleDateSelect} />
-                </View>
-                <View>
-
-                    {Object.keys(caldate).length !== 0 && startTime !== null && endTime !== null && (
-                        <TouchableOpacity
-                            style={{ margin: wp(3), height: 40, flex: 1 }}
-                            onPress={() => BookingPro()}
-                        >
-                            <Text style={styles.payment}>
-                                {startTime} to {endTime}
-                            </Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
-
-            </ScrollView>
+            <Text style={styles.textLeft}>Time    : {item.time}</Text>
+            <Text style={styles.textLeft}>Date    : {item.date}</Text>
+            <Text style={styles.textLeft}>BoxName :{item.BoxName}</Text>
+            <Text style={styles.textLeft}>Amount  :{item.amount}</Text>
+            <Text style={styles.textLeft}>code    :{item.code}</Text>
+            <Text style={styles.textLeft}>message :{item.message}</Text>
         </View>
+    );
+    return (
+        <SafeAreaView style={{ position: 'relative', marginBottom: hp(12) }}>
+            <View style={{ position: 'relative' }}>
+                <ScrollView >
 
+                    <View >
+                        <TopHeader name={"Inbox"} />
+                    </View>
 
+                    <View>
+                        <Text style={{ color: '#000', marginTop: hp(8), fontSize: wp(6), marginHorizontal: wp(5) }}>
+                            Genral Rules
+                        </Text>
+                    </View>
+                    <View style={{ marginRight: wp(9), }}>
+                        <FlatList
+                            style={{ marginTop: hp(3), }}
+                            data={rulesData}
+                            showsVerticalScrollIndicator={false}
+                            keyExtractor={item => item.id}
+                            renderItem={renderItem}
+                        />
+                    </View>
+
+                </ScrollView>
+
+            </View>
+
+        </SafeAreaView>
     )
 }
 
 export default Inbox
 
 const styles = StyleSheet.create({
-    mainView: { flexDirection: 'row', },
-    payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
+    timeSlot: {
 
+        marginVertical: wp(2),
+        paddingHorizontal: wp(2),
+
+    }, textLeft: {
+        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap'
+
+    }
 })

@@ -23,10 +23,10 @@ export default Facilities
 
 const styles = StyleSheet.create({
     facilityView: {
-        backgroundColor: '#fff', flexDirection: 'row', alignItems: 'baseline', paddingHorizontal: wp(4), paddingVertical: wp(0.5), borderRadius: wp(6), margin: wp(1), borderWidth: wp(0.3), borderColor: '#027850'
+        alignItems: 'center', backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', paddingHorizontal: wp(4), paddingVertical: wp(1), borderRadius: wp(6), margin: wp(1), borderWidth: wp(0.3), borderColor: '#027850', width: wp(40)
     },
     imgs: {
         width: wp(6), height: hp(4), marginRight: wp(2)
     },
-    txt: { alignSelf: 'center' },
+    txt: { alignSelf: 'center', textAlign: 'center' },
 })

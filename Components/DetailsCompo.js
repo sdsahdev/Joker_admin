@@ -46,32 +46,30 @@ const DetailsCompo = ({ navigation }) => {
             <TimeComp img={imagesClass.bluerike} text={"2 Slot available"} />
 
             <Titels text1={"Location"} />
+            <Text style={styles.addrestxt}> surat , gujrat</Text>
             <View style={styles.locationview}>
 
-                <Text style={styles.addrestxt}> surat , gujrat</Text>
                 <Image
                     source={imagesClass.location
                     }
                     style={styles.mapimage}
-                    resizeMode="cover"
+                    resizeMode="contain"
                 />
             </View>
-            <Titels text1={"Facilities provided"} />
+            <View style={{ marginTop: hp(1) }}>
+
+                <Titels text1={"Facilities provided"} />
+            </View>
             <SafeAreaView style={styles.facilityView}>
+
                 <SafeAreaView>
-                    <Facilities img={imagesClass.parking} text3={"Parking"} />
+                    <Facilities img={imagesClass.waiting} text3={"Waiting Area"} />
                     <Facilities img={imagesClass.bat} text3={"bat"} />
-
-
-                </SafeAreaView>
-                <SafeAreaView>
-                    <Facilities img={imagesClass.Locaker} text3={"Locaker"} />
-                    <Facilities img={imagesClass.waiting} text3={"Waiting Room"} />
 
                 </SafeAreaView>
                 <SafeAreaView>
                     <Facilities img={imagesClass.water} text3={"Water"} />
-                    <Facilities img={imagesClass.bat} text3={"bat"} />
+                    <Facilities img={imagesClass.parking} text3={"Parking"} />
 
                 </SafeAreaView>
             </SafeAreaView>
@@ -88,18 +86,18 @@ const DetailsCompo = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: { backgroundColor: '#027850', height: hp(6), width: "90%", alignSelf: 'center', borderRadius: wp(2), marginTop: wp(5) },
-    facilityView: { flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: wp(2) },
-    addrestxt: { marginLeft: wp(5), marginVertical: wp(1) },
+    bookbtn: { backgroundColor: '#027850', height: hp(6), width: "90%", alignSelf: 'center', borderRadius: wp(2), marginTop: hp(4) },
+    facilityView: { flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: wp(2), marginTop: hp(2) },
+    addrestxt: { marginLeft: wp(5), marginBottom: hp(1) },
     locationview: {
-        height: hp(18.5), width: "90%", backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4), paddingBottom: 8
+        width: "90%", backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4), height: hp(18)
     },
     mapimage: {
-        width: "90%", height: hp(15), alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4),
+        width: "90%", height: hp(15), alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4)
     },
     container: {
         width: '100%',
-        // backgroundColor: '#fff'
+        flex: 1
     },
     imageContainer: {
         position: 'relative',

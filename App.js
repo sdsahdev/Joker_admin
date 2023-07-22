@@ -35,7 +35,7 @@ const App = () => {
         <Stack.Screen name="BoxeItems" component={BoxeItems} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="DateTime" component={DateTime} />
-
+        <Stack.Screen name="Inbox" component={Inbox} />
         <Stack.Screen name="DetailsCompo" component={DetailsCompo} />
         <Stack.Screen name="loginSceen" component={loginSceen} />
         <Stack.Screen name="Otp" component={Otp} />
