@@ -33,8 +33,8 @@ const Inbox = () => {
     const renderItem = ({ item }) => (
         <View style={styles.timeSlot}>
 
-            <Text style={styles.textLeft}>Time    : {item.time}</Text>
-            <Text style={styles.textLeft}>Date    : {item.date}</Text>
+            <Text style={styles.textLeft}>Time    :{item.time}</Text>
+            <Text style={styles.textLeft}>Date    :{item.date}</Text>
             <Text style={styles.textLeft}>BoxName :{item.BoxName}</Text>
             <Text style={styles.textLeft}>Amount  :{item.amount}</Text>
             <Text style={styles.textLeft}>code    :{item.code}</Text>
@@ -57,7 +57,7 @@ const Inbox = () => {
                     </View>
                     <View style={{ marginRight: wp(9), }}>
                         <FlatList
-                            style={{ marginTop: hp(3), }}
+                            style={{ marginTop: hp(3), alignSelf: 'center', width: '95%', }}
                             data={rulesData}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
@@ -80,9 +80,10 @@ const styles = StyleSheet.create({
 
         marginVertical: wp(2),
         paddingHorizontal: wp(2),
-
+        borderWidth: wp(0.5), justifyContent: 'center'
+        , borderColor: '#027850',
     }, textLeft: {
-        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap'
+        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap', marginVertical: wp(1), fontWeight: 'bold', fontSize: wp(4)
 
     }
 })
