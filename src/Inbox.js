@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TounamentDate from '../Components/TounamentDate'
 import About from './About'
 import CalanderFile from '../Components/CalanderFile'
@@ -12,12 +12,15 @@ import TopHeader from '../Components/TopHeader'
 const Inbox = () => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
-    const [caldate, setcalldat] = useState(null);
+    const [caldate, setcalldat] = useState({});
     const handleDateSelect = date => {
-        setcalldat(date)
-        console.log(date, "====dates=====");
-        console.log(caldate, "====dates=====");
-    }
+        // Reset startTime and endTime to null when the date is removed
+
+        setcalldat(date);
+
+    };
+
+
     const BookingPro = () => {
         console.log("preess");
     }
@@ -31,6 +34,9 @@ const Inbox = () => {
         // console.log(time, "++++end Times++++++++");
 
     };
+
+
+
     return (
         <View style={{ flex: 1, marginBottom: hp(13), }}>
             <ScrollView>
@@ -45,7 +51,8 @@ const Inbox = () => {
                     <CalanderFile datesselect={handleDateSelect} />
                 </View>
                 <View>
-                    {startTime !== null && endTime !== null && (
+
+                    {Object.keys(caldate).length !== 0 && startTime !== null && endTime !== null && (
                         <TouchableOpacity
                             style={{ margin: wp(3), height: 40, flex: 1 }}
                             onPress={() => BookingPro()}
