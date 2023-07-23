@@ -73,11 +73,19 @@ const DetailsCompo = ({ navigation }) => {
 
                 </SafeAreaView>
             </SafeAreaView>
-            <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
-                <Text style={styles.booktxt}>
-                    Book Now
-                </Text>
-            </TouchableOpacity>
+            <View >
+
+                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
+                    <Text style={styles.booktxt}>
+                        Book Now
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
+                    <Text style={styles.booktxt}>
+                        Book Now
+                    </Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView >
 
 

@@ -511,10 +511,10 @@ const DateTime = () => {
 export default DateTime;
 
 const styles = StyleSheet.create({
-  btn: { margin: wp(3), height: 40, flex: 1 },
   thiView: { margin: wp(10) },
   sendView: { flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignSelf: 'center', marginTop: hp(4) },
   mainView: { flex: 1, marginBottom: hp(5), },
+  btn: { margin: wp(3), height: 40, flex: 1 },
   payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
 
 })

@@ -16,7 +16,7 @@ import {
 import imagesClass from '../asserts/imagepath';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const Inbox = () => {
+const Inbox = ({ navigation }) => {
     const rulesData = [
         { id: '0', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
         { id: '1', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
@@ -32,17 +32,48 @@ const Inbox = () => {
 
     const renderItem = ({ item }) => (
         <View style={styles.timeSlot}>
+            <View style={{ flexDirection: 'row', }}>
 
-            <Text style={styles.textLeft}>Time    :{item.time}</Text>
-            <Text style={styles.textLeft}>Date    :{item.date}</Text>
-            <Text style={styles.textLeft}>BoxName :{item.BoxName}</Text>
-            <Text style={styles.textLeft}>Amount  :{item.amount}</Text>
-            <Text style={styles.textLeft}>code    :{item.code}</Text>
-            <Text style={styles.textLeft}>message :{item.message}</Text>
+                <Text style={styles.textLeft}>Time</Text>
+                <Text style={styles.textLeft}>{item.time}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+
+                <Text style={styles.textLeft}>Date</Text>
+                <Text style={styles.textLeft}>{item.date}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+
+                <Text style={styles.textLeft}>BoxName</Text>
+                <Text style={styles.textLeft}>{item.BoxName}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+
+                <Text style={styles.textLeft}>Amount</Text>
+                <Text style={styles.textLeft}>{item.amount}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+
+                <Text style={styles.textLeft}>code</Text>
+                <Text style={styles.textLeft}>{item.code}</Text>
+            </View>
+            <View style={{ flexDirection: 'row' }}>
+
+                <Text style={styles.textLeft}>message</Text>
+                <Text style={styles.textLeft}>{item.message}</Text>
+            </View>
+            <TouchableOpacity
+                style={styles.btn}
+                onPress={() => navigation.navigate('Cancel')}
+            >
+                <Text style={styles.payment}>
+                    cancelation
+                </Text>
+            </TouchableOpacity>
         </View>
     );
     return (
-        <SafeAreaView style={{ position: 'relative', marginBottom: hp(12) }}>
+        <SafeAreaView style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
                 <ScrollView >
 
@@ -50,14 +81,9 @@ const Inbox = () => {
                         <TopHeader name={"Inbox"} />
                     </View>
 
-                    <View>
-                        <Text style={{ color: '#000', marginTop: hp(8), fontSize: wp(6), marginHorizontal: wp(5) }}>
-                            Genral Rules
-                        </Text>
-                    </View>
-                    <View style={{ marginRight: wp(9), }}>
+                    <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>
                         <FlatList
-                            style={{ marginTop: hp(3), alignSelf: 'center', width: '95%', }}
+                            style={{ marginTop: hp(4), alignSelf: 'center', width: '95%', }}
                             data={rulesData}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
@@ -76,14 +102,16 @@ const Inbox = () => {
 export default Inbox
 
 const styles = StyleSheet.create({
+    btn: { margin: wp(3), height: 40, flex: 1 },
+    payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
     timeSlot: {
-
         marginVertical: wp(2),
         paddingHorizontal: wp(2),
         borderWidth: wp(0.5), justifyContent: 'center'
         , borderColor: '#027850',
+        borderRadius: wp(2)
     }, textLeft: {
-        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap', marginVertical: wp(1), fontWeight: 'bold', fontSize: wp(4)
+        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap', marginVertical: wp(0.5), fontWeight: 'bold', fontSize: wp(4)
 
     }
 })

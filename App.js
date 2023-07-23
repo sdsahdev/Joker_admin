@@ -20,6 +20,7 @@ import BottomTab from './BottomTab';
 import BoxeItems from './Components/BoxeItems';
 import DetailsCompo from './Components/DetailsCompo';
 import Otp from './src/Otp';
+import Cancel from './Components/Cancel';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -38,6 +39,7 @@ const App = () => {
         <Stack.Screen name="Inbox" component={Inbox} />
         <Stack.Screen name="DetailsCompo" component={DetailsCompo} />
         <Stack.Screen name="loginSceen" component={loginSceen} />
+        <Stack.Screen name="Cancel" component={Cancel} />
         <Stack.Screen name="Otp" component={Otp} />
 
       </Stack.Navigator>
