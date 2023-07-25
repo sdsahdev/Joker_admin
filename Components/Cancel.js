@@ -63,7 +63,7 @@ const Cancel = () => {
 
                         <TouchableOpacity
                             style={styles.btn}
-                            onPress={() => "cancle reqest"}
+                            onPress={() => "Fcancle reqest"}
                         >
                             <Text style={styles.payment}>
                                 cancle You slot
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         marginVertical: wp(2),
         paddingHorizontal: wp(2),
     }, textLeft: {
-        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap'
+        alignSelf: 'flex-start', textAlignVertical: 'top', verticalAlign: 'top', justifyContent: 'flex-start', flex: 1, flexWrap: 'wrap',
 
     }
 })
