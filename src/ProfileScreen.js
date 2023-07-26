@@ -9,14 +9,23 @@ import Menu from '../Components/Menu';
 import { ScrollView } from 'react-native-gesture-handler';
 
 const ProfileScreen = () => {
+
     const hEdit = () => {
         console.log("edit");
     }
-    const handleEditProfile = () => {
-        // This function will be executed when "Edit Profile" is pressed
-        // Implement your logic here
+    const hcontact = () => {
+        console.log("Contact");
+    }
+    const habout = () => {
+        console.log("About");
+    }
+    const hlogout = () => {
+        console.log("Logout");
+    }
+    const hpassword = () => {
         console.log("Edit Profile pressed!");
     };
+
     return (
         <View style={{ position: 'relative', backgroundColor: '#eeeeee', height: '100%' }}>
             <ScrollView style={{ marginBottom: hp(10) }}>
@@ -32,11 +41,11 @@ const ProfileScreen = () => {
                     <Text style={{ color: '#000', fontSize: wp(5) }}>
                         123456789</Text>
                 </View>
-                <Menu icon={imagesClass.pen1} name={"Edit Profile"} onpress={() => hEdit} />
-                <Menu icon={imagesClass.pen1} name={"Edit Profile"} onPress={handleEditProfile} />
-                <Menu icon={imagesClass.call} name={"Contact Us"} />
-                <Menu icon={imagesClass.about} name={"About Us"} />
-                <Menu icon={imagesClass.logout} name={"Logout"} />
+                <Menu icon={imagesClass.pen1} name={"Edit Profile"} onpress={() => hEdit()} />
+                <Menu icon={imagesClass.password} name={"Change Password"} onpress={() => hpassword()} />
+                <Menu icon={imagesClass.call} name={"Contact Us"} onpress={() => hcontact()} />
+                <Menu icon={imagesClass.about} name={"About Us"} onpress={() => habout()} />
+                <Menu icon={imagesClass.logout} name={"Logout"} onpress={() => hlogout()} />
 
             </ScrollView>
 

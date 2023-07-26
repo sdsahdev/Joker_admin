@@ -21,6 +21,7 @@ import BoxeItems from './Components/BoxeItems';
 import DetailsCompo from './Components/DetailsCompo';
 import Otp from './src/Otp';
 import Cancel from './Components/Cancel';
+import ChangePass from './src/ChangePass';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -41,6 +42,7 @@ const App = () => {
         <Stack.Screen name="loginSceen" component={loginSceen} />
         <Stack.Screen name="Cancel" component={Cancel} />
         <Stack.Screen name="Otp" component={Otp} />
+        <Stack.Screen name="ChangePass" component={ChangePass} />
 
       </Stack.Navigator>
     </NavigationContainer>

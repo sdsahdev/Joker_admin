@@ -39,6 +39,9 @@ const imagesClass = {
   call: require('./Images/call.png'),
   about: require('./Images/about.png'),
 
+  view: require('./Images/view.png'),
+  hide: require('./Images/hide.png'),
+
 };
 
 export default imagesClass;
