@@ -40,10 +40,11 @@ const loginSceen = ({ navigation }) => {
 
   // Function to handle form submission
   const handleSubmit = () => {
+    navigation.navigate("PasswordScreen");
+
     if (isValidPhoneNumber(phoneNumber)) {
       // Perform your action or validation success logic here
       Alert.alert('Success', 'Valid phone number!');
-      navigation.navigate("ChangePass");
     } else {
       Alert.alert('Error', 'Invalid phone number!');
     }

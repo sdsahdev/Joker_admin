@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Image } from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {
@@ -6,18 +6,25 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import BackgroundSvg from '../asserts/svgs/BgImg';
+import imagesClass from '../asserts/imagepath';
 
-const TopHeader = ({ name }) => {
+const TopHeader = ({ name, back }) => {
     return (
         <SafeAreaView style={styles.container}>
 
             <View style={styles.backgroundContainer}>
                 <BackgroundSvg />
             </View>
-            <Text
-                style={styles.headetxt}>
-                {name}
-            </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp(3) }}>
+
+
+                {back === true ? <Image source={imagesClass.backScreen} style={styles.backstyle} /> : null}
+
+                <Text
+                    style={styles.headetxt}>
+                    {name}
+                </Text>
+            </View>
         </SafeAreaView>
 
     )
@@ -26,12 +33,11 @@ const TopHeader = ({ name }) => {
 export default TopHeader
 
 const styles = StyleSheet.create({
+    backstyle: { width: wp(10), height: hp(8), resizeMode: 'center', marginLeft: wp(8), tintColor: '#000' },
     headetxt: {
         color: '#000',
         fontSize: wp(7),
-        marginTop: wp(10),
-
-        marginLeft: wp(10),
+        marginLeft: wp(4),
     },
     container: { flex: 1, position: 'relative' },
     backgroundContainer: {

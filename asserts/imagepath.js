@@ -40,8 +40,9 @@ const imagesClass = {
   about: require('./Images/about.png'),
 
   view: require('./Images/view.png'),
-  hide: require('./Images/hide.png'),
 
+  hide: require('./Images/hide.png'),
+  backScreen: require('./Images/backScreen.png'),
 };
 
 export default imagesClass;
