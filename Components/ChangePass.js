@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'reac
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const ChangePass = ({ name, onChangeText }) => {
+const ChangePass = ({ name, onChangeText, headerText, eye }) => {
     const [secure, setSecure] = useState(false);
     const [inputValue, setInputValue] = useState('');
 
@@ -13,10 +13,11 @@ const ChangePass = ({ name, onChangeText }) => {
     };
 
     return (
-        <View>
-            <Text style={{ marginTop: 10, marginHorizontal: wp(5) }}>
-                {name}
+        <View style={{ marginVertical: hp(0.8), }}>
+            {headerText === null ? null : <Text style={{ marginTop: 10, marginHorizontal: wp(5) }}>
+                {headerText}h
             </Text>
+            }
             <View style={styles.fillDetails}>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', flex: 1 }}>
                     <Image
@@ -32,15 +33,16 @@ const ChangePass = ({ name, onChangeText }) => {
                         value={inputValue} // Set the value prop for controlled input
                     />
                 </View>
-                <View>
+                {eye ? <View>
                     <TouchableOpacity onPress={() => setSecure(!secure)} style={{ alignSelf: 'center' }}>
                         <Image
                             source={secure ? imagesClass.hide : imagesClass.view}
-                            style={{ alignSelf: 'flex-end', height: 15, width: 20, justifyContent: 'center' }}
+                            style={{ alignSelf: 'flex-end', height: 15, width: 20, justifyContent: 'center', tintColor: '#027850' }}
                             resizeMode="center"
                         />
                     </TouchableOpacity>
-                </View>
+                </View> : null}
+
             </View>
         </View>
     );
@@ -50,7 +52,7 @@ export default ChangePass;
 
 // define your styles
 const styles = StyleSheet.create({
-    phnimage: { width: wp(6), height: hp(5) },
+    phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
     booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
     bookbtn: {
         backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)
@@ -81,7 +83,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     inputFild: {
-        height: hp(5), color: 'black', paddingLeft: wp(4), flexWrap: 'wrap', flex: 1
+        height: hp(5), color: 'black', paddingLeft: wp(4), flexWrap: 'wrap', flex: 1, fontSize: wp(4)
     },
 });
 

@@ -23,6 +23,7 @@ import Otp from './src/Otp';
 import Cancel from './Components/Cancel';
 import ChangePass from './Components/ChangePass';
 import PasswordScreen from './src/PasswordScreen';
+import RegisterScreen from './src/RegisterScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ const App = () => {
         <Stack.Screen name="Otp" component={Otp} />
         <Stack.Screen name="ChangePass" component={ChangePass} />
         <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
 
       </Stack.Navigator>
     </NavigationContainer>

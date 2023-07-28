@@ -19,6 +19,7 @@ import Svg, { Path } from 'react-native-svg';
 import Frame from '../asserts/svgs/Frame.svg';
 import imagesClass from '../asserts/imagepath';
 import TopHeader from '../Components/TopHeader';
+import ChangePass from '../Components/ChangePass';
 
 
 // create a component
@@ -40,8 +41,10 @@ const loginSceen = ({ navigation }) => {
 
   // Function to handle form submission
   const handleSubmit = () => {
-    navigation.navigate("PasswordScreen");
 
+    // navigation.navigate("PasswordScreen");
+    navigation.navigate("PasswordScreen");
+    navigation.navigate("Otp");
     if (isValidPhoneNumber(phoneNumber)) {
       // Perform your action or validation success logic here
       Alert.alert('Success', 'Valid phone number!');
@@ -67,17 +70,8 @@ const loginSceen = ({ navigation }) => {
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
-          <View style={styles.fillDetails}>
+          <ChangePass name={"User Name"} headerText={null} />
 
-            <Image
-              source={imagesClass.user
-              }
-              style={styles.phnimage}
-              resizeMode="center"
-            />
-            <TextInput placeholder='User' style={styles.inputFild} />
-
-          </View>
 
           <View style={styles.fillDetails}>
 
@@ -93,7 +87,7 @@ const loginSceen = ({ navigation }) => {
 
           </View>
         </View>
-
+        <ChangePass name={"Password"} headerText={null} />
       </SafeAreaView >
       <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
         <Text style={styles.booktxt}>
@@ -107,7 +101,7 @@ const loginSceen = ({ navigation }) => {
 
 // define your styles
 const styles = StyleSheet.create({
-  phnimage: { width: wp(6), height: hp(5) },
+  phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
   booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
   bookbtn: {
     backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)

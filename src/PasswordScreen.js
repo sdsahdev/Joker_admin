@@ -32,20 +32,19 @@ const PasswordScreen = () => {
             </View>
             <View style={{ marginTop: hp(15), }}>
 
-                <ChangePass name={'Password'} onChangeText={handlePasswordChange} />
-                <ChangePass name={'Enter new password'} onChangeText={handleNewPasswordChange} />
-                <ChangePass name={'Re-enter new password'} onChangeText={handleConfirmPasswordChange} />
+                <ChangePass name={'Password'} onChangeText={handlePasswordChange} headerText={"Password"} eye={true} />
+                <ChangePass name={'Enter new password'} onChangeText={handleNewPasswordChange} headerText={'Enter new password'} eye={true} />
+                <ChangePass name={'Re-enter new password'} onChangeText={handleConfirmPasswordChange} headerText={'Re-enter new password'} eye={true} />
 
             </View>
             <View style={{ flex: 1 }}>
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'margin'}
-                    style={{ flex: 1 }}
-                >
+                    style={{ flex: 1 }} >
 
                     <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
                         <Text style={styles.booktxt}>
-                            Verify Number
+                            Change Password
                         </Text>
                     </TouchableOpacity>
                 </KeyboardAvoidingView>
