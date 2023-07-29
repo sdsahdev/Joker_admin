@@ -73,16 +73,16 @@ const DetailsCompo = ({ navigation }) => {
 
                 </SafeAreaView>
             </SafeAreaView>
-            <View >
+            <View style={{ flexDirection: 'row' }}>
 
-                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
+                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("TornamentBook")}>
                     <Text style={styles.booktxt}>
-                        Book Now
+                        Tounament Booking
                     </Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
                     <Text style={styles.booktxt}>
-                        Book Now
+                        Slot Booking
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -94,7 +94,7 @@ const DetailsCompo = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: { backgroundColor: '#027850', height: hp(6), width: "90%", alignSelf: 'center', borderRadius: wp(2), marginTop: hp(4) },
+    bookbtn: { backgroundColor: '#027850', height: hp(6), flex: 1, alignSelf: 'center', borderRadius: wp(2), marginTop: hp(4), marginHorizontal: wp(2) },
     facilityView: { flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: wp(2), marginTop: hp(2) },
     addrestxt: { marginLeft: wp(5), marginBottom: hp(1) },
     locationview: {

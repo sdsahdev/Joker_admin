@@ -7,8 +7,9 @@ import {
 } from 'react-native-responsive-screen';
 import BackgroundSvg from '../asserts/svgs/BgImg';
 import imagesClass from '../asserts/imagepath';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const TopHeader = ({ name, back }) => {
+const TopHeader = ({ name, back, navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
 
@@ -18,7 +19,14 @@ const TopHeader = ({ name, back }) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: hp(3) }}>
 
 
-                {back === true ? <Image source={imagesClass.backScreen} style={styles.backstyle} /> : null}
+                {back === true ?
+                    <TouchableOpacity onPress={() => navigation.pop()} >
+
+                        <Image source={imagesClass.backScreen} style={styles.backstyle} />
+                    </TouchableOpacity>
+
+
+                    : null}
 
                 <Text
                     style={styles.headetxt}>

@@ -1,3 +1,4 @@
+
 //import liraries
 import React, { Component, useState, useRef } from 'react';
 import {
@@ -41,8 +42,8 @@ const RegisterScreen = ({ navigation }) => {
 
     // Function to handle form submission
     const handleSubmit = () => {
-        navigation.navigate("PasswordScreen");
 
+        navigation.navigate("Otp");
         if (isValidPhoneNumber(phoneNumber)) {
             // Perform your action or validation success logic here
             Alert.alert('Success', 'Valid phone number!');
@@ -64,17 +65,32 @@ const RegisterScreen = ({ navigation }) => {
                 <TopHeader />
                 <Text style={styles.titelText}>
                     Hi~{'\n'}
-                    Welcome Back!
+                    Signup to get started
                 </Text>
                 <View style={{ marginTop: hp(4) }}>
 
                     <ChangePass name={"User Name"} headerText={null} />
+
+
+                    <View style={styles.fillDetails}>
+
+                        <Image
+                            source={imagesClass.telephone
+                            }
+                            style={styles.phnimage}
+                            resizeMode="center"
+                        />
+                        <TextInput keyboardType='phone-pad' placeholder="Enter Mobile Number" style={styles.inputFild}
+                            value={phoneNumber}
+                            onChangeText={handlePhoneNumberChange} />
+
+                    </View>
                 </View>
                 <ChangePass name={"Password"} headerText={null} />
             </SafeAreaView >
             <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
                 <Text style={styles.booktxt}>
-                    Login
+                    Verify Number
                 </Text>
             </TouchableOpacity>
 
@@ -120,3 +136,4 @@ const styles = StyleSheet.create({
 
 //make this component available to the app
 export default RegisterScreen;
+

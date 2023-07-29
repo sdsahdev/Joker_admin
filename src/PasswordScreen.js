@@ -6,7 +6,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import { Image } from 'react-native-animatable';
 import imagesClass from '../asserts/imagepath';
 
-const PasswordScreen = () => {
+const PasswordScreen = ({ navigation }) => {
     const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -27,7 +27,7 @@ const PasswordScreen = () => {
         <View style={{ flex: 1, position: 'relative', flexDirection: 'column', height: '100%' }}>
             <View style={{ position: 'absolute' }}>
 
-                <TopHeader name={"Change Password"} back={true} />
+                <TopHeader name={"Change Password"} back={true} navigation={navigation} />
 
             </View>
             <View style={{ marginTop: hp(15), }}>

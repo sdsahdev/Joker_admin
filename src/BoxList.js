@@ -32,7 +32,7 @@ const BoxList = ({ navigation }) => {
           </View>
 
           <View>
-            <TouchableOpacity onPress={() => navigation.navigate("loginSceen")} >
+            <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")} >
 
               <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
             </TouchableOpacity>

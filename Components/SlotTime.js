@@ -7,7 +7,7 @@ import {
 import moment from 'moment';
 import CalanderFile from '../Components/CalanderFile';
 // nornmal and for bulk booking  comppoonent 
-const SlotTime = ({ onStartTimeChange, onEndTimeChange }) => {
+const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
     const [numColumns, setNumColumns] = useState(4);
     const [selectedItems, setSelectedItems] = useState({});
     const [selectedStartTime, setSelectedStartTime] = useState(null);
@@ -126,10 +126,12 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange }) => {
         const selectedItemsCount = Object.keys(selectedItems).length;
         return (
             <View>
-                {totalDuration > 3 ? console.log(totalDuration, "first") : (
-                    <Text style={styles.minHoursText}>
-                        Please select  minimum {totalDuration} hours
-                    </Text>
+                {totalDuration > 3 ? tor(true) : (
+
+                    <>
+                        {tor(false)}
+
+                    </>
                 )}
             </View>
         );

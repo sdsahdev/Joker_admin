@@ -24,6 +24,9 @@ import Cancel from './Components/Cancel';
 import ChangePass from './Components/ChangePass';
 import PasswordScreen from './src/PasswordScreen';
 import RegisterScreen from './src/RegisterScreen';
+import EditProfile from './src/EditProfile';
+import ContactUs from './src/ContactUs';
+import TornamentBook from './src/TornamentBook';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,6 +50,10 @@ const App = () => {
         <Stack.Screen name="ChangePass" component={ChangePass} />
         <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="ContactUs" component={ContactUs} />
+        <Stack.Screen name="About" component={About} />
+        <Stack.Screen name="TornamentBook" component={TornamentBook} />
 
       </Stack.Navigator>
     </NavigationContainer>

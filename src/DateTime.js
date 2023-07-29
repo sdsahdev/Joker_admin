@@ -472,6 +472,11 @@ const DateTime = () => {
     // console.log(time, "++++end Times++++++++");
 
   };
+  const handletor = time => {
+    // setEndTime(time);
+    // console.log(time, "++++end Times++++++++");
+
+  };
 
 
 
@@ -482,10 +487,7 @@ const DateTime = () => {
           <TopHeader name={"Book Your Slot"} />
         </View>
         <View style={styles.sendView}>
-          <SlotTime onStartTimeChange={handleStartTimeChange} onEndTimeChange={handleEndTimeChange} />
-        </View>
-        <View style={styles.thiView} >
-          <CalanderFile datesselect={handleDateSelect} />
+          <SlotTime onStartTimeChange={handleStartTimeChange} onEndTimeChange={handleEndTimeChange} tor={handletor} />
         </View>
         <View>
 
@@ -500,6 +502,10 @@ const DateTime = () => {
             </TouchableOpacity>
           )}
         </View>
+        <View style={styles.thiView} >
+          <CalanderFile datesselect={handleDateSelect} />
+        </View>
+
 
       </ScrollView>
     </View>
@@ -511,7 +517,7 @@ const DateTime = () => {
 export default DateTime;
 
 const styles = StyleSheet.create({
-  thiView: { margin: wp(10) },
+  thiView: { marginHorizontal: wp(10), marginVertical: hp(2) },
   sendView: { flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignSelf: 'center', marginTop: hp(4) },
   mainView: { flex: 1, marginBottom: hp(5), },
   btn: { margin: wp(3), height: 40, flex: 1 },

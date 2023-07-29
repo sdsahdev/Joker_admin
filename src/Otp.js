@@ -22,7 +22,7 @@ import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 
 import OTPInputView from '@twotalltotems/react-native-otp-input';
-const Otp = () => {
+const Otp = ({ navigation }) => {
     const [otp, setOtp] = useState('');
     const MAX_CODE = 4;
 
@@ -30,23 +30,29 @@ const Otp = () => {
         setOtp(otp);
         // Your additional logic here, if needed
     };
-
+    const handleSubmit = () => {
+        navigation.navigate("loginSceen");
+    }
     return (
         <View style={{ flex: 1, }}>
             <View style={{ position: 'absolute', }}>
                 <TopHeader name={'Otp Screen'} />
             </View>
-            <View style={{ borderRadius: wp(10), justifyContent: 'center', flex: 1 }}>
+            <View style={{ borderRadius: wp(10), justifyContent: 'center', flex: 1, }}>
                 <OTPInputView
-                    style={{ height: 200, marginHorizontal: wp(11) }} // Adjust the style as per your requirement
+                    style={{ marginHorizontal: wp(11), height: hp(14) }} // Adjust the style as per your requirement
                     pinCount={MAX_CODE}
                     code={otp}
+                    autoFocusOnLoad={false}
                     onCodeChanged={handleOtpChange}
-                    autoFocusOnLoad
                     codeInputFieldStyle={{ color: '#000', borderColor: '#027850', borderRadius: 7, borderWidth: 2, width: wp(14), height: hp(7) }} // Change the text and border color to red
-                    codeInputHighlightStyle={{}} // Change the border color of the focused input
+                    codeInputHighlightStyle={{}}
+                    // Change the border color of the focused input
                     inputBorderRadius={10} // Change the border radius to 10 or any other value you prefer
                 />
+                <Text style={{ alignSelf: 'center' }}>
+                    Resend OTP
+                </Text>
             </View>
             <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
                 <Text style={styles.booktxt}>
