@@ -14,6 +14,12 @@ import BackgroundSvg from '../asserts/svgs/BgImg';
 import TopHeader from '../Components/TopHeader';
 import TimeComp from '../Components/TimeComp';
 import SlotTime from '../Components/SlotTime';
+<<<<<<< HEAD
+=======
+import RazorpayCheckout from 'react-native-razorpay';
+import { encode } from 'base-64';
+import { base64 } from 'react-native-base64';
+>>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
 
 const DateTime = () => {
   const [startTime, setStartTime] = useState(null);
@@ -21,6 +27,10 @@ const DateTime = () => {
   const [caldate, setcalldat] = useState({});
   const [startTimeData, setStartTimeData] = useState(null);
   const [endTimeData, setEndTimeData] = useState(null);
+<<<<<<< HEAD
+=======
+  const [amo, setamo] = useState(0);
+>>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
 
   const data = [
     { id: '1', time: '01-02 am', price: 100, status: true, stime: '01:00', etime: '02:00' },
@@ -67,10 +77,115 @@ const DateTime = () => {
   };
 
   const BookingPro = () => {
+<<<<<<< HEAD
     console.log('preess');
   };
 
 
+=======
+
+    const startIndex = data.findIndex(item => item.stime === startTime);
+    const endIndex = data.findIndex(item => item.etime === endTime);
+    console.log(startIndex, 'start index');
+    console.log(endIndex, "end index");
+    let totalAmount = 0;
+
+    if (startIndex !== -1 && endIndex !== -1) {
+      for (let i = startIndex; i <= endIndex; i++) {
+        totalAmount += data[i].price;
+      }
+      totalAmount = totalAmount * Object.keys(caldate).length;
+
+    }
+    console.log('Total Amount:', totalAmount);
+    setamo(totalAmount)
+    // console.log('Total Amount:', Object.keys(caldate).length);
+
+    var options = {
+      description: 'Credits towards ',
+      image: 'https://i.imgur.com/3g7nmJC.jpg',
+      currency: 'INR',
+      key: 'rzp_test_3XuGHeboPYRExS',
+      amount: totalAmount * 100,
+      name: 'Acme Corp',
+
+      order_id: '',//Replace this with an order_id created using Orders API.
+      prefill: {
+        email: 'gaurav.kumar@example.com',
+        contact: '9191919191',
+        name: 'Gaurav Kumar'
+      },
+      theme: {
+        color: '#027850',
+      }
+    }
+    RazorpayCheckout.open(options).then((data) => {
+      // handle success
+      alert(`Success: ${data.razorpay_payment_id}`);
+    }).catch((error) => {
+      // handle failure
+      alert(`Error: ${error.code} | ${error.description}`);
+    });
+    console.log('preess');
+  };
+
+  const refuns = async () => {
+    // try {
+    // const apiKey = 'rzp_test_3XuGHeboPYREx'; // Replace with your actual API key
+    // const refundUrl = 'https://api.paymentgateway.com/refunds'; // Replace with the refund API endpoint provided by your payment gateway
+    // const amountToRefund = 1000 * 100; // Use the calculated refund amount
+
+    // const requestBody = {
+    //   transaction_id: 'pay_MK0IeGbR1JDjMR', // Replace with the actual transaction ID of the payment you want to refund
+    //   amount: amountToRefund,
+    //   api_key: apiKey,
+    // };
+
+    const keyId = 'rzp_test_3XuGHeboPYRExS';
+    const keySecret = 'rzp_test_3XuGHeboPYRExS';
+    const paymentId = 'pay_MK2BMf7UJUDNzH';
+
+    const url = `https://api.razorpay.com/v1/payments/${paymentId}/refund`;
+
+    const refundRequest = {
+      amount: 10000,
+      speed: 'normal',
+      notes: {
+        notes_key_1: 'Tea, Earl Grey, Hot',
+        notes_key_2: 'Tea, Earl Grey... decaf.',
+      },
+      receipt: 'Receipt No. #31',
+    };
+    const basicAuth = 'Basic ' + encode(`${keyId}`);
+
+    // const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: basicAuth,
+        },
+        body: JSON.stringify(refundRequest),
+      });
+
+      if (response.ok) {
+        // Refund request successful
+        const responseData = await response.json();
+        console.log('Refund success:', responseData);
+      } else {
+        // Refund request failed
+        console.log('Refund request failed with status code', response.status);
+        console.log('Refund request failed with status code', response.json);
+      }
+    } catch (error) {
+      // Handle any exceptions
+      console.log('Error creating refund request:', error);
+    }
+
+  }
+>>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
   const handleStartTimeChange = time => {
     if (!time) {
       return;
