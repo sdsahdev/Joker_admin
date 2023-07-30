@@ -1,526 +1,270 @@
-// import React, { useEffect, useState, useMemo } from 'react';
-// import {
-//   View,
-//   StyleSheet,
-//   Text,
-//   FlatList,
-//   TouchableOpacity,
-//   Image,
-// } from 'react-native';
-// import CalendarStrip from 'react-native-calendar-strip';
-// import moment from 'moment-timezone'; // only if timezone is needed
-// import {
-//   widthPercentageToDP as wp,
-//   heightPercentageToDP as hp,
-// } from 'react-native-responsive-screen';
-// import { SafeAreaView } from 'react-native-safe-area-context';
-// import BackgroundSvg from '../asserts/svgs/BgImg.js';
-// import imagesClass from '../asserts/imagepath.js';
-// import PaymentBtn from '../Components/PaymentBtn.js';
-// import TopHeader from '../Components/TopHeader.js';
-// import About from './About.js';
-
-// const DateTime = () => {
-//   const [numColumns, setNumColumns] = useState(4);
-//   const [selectedItems, setSelectedItems] = useState({});
-//   const [totalPrice, setTotalPrice] = useState(0);
-
-//   // const data = [
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-//   //   {
-//   //     id: '1',
-//   //     image: imagesClass.banner2,
-//   //     leftText: '01:00 pm ',
-//   //     rightText: '$100/hr',
-//   //   },
-
-//   //   // Add more items as needed
-//   // ];
-//   const data2 = [
-//     {
-//       id: '1',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '2',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '3',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '4',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '5',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '6',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '7',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '8',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '9',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '10',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '11',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '12',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '13',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '14',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '15',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '16',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '17',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '18',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '19',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '20',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '21',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '22',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '23',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//     {
-//       id: '24',
-//       image: imagesClass.banner2,
-//       leftText: '01:00 pm ',
-//       rightText: '$100/hr',
-//     },
-//   ];
-//   const today = moment().startOf('day');
-//   const maxSelectableDate = moment().add(1, 'month').endOf('day');
-//   const [selectedDate, setSelectedDate] = useState(null);
-
-//   const handleItemPress = (id) => {
-//     console.log("Single-click selection for item with ID:", id);
-//     setSelectedItems((prevSelectedItems) => {
-//       const isSelected = prevSelectedItems[id];
-//       const updatedSelectedItems = { ...prevSelectedItems };
-//       updatedSelectedItems[id] = !isSelected;
-//       return updatedSelectedItems;
-//     });
-//   };
-
-//   // Function to handle item selection on long press
-//   const handleItemLongPress = (id) => {
-//     console.log("Long-press selection for item with ID:", id);
-//     setSelectedItems((prevSelectedItems) => {
-//       const isSelected = prevSelectedItems[id];
-//       const updatedSelectedItems = { ...prevSelectedItems };
-//       updatedSelectedItems[id] = !isSelected;
-//       return updatedSelectedItems;
-//     });
-//   };
-//   // Calculate the total price based on selected items and their prices
-//   useMemo(() => {
-//     const pricePerItem = 100;
-//     const selectedItemCount = Object.values(selectedItems).filter((selected) => selected).length;
-//     const total = pricePerItem * selectedItemCount;
-
-//     let sum = 0;
-//     for (const id in selectedItems) {
-//       if (selectedItems[id]) {
-//         // Find the item with the corresponding ID from the data array
-//         const selectedItem = data2.find((item) => item.id === id);
-//         if (selectedItem) {
-//           // Calculate the total price for the selected item
-//           const price = parseFloat(selectedItem.rightText.substring(1));
-//           sum += price;
-//         }
-//       }
-//     }
-//     setTotalPrice(total); // Update the totalPrice state here
-//   }, [selectedItems]);
 
 
-//   const handleDateSelected = date => {
-//     setSelectedDate(date);
-//   };
-
-//   const formatDate = date => {
-//     return moment(date).format('D MMMM');
-//   };
-
-//   const renderItem2 = ({ item }) => (
-//     <TouchableOpacity
-//       onPress={() => handleItemPress(item.id)}
-//       onLongPress={() => handleItemLongPress(item.id)}
-//     >
-//       <View style={[styles.timeSlot, selectedItems[item.id] && styles.selectedItem]}>
-//         {/* ... other item content ... */}
-//         <Text style={styles.textRight}>{item.rightText}</Text>
-//       </View>
-//     </TouchableOpacity>
-//   );
-//   const renderItem = ({ item }) => (
-//     <View style={styles.timeSlot}>
-
-//       <Text style={styles.textLeft}>{item.leftText}</Text>
-//     </View>
-//   );
-//   return (
-//     <SafeAreaView style={styles.container}>
-//       <View >
-
-//         <TopHeader name={"Book Your Slot"} />
-//       </View>
-//       <Text>Total Price: ${totalPrice.toFixed(2)}</Text>
-
-//       <View style={styles.calView}>
-//         <CalendarStrip
-//           startingDate={Date()}
-//           style={styles.maincalanedr} // Adjust paddingTop and paddingBottom as needed
-//           highlightDateContainerStyle={styles.con}
-//           calendarHeaderStyle={styles.calheader}
-//           dateNumberStyle={styles.numdate}
-//           dateNameStyle={styles.datename}
-//           iconContainer={{ flex: 0.1 }}
-//           minDate={Date()}
-//           highlightDateNumberStyle={styles.highDate}
-//           highlightDateNameStyle={styles.hightname} // Adjust the paddingTop value as needed
-//           scrollable={false}
-//           borderHighlightColor={'grey'}
-//           maxDate={maxSelectableDate}
-//           daySelectionAnimation={styles.dateselect}
-//           useIsoWeekday={false}
-//           locale={styles.localestyle}
-//           onDateSelected={handleDateSelected}
-//         />
-
-//         {selectedDate && (
-//           <Text style={styles.selectedDateText}>
-//             Selected Date: {formatDate(selectedDate)}
-//           </Text>
-//         )}
-//       </View>
-//       <View style={{ alignItems: 'center', flex: 1, }}>
-
-//         <About tor={true}  />
-//       </View>
-//       <View style={{ flex: 0.2 }}>
-//         <PaymentBtn txt={'Advance Payment'} txt2={'Full Payment'} />
-//       </View>
-//     </SafeAreaView>
-//   );
-// };
-// const styles = StyleSheet.create({
-//   selectedItem: {
-//     // Add styles to indicate the selected item (e.g., change the background color)
-//     backgroundColor: 'green',
-//   },
-//   slotTxt: {
-//     color: '#000',
-//     borderWidth: wp(0.3),
-//     borderColor: '#027850',
-//     padding: wp(3),
-//     borderRadius: wp(2),
-//     fontSize: wp(4),
-//     marginBottom: wp(1)
-//   },
-//   textLeft: { textAlignVertical: 'center', flex: 1 },
-//   timeSlot: {
-//     backgroundColor: '#E3EFEB',
-//     width: wp(18),
-//     height: hp(6),
-//     margin: wp(2),
-//     borderRadius: wp(1.5),
-//     alignItems: 'center',
-//     borderWidth: wp(0.3),
-//     borderColor: '#027850',
-//   },
-//   calView: { marginTop: hp(10) },
-//   con: {
-//     backgroundColor: '#E3EFEB',
-//     width: wp(12),
-//     height: wp(15),
-//     borderRadius: wp(2),
-//     borderWidth: wp(0.3),
-//     borderColor: '#027850',
-//   },
-//   localestyle: {
-//     name: 'en', // Set the locale to English
-//     config: {
-//       months: moment.localeData('en').months(), // Use English months
-//       weekdaysShort: moment.localeData('en').weekdaysShort(), // Use English weekdays
-//     },
-//   },
-//   dateselect: {
-//     type: 'border',
-//     borderWidth: 0, // Adjust the borderWidth as desired
-//     borderHighlightColor: '#027850',
-
-//     // Add padding to create space between the border and content
-//   },
-//   hightname: {
-//     color: '#027850',
-//     fontSize: wp(4),
-//   },
-//   highDate: { color: '#027850', fontSize: wp(5) },
-//   datename: { color: 'grey', fontSize: wp(3.5) },
-//   numdate: { color: 'grey', fontSize: wp(3.5) },
-//   calheader: {
-//     color: '#000',
-//     fontSize: wp(5),
-//     paddingBottom: wp(5),
-//     // right: 2, alignSelf: 'flex-end'
-//   },
-//   maincalanedr: {
-//     height: hp(14),
-//     paddingBottom: 20,
-//     position: 'relative',
-//   },
-//   container: { flex: 1, position: 'relative' },
-//   selectedDateText: { textAlign: 'center' },
-
-// });
-// export default DateTime;
-
-
-import { StyleSheet, Text, View } from 'react-native'
-import React, { useState, useEffect } from 'react'
-import About from './About'
-import CalanderFile from '../Components/CalanderFile'
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import Facilities from '../Components/Facilities'
-import BackgroundSvg from '../asserts/svgs/BgImg'
-import TopHeader from '../Components/TopHeader'
-import TimeComp from '../Components/TimeComp'
-import SlotTime from '../Components/SlotTime'
+import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import About from './About';
+import CalanderFile from '../Components/CalanderFile';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
+import Facilities from '../Components/Facilities';
+import BackgroundSvg from '../asserts/svgs/BgImg';
+import TopHeader from '../Components/TopHeader';
+import TimeComp from '../Components/TimeComp';
+import SlotTime from '../Components/SlotTime';
+import RazorpayCheckout from 'react-native-razorpay';
+import { encode } from 'base-64';
+import { base64 } from 'react-native-base64';
 
 const DateTime = () => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [caldate, setcalldat] = useState({});
+  const [startTimeData, setStartTimeData] = useState(null);
+  const [endTimeData, setEndTimeData] = useState(null);
+  const [amo, setamo] = useState(0);
+
+  const data = [
+    { id: '1', time: '01-02 am', price: 100, status: true, stime: '01:00', etime: '02:00' },
+    { id: '2', time: '02-03 am', price: 100, status: true, stime: '02:00', etime: '03:00' },
+    { id: '3', time: '03-04 am', price: 100, status: true, stime: '03:00', etime: '04:00' },
+    { id: '4', time: '04-05 am', price: 100, status: true, stime: '04:00', etime: '05:00' },
+    { id: '5', time: '05-06 am', price: 100, status: true, stime: '05:00', etime: '06:00' },
+    { id: '6', time: '06-07 am', price: 100, status: true, stime: '06:00', etime: '07:00' },
+    { id: '7', time: '07-08 am', price: 100, status: true, stime: '07:00', etime: '08:00' },
+    { id: '8', time: '08-09 am', price: 100, status: true, stime: '08:00', etime: '09:00' },
+    { id: '9', time: '09-10 am', price: 100, status: true, stime: '09:00', etime: '10:00' },
+    { id: '10', time: '10-11 am', price: 100, status: false, stime: '10:00', etime: '11:00' },
+    { id: '11', time: '11-12 am', price: 100, status: false, stime: '11:00', etime: '12:00' },
+    { id: '12', time: '12-13 am', price: 100, status: false, stime: '12:00', etime: '13:00' },
+    { id: '13', time: '13-14 pm', price: 100, status: false, stime: '13:00', etime: '14:00' },
+    { id: '14', time: '14-15 pm', price: 100, status: false, stime: '14:00', etime: '15:00' },
+    { id: '15', time: '15-16 pm', price: 100, status: false, stime: '15:00', etime: '16:00' },
+    { id: '16', time: '16-17 pm', price: 100, status: false, stime: '16:00', etime: '17:00' },
+    { id: '17', time: '17-18 pm', price: 100, status: false, stime: '17:00', etime: '18:00' },
+    { id: '18', time: '18-19 pm', price: 100, status: false, stime: '18:00', etime: '19:00' },
+    { id: '19', time: '19-20 pm', price: 100, status: false, stime: '19:00', etime: '20:00' },
+    { id: '20', time: '20-21 pm', price: 100, status: false, stime: '20:00', etime: '21:00' },
+    { id: '21', time: '21-22 pm', price: 100, status: false, stime: '21:00', etime: '22:00' },
+    { id: '22', time: '22-23 pm', price: 100, status: false, stime: '22:00', etime: '23:00' },
+    { id: '23', time: '23-24 pm', price: 100, status: false, stime: '23:00', etime: '24:00' },
+    { id: '24', time: '24-01 pm', price: 100, status: false, stime: '24:00', etime: '01:00' },
+  ];
+
+  useEffect(() => {
+    if (startTimeData) {
+      setStartTime(startTimeData.stime);
+      if (!endTimeData) {
+        // If endTimeData is not set, set it to startTimeData.etime initially
+        setEndTime(startTimeData.etime);
+      }
+    }
+    if (endTimeData) {
+      setEndTime(endTimeData.etime);
+    }
+  }, [startTimeData, endTimeData]);
   const handleDateSelect = date => {
     // Reset startTime and endTime to null when the date is removed
     setcalldat(date);
-
   };
 
-
   const BookingPro = () => {
-    console.log("preess");
+
+    const startIndex = data.findIndex(item => item.stime === startTime);
+    const endIndex = data.findIndex(item => item.etime === endTime);
+    console.log(startIndex, 'start index');
+    console.log(endIndex, "end index");
+    let totalAmount = 0;
+
+    if (startIndex !== -1 && endIndex !== -1) {
+      for (let i = startIndex; i <= endIndex; i++) {
+        totalAmount += data[i].price;
+      }
+      totalAmount = totalAmount * Object.keys(caldate).length;
+
+    }
+    console.log('Total Amount:', totalAmount);
+    setamo(totalAmount)
+    // console.log('Total Amount:', Object.keys(caldate).length);
+
+    var options = {
+      description: 'Credits towards ',
+      image: 'https://i.imgur.com/3g7nmJC.jpg',
+      currency: 'INR',
+      key: 'rzp_test_3XuGHeboPYRExS',
+      amount: totalAmount * 100,
+      name: 'Acme Corp',
+
+      order_id: '',//Replace this with an order_id created using Orders API.
+      prefill: {
+        email: 'gaurav.kumar@example.com',
+        contact: '9191919191',
+        name: 'Gaurav Kumar'
+      },
+      theme: {
+        color: '#027850',
+      }
+    }
+    RazorpayCheckout.open(options).then((data) => {
+      // handle success
+      alert(`Success: ${data.razorpay_payment_id}`);
+    }).catch((error) => {
+      // handle failure
+      alert(`Error: ${error.code} | ${error.description}`);
+    });
+    console.log('preess');
+  };
+
+  const refuns = async () => {
+    // try {
+    // const apiKey = 'rzp_test_3XuGHeboPYREx'; // Replace with your actual API key
+    // const refundUrl = 'https://api.paymentgateway.com/refunds'; // Replace with the refund API endpoint provided by your payment gateway
+    // const amountToRefund = 1000 * 100; // Use the calculated refund amount
+
+    // const requestBody = {
+    //   transaction_id: 'pay_MK0IeGbR1JDjMR', // Replace with the actual transaction ID of the payment you want to refund
+    //   amount: amountToRefund,
+    //   api_key: apiKey,
+    // };
+
+    const keyId = 'rzp_test_3XuGHeboPYRExS';
+    const keySecret = 'rzp_test_3XuGHeboPYRExS';
+    const paymentId = 'pay_MK2BMf7UJUDNzH';
+
+    const url = `https://api.razorpay.com/v1/payments/${paymentId}/refund`;
+
+    const refundRequest = {
+      amount: 10000,
+      speed: 'normal',
+      notes: {
+        notes_key_1: 'Tea, Earl Grey, Hot',
+        notes_key_2: 'Tea, Earl Grey... decaf.',
+      },
+      receipt: 'Receipt No. #31',
+    };
+    const basicAuth = 'Basic ' + encode(`${keyId}`);
+
+    // const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: basicAuth,
+        },
+        body: JSON.stringify(refundRequest),
+      });
+
+      if (response.ok) {
+        // Refund request successful
+        const responseData = await response.json();
+        console.log('Refund success:', responseData);
+      } else {
+        // Refund request failed
+        console.log('Refund request failed with status code', response.status);
+        console.log('Refund request failed with status code', response.json);
+      }
+    } catch (error) {
+      // Handle any exceptions
+      console.log('Error creating refund request:', error);
+    }
+
   }
   const handleStartTimeChange = time => {
-    setStartTime(time);
-    // console.log(time, "++++start Times++++++++");
+    if (!time) {
+      return;
+    }
+
+    const selectedStartTimeData = data.find(item => item.time === time);
+
+    if (selectedStartTimeData) {
+      setStartTimeData(selectedStartTimeData);
+    }
   };
 
   const handleEndTimeChange = time => {
-    setEndTime(time);
-    // console.log(time, "++++end Times++++++++");
+    if (!time) {
+      console.error('endTime is not valid:', time);
+      setEndTimeData(null)
+      return;
+    }
 
+    const selectedEndTimeData = data.find(item => item.time === time);
+    if (selectedEndTimeData) {
+      setEndTimeData(selectedEndTimeData);
+    }
   };
+
+
   const handletor = time => {
     // setEndTime(time);
     // console.log(time, "++++end Times++++++++");
-
   };
-
-
 
   return (
     <View style={styles.mainView}>
       <ScrollView>
-        <View >
-          <TopHeader name={"Book Your Slot"} />
+        <View>
+          <TopHeader name={'Book Your Slot'} />
         </View>
         <View style={styles.sendView}>
-          <SlotTime onStartTimeChange={handleStartTimeChange} onEndTimeChange={handleEndTimeChange} tor={handletor} />
+          <SlotTime
+            onStartTimeChange={handleStartTimeChange}
+            onEndTimeChange={handleEndTimeChange}
+            tor={handletor}
+            data={data} />
         </View>
-        <View>
 
+
+
+        {console.log(startTime, "==satrt===")}
+        {console.log(endTime, "==end===")}
+
+        <View>
           {Object.keys(caldate).length !== 0 && startTime !== null && (
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => BookingPro()}
-            >
+            <TouchableOpacity style={styles.btn} onPress={() => BookingPro()}>
               <Text style={styles.payment}>
                 {startTime} to {endTime}
               </Text>
             </TouchableOpacity>
           )}
         </View>
-        <View style={styles.thiView} >
+
+        <Text style={styles.datess}>select date is required</Text>
+        <View style={styles.thiView}>
           <CalanderFile datesselect={handleDateSelect} />
         </View>
-
-
       </ScrollView>
     </View>
-
-
-  )
-}
+  );
+};
 
 export default DateTime;
 
 const styles = StyleSheet.create({
-  thiView: { marginHorizontal: wp(10), marginVertical: hp(2) },
-  sendView: { flexWrap: 'wrap', flex: 1, justifyContent: 'center', alignSelf: 'center', marginTop: hp(4) },
-  mainView: { flex: 1, marginBottom: hp(5), },
-  btn: { margin: wp(3), height: 40, flex: 1 },
-  payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
+  datess: { alignSelf: 'center', color: '#f97272', marginVertical: hp(1) },
 
-})
+  sold: { color: '#000' },
+  thiView: { marginHorizontal: wp(10), },
+  sendView: {
+    flexWrap: 'wrap',
+    flex: 1,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: hp(4),
+  },
+  mainView: { flex: 1, marginBottom: hp(5) },
+  btn: { margin: wp(3), height: 40, flex: 1 },
+  payment: {
+    color: '#fff',
+    backgroundColor: '#027850',
+    flex: 1,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    fontSize: wp(5),
+    borderRadius: wp(2),
+  },
+});

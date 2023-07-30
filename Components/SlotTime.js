@@ -7,40 +7,17 @@ import {
 import moment from 'moment';
 import CalanderFile from '../Components/CalanderFile';
 // nornmal and for bulk booking  comppoonent 
-const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
+const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
     const [numColumns, setNumColumns] = useState(4);
     const [selectedItems, setSelectedItems] = useState({});
-    const [selectedStartTime, setSelectedStartTime] = useState(null);
+    const [selectedStartTime, setSelectedStartTime] = useState(null); +7
     const [selectedEndTime, setSelectedEndTime] = useState(null);
+    const [selectedStartTimeData, setSelectedStartTimeData] = useState(null);
+    const [selectedEndTimeData, setSelectedEndTimeData] = useState(null);
+
     // const [torna, settoyna] = useState(tor);
 
-    const data = [
 
-        { id: '1', time: '01-02 am', price: 100 },
-        { id: '2', time: '02-03 am', price: 100 },
-        { id: '3', time: '03-04 am', price: 100 },
-        { id: '4', time: '04-05 am', price: 100 },
-        { id: '5', time: '05-06 am', price: 100 },
-        { id: '6', time: '06-07 am', price: 100 },
-        { id: '7', time: '07-08 am', price: 100 },
-        { id: '8', time: '08-09 am', price: 100 },
-        { id: '9', time: '09-10 am', price: 100 },
-        { id: '10', time: '10-11 am', price: 100 },
-        { id: '11', time: '11-12 am', price: 100 },
-        { id: '12', time: '12-13 am', price: 100 },
-        { id: '13', time: '13-14 pm', price: 100 },
-        { id: '14', time: '14-15 pm', price: 100 },
-        { id: '15', time: '15-16 pm', price: 100 },
-        { id: '16', time: '16-17 pm', price: 100 },
-        { id: '17', time: '17-18 pm', price: 100 },
-        { id: '18', time: '18-19 pm', price: 100 },
-        { id: '19', time: '19-20 pm', price: 100 },
-        { id: '20', time: '20-21 pm', price: 100 },
-        { id: '21', time: '21-22 pm', price: 100 },
-        { id: '22', time: '22-23 pm', price: 100 },
-        { id: '23', time: '23-24 pm', price: 100 },
-        { id: '24', time: '24-01 pm', price: 100 },
-    ];
 
     const handleTimePress = time => {
         if (!selectedStartTime) {
@@ -64,6 +41,9 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
             setSelectedEndTime(null);
             onEndTimeChange(null)
         }
+        setSelectedStartTimeData(data.find(item => item.time === selectedStartTime));
+        setSelectedEndTimeData(data.find(item => item.time === selectedEndTime));
+
     };
 
     const handleItemPress = id => {
@@ -96,11 +76,12 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
 
         return (
             <TouchableOpacity
+                disabled={!item.status}
                 onPress={() => {
-                    handleTimePress(item.time);
+                    handleTimePress(item.time, data);
                     handleItemPress(item.id);
                 }}>
-                <View style={[styles.timeSlot, isSelected && styles.selectedTimeSlot]}>
+                <View style={[styles.timeSlot, isSelected && styles.selectedTimeSlot, !item.status ? styles.notAvaable : null]}>
                     <Text style={[styles.timeText, isSelected && styles.selectedtext]}>
                         {item.time}
                     </Text>
@@ -120,6 +101,8 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
 
         return 0; // Return 0 if start or end time is not selected
     };
+
+
     const renderSelectedItemsText = () => {
         const totalDuration = calculateTotalDuration();
         const requireDuration = 4 - totalDuration;
@@ -150,11 +133,68 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor }) => {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
             />
+
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly',
+                    marginTop: hp(2),
+                }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.pxboxa}></View>
+
+                    <Text style={styles.sold}>Available</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.pxboxn}></View>
+
+                    <Text style={styles.sold}>Not Available</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={styles.pxboxs}></View>
+
+                    <Text style={styles.sold}>Selected</Text>
+                </View>
+            </View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
+    notAvaable: {
+        backgroundColor: '#E5D9B6',
+        color: '#fff'
+    },
+    datess: { alignSelf: 'center', color: '#f97272', marginVertical: hp(1) },
+    pxboxa: {
+        width: wp(3),
+        height: wp(3),
+        backgroundColor: '#E3EFEB',
+        marginHorizontal: wp(2),
+        borderColor: '#000',
+        borderWidth: 1,
+    },
+    pxboxs: {
+        width: wp(3),
+        height: wp(3),
+        backgroundColor: '#027850',
+        marginHorizontal: wp(2),
+        borderColor: '#000',
+        borderWidth: 1,
+    },
+    pxboxn: {
+        width: wp(3),
+        height: wp(3),
+        backgroundColor: '#E5D9B6',
+        marginHorizontal: wp(2),
+        borderColor: '#000',
+        borderWidth: 1,
+    },
+    sold: { color: '#000' },
+    thiView: { marginHorizontal: wp(10), },
     minHoursText: {
         textAlign: 'center',
         fontSize: wp(4),
@@ -234,6 +274,7 @@ const styles = StyleSheet.create({
     selectedTimeSlot: {
         backgroundColor: 'green',
     },
+
 });
 
 export default SlotTime;
