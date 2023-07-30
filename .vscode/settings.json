@@ -3,5 +3,6 @@
     "editor.formatOnSave": true,
     "editor.formatOnPaste": true,
     "editor.formatOnType": true,
-    "color-pick.analytics": true
+    "color-pick.analytics": true,
+    "java.compile.nullAnalysis.mode": "automatic"
 }
