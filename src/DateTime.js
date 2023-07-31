@@ -14,12 +14,9 @@ import BackgroundSvg from '../asserts/svgs/BgImg';
 import TopHeader from '../Components/TopHeader';
 import TimeComp from '../Components/TimeComp';
 import SlotTime from '../Components/SlotTime';
-<<<<<<< HEAD
-=======
 import RazorpayCheckout from 'react-native-razorpay';
 import { encode } from 'base-64';
 import { base64 } from 'react-native-base64';
->>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
 
 const DateTime = () => {
   const [startTime, setStartTime] = useState(null);
@@ -27,10 +24,8 @@ const DateTime = () => {
   const [caldate, setcalldat] = useState({});
   const [startTimeData, setStartTimeData] = useState(null);
   const [endTimeData, setEndTimeData] = useState(null);
-<<<<<<< HEAD
-=======
   const [amo, setamo] = useState(0);
->>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
+
 
   const data = [
     { id: '1', time: '01-02 am', price: 100, status: true, stime: '01:00', etime: '02:00' },
@@ -77,12 +72,11 @@ const DateTime = () => {
   };
 
   const BookingPro = () => {
-<<<<<<< HEAD
-    console.log('preess');
-  };
 
 
-=======
+
+
+
 
     const startIndex = data.findIndex(item => item.stime === startTime);
     const endIndex = data.findIndex(item => item.etime === endTime);
@@ -127,8 +121,8 @@ const DateTime = () => {
       alert(`Error: ${error.code} | ${error.description}`);
     });
     console.log('preess');
-  };
 
+  };
   const refuns = async () => {
     // try {
     // const apiKey = 'rzp_test_3XuGHeboPYREx'; // Replace with your actual API key
@@ -185,7 +179,7 @@ const DateTime = () => {
     }
 
   }
->>>>>>> df9af604858a21526e67556d4923d3b1e2d09f44
+
   const handleStartTimeChange = time => {
     if (!time) {
       return;

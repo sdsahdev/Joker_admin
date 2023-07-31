@@ -38,18 +38,18 @@ const App = () => {
 
     <NavigationContainer>
       <Stack.Navigator headerMode="none">
+        <Stack.Screen name="loginSceen" component={loginSceen} />
         <Stack.Screen name="BoxList" component={BottomTab} />
         <Stack.Screen name="BoxeItems" component={BoxeItems} />
+        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="Details" component={Details} />
         <Stack.Screen name="DateTime" component={DateTime} />
         <Stack.Screen name="Inbox" component={Inbox} />
         <Stack.Screen name="DetailsCompo" component={DetailsCompo} />
-        <Stack.Screen name="loginSceen" component={loginSceen} />
         <Stack.Screen name="Cancel" component={Cancel} />
         <Stack.Screen name="Otp" component={Otp} />
         <Stack.Screen name="ChangePass" component={ChangePass} />
         <Stack.Screen name="PasswordScreen" component={PasswordScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="ContactUs" component={ContactUs} />
         <Stack.Screen name="About" component={About} />

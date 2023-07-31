@@ -12,8 +12,12 @@ const ProfileScreen = ({ navigation }) => {
 
     const hEdit = () => {
         console.log("edit");
-        navigation.navigate("EditProfile");
+        navigation.navigate("RegisterScreen");
     }
+    const hpassword = () => {
+        console.log("Edit Profile pressed!");
+        navigation.navigate("PasswordScreen")
+    };
     const hcontact = () => {
         console.log("Contact");
         navigation.navigate("ContactUs");
@@ -29,10 +33,6 @@ const ProfileScreen = ({ navigation }) => {
         navigation.navigate("loginSceen");
 
     }
-    const hpassword = () => {
-        console.log("Edit Profile pressed!");
-        navigation.navigate("PasswordScreen")
-    };
 
     return (
         <View style={{ position: 'relative', backgroundColor: '#eeeeee', height: '100%' }}>
@@ -50,10 +50,10 @@ const ProfileScreen = ({ navigation }) => {
                 </View> */}
                 <View style={{ marginTop: hp(10) }}>
 
-                    <Menu icon={imagesClass.pen1} name={"Edit Profile"} onpress={() => hEdit()} />
-                    <Menu icon={imagesClass.password} name={"Change Password"} onpress={() => hpassword()} />
-                    <Menu icon={imagesClass.call} name={"Contact Us"} onpress={() => hcontact()} />
-                    <Menu icon={imagesClass.about} name={"About Us"} onpress={() => habout()} />
+                    <Menu icon={imagesClass.pen1} name={"Register Admin"} onpress={() => hEdit()} />
+                    <Menu icon={imagesClass.password} name={"Change access"} onpress={() => hpassword()} />
+                    <Menu icon={imagesClass.call} name={"Download report"} onpress={() => hcontact()} />
+                    {/* <Menu icon={imagesClass.about} name={""} onpress={() => habout()} /> */}
                     <Menu icon={imagesClass.logout} name={"Logout"} onpress={() => hlogout()} />
                 </View>
 

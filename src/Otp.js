@@ -28,10 +28,11 @@ const Otp = ({ navigation }) => {
 
     const handleOtpChange = (otp) => {
         setOtp(otp);
+
         // Your additional logic here, if needed
     };
     const handleSubmit = () => {
-        navigation.navigate("loginSceen");
+        navigation.navigate("BoxList");
     }
     return (
         <View style={{ flex: 1, }}>
