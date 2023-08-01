@@ -29,7 +29,7 @@ const Otp = ({ navigation }) => {
     const handleOtpChange = (otp) => {
         setOtp(otp);
 
-        // Your additional logic here, if needed
+        // Your additional logic here, if needed mk
     };
     const handleSubmit = () => {
         navigation.navigate("BoxList");

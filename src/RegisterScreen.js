@@ -75,8 +75,7 @@ const RegisterScreen = ({ navigation }) => {
                     <View style={styles.fillDetails}>
 
                         <Image
-                            source={imagesClass.telephone
-                            }
+                            source={imagesClass.telephone}
                             style={styles.phnimage}
                             resizeMode="center"
                         />

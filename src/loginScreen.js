@@ -25,38 +25,24 @@ import ChangePass from '../Components/ChangePass';
 
 // create a component
 const loginSceen = ({ navigation }) => {
-  const [value, setValue] = useState("");
-  const [formattedValue, setFormattedValue] = useState("");
-  const [valid, setValid] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [username, setusername] = useState('');
 
-  // const phoneInput = useRef < PhoneInput > (null);
-  const handlePhoneNumberChange = (input) => {
-    // Remove any non-digit characters from the input
-    const formattedPhoneNumber = input.replace(/\D/g, '');
-    const limitedPhoneNumber = formattedPhoneNumber.slice(0, 10);
 
-    setPhoneNumber(limitedPhoneNumber);
+
+  handleSubmit = () => {
+    navigation.navigate("RegisterScreen");
+
+    console.log("name ", username);
+    console.log("pass ", password);
+
   };
-
-  // Function to handle form submission
-  const handleSubmit = () => {
-    navigation.navigate("Otp");
-    if (isValidPhoneNumber(phoneNumber)) {
-      // Perform your action or validation success logic here
-      Alert.alert('Success', 'Valid phone number!');
-    } else {
-      Alert.alert('Error', 'Invalid phone number!');
-    }
-  };
-
-  // Function to validate the phone number using regex
-  const isValidPhoneNumber = (input) => {
-    // Phone number regex pattern (for example, supports only 10-digit US phone numbers)
-    const phoneNumberPattern = /^\d{10}$/;
-    return input.length === 10;
-  };
+  const handleuserChange = (newUser) => {
+    setusername(newUser);
+  }
+  const handletxtChange = (newPassword) => {
+    setPassword(newPassword);
+  }
 
   return (
     <View style={styles.container}>
@@ -68,16 +54,15 @@ const loginSceen = ({ navigation }) => {
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
-          <ChangePass name={"User Name"} headerText={null} />
+          <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
-        <ChangePass name={"Password"} headerText={null} />
+        <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} />
       </SafeAreaView >
       <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
         <Text style={styles.booktxt}>
           Login
         </Text>
       </TouchableOpacity>
-
     </View >
   );
 };

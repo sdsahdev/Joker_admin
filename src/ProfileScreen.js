@@ -21,7 +21,6 @@ const ProfileScreen = ({ navigation }) => {
     const hcontact = () => {
         console.log("Contact");
         navigation.navigate("ContactUs");
-
     }
     const habout = () => {
         navigation.navigate("About");
@@ -31,7 +30,6 @@ const ProfileScreen = ({ navigation }) => {
     const hlogout = () => {
         console.log("Logout");
         navigation.navigate("loginSceen");
-
     }
 
     return (
