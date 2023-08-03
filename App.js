@@ -27,13 +27,41 @@ import RegisterScreen from './src/RegisterScreen';
 import EditProfile from './src/EditProfile';
 import ContactUs from './src/ContactUs';
 import TornamentBook from './src/TornamentBook';
+import messaging from '@react-native-firebase/messaging';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
 const App = () => {
+  useEffect(() => {
+    async function requestUserPermission() {
+      const authStatus = await messaging().requestPermission();
+      const enabled =
+        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+      if (enabled) {
+        console.log('Authorization status:', authStatus);
+        GetFcmToken();
+      }
+    }
+    return () => {
+      requestUserPermission
+    };
+  })
 
 
+  async function GetFcmToken() {
+    try {
+
+      let fcmToken = await messaging().getToken();
+      // AsyncStorage.setItem("fcmtoken", fcmToken);
+      console.log(fcmToken, "==firebase token==");
+    } catch (error) {
+      console.log(error, 'error');
+    }
+  }
   return (
 
     <NavigationContainer>
