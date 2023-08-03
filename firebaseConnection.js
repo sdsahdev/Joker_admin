@@ -35,7 +35,6 @@ export default async function requestUserPermission() {
 }
 async function GetFcmToken() {
     try {
-
         let fcmToken = await messaging().getToken();
         console.log(fcmToken, "==firebase token==");
     } catch (error) {

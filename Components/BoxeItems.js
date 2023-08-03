@@ -1,23 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { useNavigation, } from '@react-navigation/native';
 
 
 
-const data = [
-    { id: '1', image: imagesClass.banner2, leftText: 'Box 1', rightText: '$100/hr' },
-    { id: '2', image: imagesClass.box2, leftText: 'Box 2', rightText: '$200/hr' },
-    { id: '3', image: imagesClass.box3, leftText: 'Box 3', rightText: '$300/hr' },
-    { id: '4', image: imagesClass.box4, leftText: 'Box 3', rightText: '$300/hr' },
+// const data = [
+//     { id: '1', image: imagesClass.banner2, leftText: 'Box 1', rightText: '$100/hr' },
+//     { id: '2', image: imagesClass.box2, leftText: 'Box 2', rightText: '$200/hr' },
+//     { id: '3', image: imagesClass.box3, leftText: 'Box 3', rightText: '$300/hr' },
+//     { id: '4', image: imagesClass.box4, leftText: 'Box 3', rightText: '$300/hr' },
 
-    // Add more items as needed
-];
+//     // Add more items as needed
+// ];
 
 
 
 const BoxeItems = ({ navigation }) => {
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        // Call the API when the component mounts
+        console.log("+++++++");
+        fetchBoxData();
+    }, []);
+
+
+    // const fetchBoxData = async () => {
+    //     try {
+    //         const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
+    //         const jsonData = await response.json();
+    //         setData("=jdata=== ", jsonData);
+    //     } catch (error) {
+    //         console.log('Error:', error);
+    //     }
+    // };
+    const fetchBoxData = async () => {
+        console.log("-----------");
+        try {
+            const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
+            if (!response.ok) {
+                console.log("not ok");
+                throw new Error('Network response was not ok');
+
+            }
+            const jsonData = await response.json();
+            console.log(jsonData[0].images[0].url, "==== datas");
+            setData(jsonData);
+        } catch (error) {
+            console.log('Error:', error);
+        }
+    };
+
     // const navigation = useNavigation();
 
     const renderItem = ({ item }) => (
@@ -26,14 +60,15 @@ const BoxeItems = ({ navigation }) => {
             <TouchableOpacity
                 onPress={() => navigation.navigate("Details")}
             >
+                {console.log(item)}
                 <Image
-                    source={item.image}
+                    source={{ uri: item.images[0].url }}
                     style={styles.image}
                     resizeMode="cover"
                 />
                 <View style={styles.textContainer}>
-                    <Text style={styles.textLeft}>{item.leftText}</Text>
-                    <Text style={styles.textRight}>{item.rightText}</Text>
+                    <Text style={styles.textLeft}>{item.name}</Text>
+                    <Text style={styles.textRight}>{item.id}</Text>
                 </View>
             </TouchableOpacity>
 

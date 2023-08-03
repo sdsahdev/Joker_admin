@@ -21,15 +21,13 @@ import Frame from '../asserts/svgs/Frame.svg';
 import imagesClass from '../asserts/imagepath';
 import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // create a component
 const loginSceen = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [username, setusername] = useState('');
-
-
-
   handleSubmit = () => {
     navigation.navigate("RegisterScreen");
 
@@ -43,7 +41,80 @@ const loginSceen = ({ navigation }) => {
   const handletxtChange = (newPassword) => {
     setPassword(newPassword);
   }
+  const handleAdmin = async () => {
+    try {
+      const url = 'https://boxclub.in/Joker/Admin/index.php?what=loginThirdParty';
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+      console.log(fcmToken, "==storae");
 
+      const requestBody = {
+        phno: username,
+        password: password,
+        fcm: fcmToken,
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+      });
+      console.log(response.status);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          console.log(data.token);
+          AsyncStorage.setItem("token", data.token);
+          AsyncStorage.setItem("user", "admin");
+          navigation.navigate("BoxList");
+        } else {
+          console.log(data.message);
+          Alert.alert('', data.message)
+        }
+      }
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+  }
+  const handleSuperAdmin = async () => {
+    try {
+      const url = 'https://boxclub.in/Joker/Admin/index.php?what=adminLogin';
+      const fcmToken = await AsyncStorage.getItem('fcmToken');
+      console.log(fcmToken, "==storae");
+
+      const requestBody = {
+        phno: username,
+        password: password,
+        fcm: fcmToken,
+      };
+
+      const response = await fetch(url, {
+        method: 'POST',
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+
+          console.log(data.token);
+          AsyncStorage.setItem("token", data.token);
+          AsyncStorage.setItem("user", "superadmin");
+        } else {
+          console.log(data.message);
+          Alert.alert('', data.message)
+        }
+      }
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+    navigation.navigate("BoxList");
+
+  }
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -57,12 +128,25 @@ const loginSceen = ({ navigation }) => {
           <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
         <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} />
+        {/* <TouchableOpacity >
+          <Text style={{ alignSelf: 'center', color: "#027850", fontSize: wp(4), marginTop: hp(2) }}>
+            login for superAmdin
+          </Text>
+        </TouchableOpacity> */}
       </SafeAreaView >
-      <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
-        <Text style={styles.booktxt}>
-          Login
-        </Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: 'row', height: '100%' }}>
+
+        <TouchableOpacity style={styles.bookbtn} onPress={() => handleAdmin()}>
+          <Text style={styles.booktxt}>
+            Admin Login
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.bookbtn} onPress={() => handleSuperAdmin()}>
+          <Text style={styles.booktxt}>
+            Super Admin Login
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View >
   );
 };
@@ -71,13 +155,9 @@ const loginSceen = ({ navigation }) => {
 const styles = StyleSheet.create({
   phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
   booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-  bookbtn: {
-    backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)
-
-  },
+  bookbtn: { backgroundColor: '#027850', height: hp(6), flex: 1, alignSelf: 'center', borderRadius: wp(2), marginHorizontal: wp(2), bottom: hp(7), },
   container: {
     flex: 1,
-
   },
   titelText: {
     width: wp(80),
@@ -103,5 +183,4 @@ const styles = StyleSheet.create({
   },
 });
 
-//make this component available to the app
 export default loginSceen;

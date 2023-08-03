@@ -11,6 +11,8 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 const BoxList = ({ navigation }) => {
+
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
