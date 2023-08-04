@@ -55,10 +55,9 @@ const BoxeItems = ({ navigation }) => {
     // const navigation = useNavigation();
 
     const renderItem = ({ item }) => (
-
         <View style={styles.container}>
             <TouchableOpacity
-                onPress={() => navigation.navigate("Details")}
+                onPress={() => navigation.navigate("Details", { item })}
             >
                 {console.log(item)}
                 <Image
@@ -68,7 +67,7 @@ const BoxeItems = ({ navigation }) => {
                 />
                 <View style={styles.textContainer}>
                     <Text style={styles.textLeft}>{item.name}</Text>
-                    <Text style={styles.textRight}>{item.id}</Text>
+                    <Text style={styles.textRight}>{parseInt(item.morning_price)} ₹</Text>
                 </View>
             </TouchableOpacity>
 
@@ -112,7 +111,7 @@ const styles = StyleSheet.create({
     textLeft: {
         color: 'white',
         fontSize: 16,
-        color: '#000',
+        color: '#027850',
         fontWeight: 'bold',
 
 
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#000',
+        color: '#027850',
 
 
 

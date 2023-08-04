@@ -48,7 +48,7 @@ const loginSceen = ({ navigation }) => {
       console.log(fcmToken, "==storae");
 
       const requestBody = {
-        phno: username,
+        phone: username,
         password: password,
         fcm: fcmToken,
       };
