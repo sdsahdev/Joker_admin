@@ -21,6 +21,7 @@ import Frame from '../asserts/svgs/Frame.svg';
 import imagesClass from '../asserts/imagepath';
 import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 // create a component
@@ -29,34 +30,60 @@ const RegisterScreen = ({ navigation }) => {
     const [formattedValue, setFormattedValue] = useState("");
     const [valid, setValid] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
+
     const [phoneNumber, setPhoneNumber] = useState('');
-
+    const [username, setusername] = useState('');
+    const [password, setpassword] = useState('');
     // const phoneInput = useRef < PhoneInput > (null);
-    const handlePhoneNumberChange = (input) => {
-        // Remove any non-digit characters from the input
-        const formattedPhoneNumber = input.replace(/\D/g, '');
-        const limitedPhoneNumber = formattedPhoneNumber.slice(0, 10);
-
-        setPhoneNumber(limitedPhoneNumber);
+    const handlepassword = (input) => {
+        setpassword(input)
     };
-
+    const handleuserChange = (input) => {
+        setusername(input)
+    }
+    const callApi = async () => {
+        const token = await AsyncStorage.getItem("token")
+        console.log(token, "-----");
+        const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
+        const data = {
+            name: username,
+            // email: 'jokeradmin@gmail.com',
+            phno: phoneNumber,
+            password: password,
+        };
+        fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                token: token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then((response) => response.json())
+            .then((responseData) => {
+                // Handle successful response
+                console.log('API response:', responseData);
+            })
+            .catch((error) => {
+                // Handle error
+                console.error('API error:', error);
+            });
+    };
     // Function to handle form submission
     const handleSubmit = () => {
-
-        navigation.navigate("Otp");
-        if (isValidPhoneNumber(phoneNumber)) {
-            // Perform your action or validation success logic here
-            Alert.alert('Success', 'Valid phone number!');
-        } else {
-            Alert.alert('Error', 'Invalid phone number!');
-        }
+        console.log(username)
+        console.log(phoneNumber)
+        console.log(password)
+        callApi()
+        // navigation.navigate("Otp");
     };
 
-    // Function to validate the phone number using regex
     const isValidPhoneNumber = (input) => {
-        // Phone number regex pattern (for example, supports only 10-digit US phone numbers)
+        const formattedPhoneNumber = input.replace(/\D/g, '');
+        const limitedPhoneNumber = formattedPhoneNumber.slice(0, 10);
+        setPhoneNumber(limitedPhoneNumber);
         const phoneNumberPattern = /^\d{10}$/;
-        return input.length === 10;
+        return phoneNumberPattern;
     };
 
     return (
@@ -65,31 +92,18 @@ const RegisterScreen = ({ navigation }) => {
                 <TopHeader />
                 <Text style={styles.titelText}>
                     Hi~{'\n'}
-                    Signup to get started
+                    Add new Admin
                 </Text>
-                <View style={{ marginTop: hp(4) }}>
 
-                    <ChangePass name={"User Name"} headerText={null} />
+                <ChangePass name={"User Name"} headerText={null} onChangeText={handleuserChange} />
 
+                <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
 
-                    <View style={styles.fillDetails}>
-
-                        <Image
-                            source={imagesClass.telephone}
-                            style={styles.phnimage}
-                            resizeMode="center"
-                        />
-                        <TextInput keyboardType='phone-pad' placeholder="Enter Mobile Number" style={styles.inputFild}
-                            value={phoneNumber}
-                            onChangeText={handlePhoneNumberChange} />
-
-                    </View>
-                </View>
-                <ChangePass name={"Password"} headerText={null} />
+                <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />
             </SafeAreaView >
             <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
                 <Text style={styles.booktxt}>
-                    Verify Number
+                    Add Admin
                 </Text>
             </TouchableOpacity>
 
