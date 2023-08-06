@@ -17,6 +17,7 @@ import SlotTime from '../Components/SlotTime';
 import RazorpayCheckout from 'react-native-razorpay';
 import { encode } from 'base-64';
 import { base64 } from 'react-native-base64';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const DateTime = () => {
   const [startTime, setStartTime] = useState(null);
@@ -26,7 +27,32 @@ const DateTime = () => {
   const [endTimeData, setEndTimeData] = useState(null);
   const [amo, setamo] = useState(0);
 
+  const [user, setuser] = useState('')
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const user1 = await AsyncStorage.getItem('user');
+        console.log(user1, "==end===");
+        setuser(user1);
+      } catch (error) {
+        console.log("Error fetching user:", error);
+      }
+
+      if (startTimeData) {
+        setStartTime(startTimeData.stime);
+        if (!endTimeData) {
+          // If endTimeData is not set, set it to startTimeData.etime initially
+          setEndTime(startTimeData.etime);
+        }
+      }
+      if (endTimeData) {
+        setEndTime(endTimeData.etime);
+      }
+    };
+
+    fetchData();
+  }, [startTimeData, endTimeData]);
   const data = [
     { id: '1', time: '01-02 am', price: 100, status: true, stime: '01:00', etime: '02:00' },
     { id: '2', time: '02-03 am', price: 100, status: true, stime: '02:00', etime: '03:00' },
@@ -54,29 +80,9 @@ const DateTime = () => {
     { id: '24', time: '24-01 pm', price: 100, status: false, stime: '24:00', etime: '01:00' },
   ];
 
-  useEffect(() => {
-    if (startTimeData) {
-      setStartTime(startTimeData.stime);
-      if (!endTimeData) {
-        // If endTimeData is not set, set it to startTimeData.etime initially
-        setEndTime(startTimeData.etime);
-      }
-    }
-    if (endTimeData) {
-      setEndTime(endTimeData.etime);
-    }
-  }, [startTimeData, endTimeData]);
-  const handleDateSelect = date => {
-    // Reset startTime and endTime to null when the date is removed
-    setcalldat(date);
-  };
+
 
   const BookingPro = () => {
-
-
-
-
-
 
     const startIndex = data.findIndex(item => item.stime === startTime);
     const endIndex = data.findIndex(item => item.etime === endTime);
@@ -205,7 +211,10 @@ const DateTime = () => {
     }
   };
 
-
+  const handleDateSelect = date => {
+    // Reset startTime and endTime to null when the date is removed
+    setcalldat(date);
+  };
   const handletor = time => {
     // setEndTime(time);
     // console.log(time, "++++end Times++++++++");
@@ -231,7 +240,7 @@ const DateTime = () => {
         {console.log(endTime, "==end===")}
 
         <View>
-          {Object.keys(caldate).length !== 0 && startTime !== null && (
+          {Object.keys(caldate).length !== 0 && startTime !== null && user === 'superadmin' && (
             <TouchableOpacity style={styles.btn} onPress={() => BookingPro()}>
               <Text style={styles.payment}>
                 {startTime} to {endTime}

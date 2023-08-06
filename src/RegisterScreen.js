@@ -1,6 +1,6 @@
 
 //import liraries
-import React, { Component, useState, useRef } from 'react';
+import React, { Component, useState, useRef, useEffect } from 'react';
 import {
     View,
     Text,
@@ -23,15 +23,14 @@ import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 
 // create a component
 const RegisterScreen = ({ navigation }) => {
-    const [value, setValue] = useState("");
-    const [formattedValue, setFormattedValue] = useState("");
-    const [valid, setValid] = useState(false);
-    const [showMessage, setShowMessage] = useState(false);
+    FlashMessageManager.setDisabled(false);
 
     const [phoneNumber, setPhoneNumber] = useState('');
+    const [email, setemail] = useState('');
     const [username, setusername] = useState('');
     const [password, setpassword] = useState('');
     // const phoneInput = useRef < PhoneInput > (null);
@@ -41,42 +40,72 @@ const RegisterScreen = ({ navigation }) => {
     const handleuserChange = (input) => {
         setusername(input)
     }
+    const handleEmail = (input) => {
+        setemail(input)
+    }
     const callApi = async () => {
+        console.log(username)
+        console.log(phoneNumber)
+        console.log(password)
         const token = await AsyncStorage.getItem("token")
         console.log(token, "-----");
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
         const data = {
             name: username,
-            // email: 'jokeradmin@gmail.com',
+            email: email,
             phno: phoneNumber,
             password: password,
+            type: 'insert'
         };
-        fetch(apiUrl, {
+
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 token: token,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        })
-            .then((response) => response.json())
-            .then((responseData) => {
-                // Handle successful response
-                console.log('API response:', responseData);
-            })
-            .catch((error) => {
-                // Handle error
-                console.error('API error:', error);
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.success) {
+                showMessage({
+                    message: data.message,
+                    type: "Success",
+                    backgroundColor: "green", // background color
+                    color: "#fff", // text color
+                    onHide: () => {
+                        navigation.pop();
+                    }
+                });
+
+                console.log(data, " logg");
+            } else {
+                console.log(data.message, "jj");
+                showMessage({
+                    message: data.message,
+                    type: "Danger",
+                    duration: 3000,
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                });
+            }
+        } else {
+            showMessage({
+                message: "data. s",
+                type: "Danger",
+                backgroundColor: "red", // background color
+                color: "#fff", // text color
+                duration: 3000
             });
+        }
     };
-    // Function to handle form submission
-    const handleSubmit = () => {
-        console.log(username)
-        console.log(phoneNumber)
-        console.log(password)
-        callApi()
-        // navigation.navigate("Otp");
-    };
+
 
     const isValidPhoneNumber = (input) => {
         const formattedPhoneNumber = input.replace(/\D/g, '');
@@ -88,6 +117,8 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+            <FlashMessage />
+
             <SafeAreaView>
                 <TopHeader />
                 <Text style={styles.titelText}>
@@ -97,11 +128,14 @@ const RegisterScreen = ({ navigation }) => {
 
                 <ChangePass name={"User Name"} headerText={null} onChangeText={handleuserChange} />
 
+                <ChangePass name={"Email"} headerText={null} onChangeText={handleEmail} />
                 <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
 
                 <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />
             </SafeAreaView >
-            <TouchableOpacity style={styles.bookbtn} onPress={() => handleSubmit()}>
+            <FlashMessage position="bottom" />
+
+            <TouchableOpacity style={styles.bookbtn} onPress={() => callApi()}>
                 <Text style={styles.booktxt}>
                     Add Admin
                 </Text>
@@ -121,7 +155,6 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-
     },
     titelText: {
         width: wp(80),

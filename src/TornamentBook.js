@@ -11,8 +11,10 @@ import BackgroundSvg from '../asserts/svgs/BgImg'
 import TopHeader from '../Components/TopHeader'
 import TimeComp from '../Components/TimeComp'
 import SlotTime from '../Components/SlotTime'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TornamentBook = () => {
+
 
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
@@ -22,6 +24,31 @@ const TornamentBook = () => {
 
     const [tornament, settornament] = useState(false);
     const scrollViewRef = useRef(null);
+    const [user, setuser] = useState('')
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const user1 = await AsyncStorage.getItem('user');
+                console.log(user1, "==end===");
+                setuser(user1);
+            } catch (error) {
+                console.log("Error fetching user:", error);
+            }
+
+            if (startTimeData) {
+                setStartTime(startTimeData.stime);
+                if (!endTimeData) {
+                    // If endTimeData is not set, set it to startTimeData.etime initially
+                    setEndTime(startTimeData.etime);
+                }
+            }
+            if (endTimeData) {
+                setEndTime(endTimeData.etime);
+            }
+        };
+
+        fetchData();
+    }, [startTimeData, endTimeData]);
     const data = [
         { id: '1', time: '01-02 am', price: 100, status: true, stime: '01:00', etime: '02:00' },
         { id: '2', time: '02-03 am', price: 100, status: true, stime: '02:00', etime: '03:00' },
@@ -49,18 +76,6 @@ const TornamentBook = () => {
         { id: '24', time: '24-01 pm', price: 100, status: false, stime: '24:00', etime: '01:00' },
     ];
 
-    useEffect(() => {
-        if (startTimeData) {
-            setStartTime(startTimeData.stime);
-            if (!endTimeData) {
-                // If endTimeData is not set, set it to startTimeData.etime initially
-                setEndTime(startTimeData.etime);
-            }
-        }
-        if (endTimeData) {
-            setEndTime(endTimeData.etime);
-        }
-    }, [startTimeData, endTimeData]);
 
 
     const handleDateSelect = date => {
@@ -122,7 +137,7 @@ const TornamentBook = () => {
                 </View>
                 <View>
 
-                    {Object.keys(caldate).length !== 0 && startTime !== null && tornament === true && (
+                    {Object.keys(caldate).length !== 0 && startTime !== null && user === 'superadmin' && tornament === true && (
 
 
                         <TouchableOpacity

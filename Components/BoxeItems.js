@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
@@ -17,6 +17,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 
 
 const BoxeItems = ({ navigation }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
     const [data, setData] = useState([]);
 
     useEffect(() => {
@@ -25,21 +27,13 @@ const BoxeItems = ({ navigation }) => {
         fetchBoxData();
     }, []);
 
-
-    // const fetchBoxData = async () => {
-    //     try {
-    //         const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
-    //         const jsonData = await response.json();
-    //         setData("=jdata=== ", jsonData);
-    //     } catch (error) {
-    //         console.log('Error:', error);
-    //     }
-    // };
     const fetchBoxData = async () => {
         console.log("-----------");
         try {
+            setIsLoading(true);
             const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
             if (!response.ok) {
+                setIsLoading(false);
                 console.log("not ok");
                 throw new Error('Network response was not ok');
 
@@ -48,6 +42,7 @@ const BoxeItems = ({ navigation }) => {
             console.log(jsonData[0].images[0].url, "==== datas");
             setData(jsonData);
         } catch (error) {
+            setIsLoading(false);
             console.log('Error:', error);
         }
     };
@@ -75,6 +70,8 @@ const BoxeItems = ({ navigation }) => {
     );
     return (
         <View style={styles.container}>
+            {isLoading && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
             <FlatList
                 style={{ marginBottom: wp(19) }}
                 data={data}

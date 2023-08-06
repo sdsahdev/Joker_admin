@@ -8,7 +8,7 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  TouchableOpacity, StatusBar, Alert
+  TouchableOpacity, StatusBar, Alert, ActivityIndicator
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
@@ -23,10 +23,14 @@ import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 
 // create a component
 const loginSceen = ({ navigation }) => {
+  FlashMessageManager.setDisabled(false);
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
   const [username, setusername] = useState('');
   handleSubmit = () => {
     navigation.navigate("RegisterScreen");
@@ -43,10 +47,13 @@ const loginSceen = ({ navigation }) => {
   }
   const handleAdmin = async () => {
     try {
+      setIsLoading(true);
       const url = 'https://boxclub.in/Joker/Admin/index.php?what=loginThirdParty';
       const fcmToken = await AsyncStorage.getItem('fcmToken');
       console.log(fcmToken, "==storae");
-
+      console.log(username);
+      console.log(password);
+      console.log(fcmToken);
       const requestBody = {
         phone: username,
         password: password,
@@ -59,26 +66,53 @@ const loginSceen = ({ navigation }) => {
       });
       console.log(response.status);
       if (!response.ok) {
+        setIsLoading(false);
         throw new Error('Network response was not ok');
+
       }
       if (response.ok) {
+        setIsLoading(false);
         const data = await response.json();
         if (data.success) {
+          showMessage({
+            message: data.message,
+            type: "Success",
+            backgroundColor: "green", // background color
+            color: "#fff", // text color
+            onHide: () => {
+
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'BoxList' }],
+              });
+            }
+          });
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
           AsyncStorage.setItem("user", "admin");
-          navigation.navigate("BoxList");
+          setPassword('')
+          setusername('')
+
         } else {
           console.log(data.message);
-          Alert.alert('', data.message)
+          showMessage({
+            message: data.message,
+            type: "Danger",
+            backgroundColor: "red", // background color
+            color: "#fff", // text color
+          });
         }
       }
     } catch (error) {
+      setIsLoading(false);
+
       console.log('Error:', error.message);
     }
   }
   const handleSuperAdmin = async () => {
     try {
+      setIsLoading(true);
+
       const url = 'https://boxclub.in/Joker/Admin/index.php?what=adminLogin';
       const fcmToken = await AsyncStorage.getItem('fcmToken');
       console.log(fcmToken, "==storae");
@@ -95,28 +129,57 @@ const loginSceen = ({ navigation }) => {
       });
 
       if (!response.ok) {
+        setIsLoading(false);
+
         throw new Error('Network response was not ok');
       }
       if (response.ok) {
+        setIsLoading(false);
+
         const data = await response.json();
         if (data.success) {
 
+          showMessage({
+            message: data.message,
+            type: "Success",
+            backgroundColor: "green", // background color
+            color: "#fff", // text color
+            onHide: () => {
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'BoxList' }],
+              });
+            }
+          });
+          console.log(data);
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
           AsyncStorage.setItem("user", "superadmin");
+          setPassword('')
+          setusername('')
         } else {
           console.log(data.message);
-          Alert.alert('', data.message)
+          showMessage({
+            message: data.message,
+            type: "Danger",
+            backgroundColor: "red", // background color
+            color: "#fff", // text color
+            duration: 3000
+          });
         }
       }
     } catch (error) {
+      setIsLoading(false);
+
       console.log('Error:', error.message);
     }
-    navigation.navigate("BoxList");
 
   }
   return (
     <View style={styles.container}>
+      <FlashMessage />
+      {isLoading && (
+        <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
       <SafeAreaView>
         <TopHeader />
         <Text style={styles.titelText}>
@@ -146,6 +209,7 @@ const loginSceen = ({ navigation }) => {
             Super Admin Login
           </Text>
         </TouchableOpacity>
+
       </View>
     </View >
   );

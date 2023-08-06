@@ -29,6 +29,8 @@ import ContactUs from './src/ContactUs';
 import TornamentBook from './src/TornamentBook';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
+import ChangeStatus from './src/ChangeStatus';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -64,9 +66,12 @@ const App = () => {
   return (
 
     <NavigationContainer>
+      <FlashMessage position="bottom" />
+
       <Stack.Navigator headerMode="none">
         <Stack.Screen name="loginSceen" component={loginSceen} />
         <Stack.Screen name="BoxList" component={BottomTab} />
+        <Stack.Screen name="ChangeStatus" component={ChangeStatus} />
         <Stack.Screen name="BoxeItems" component={BoxeItems} />
         <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
         <Stack.Screen name="Details" component={Details} />

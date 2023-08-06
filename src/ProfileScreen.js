@@ -1,5 +1,5 @@
 import { View, Text, SafeAreaView, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image } from 'react-native-animatable';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import TopHeader from '../Components/TopHeader';
@@ -7,16 +7,31 @@ import BackgroundSvg from '../asserts/svgs/BgImg';
 import imagesClass from '../asserts/imagepath';
 import Menu from '../Components/Menu';
 import { ScrollView } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { StackActions } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
+    const [user, setuser] = useState('')
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const user1 = await AsyncStorage.getItem('user');
+                console.log(user1, "==end===");
+                setuser(user1);
+            } catch (error) {
+                console.log("Error fetching user:", error);
+            }
+        };
 
+        fetchData();
+    }, []);
     const hEdit = () => {
         console.log("edit");
         navigation.navigate("RegisterScreen");
     }
     const hpassword = () => {
         console.log("Edit Profile pressed!");
-        navigation.navigate("PasswordScreen")
+        navigation.navigate("ChangeStatus")
     };
     const hcontact = () => {
         console.log("Contact");
@@ -28,8 +43,13 @@ const ProfileScreen = ({ navigation }) => {
         console.log("About");
     }
     const hlogout = () => {
-        console.log("Logout");
-        navigation.navigate("loginSceen");
+        // console.log("Logout");
+        // navigation.("loginSceen");
+
+        navigation.reset({
+            index: 0,
+            routes: [{ name: 'loginSceen' }],
+        });
     }
 
     return (
@@ -47,9 +67,13 @@ const ProfileScreen = ({ navigation }) => {
                         123456789</Text>
                 </View> */}
                 <View style={{ marginTop: hp(10) }}>
+                    {user === 'superadmin' ? (
+                        <View >
 
-                    <Menu icon={imagesClass.pen1} name={"Register Admin"} onpress={() => hEdit()} />
-                    <Menu icon={imagesClass.password} name={"Change access"} onpress={() => hpassword()} />
+                            <Menu icon={imagesClass.password} name={"Change access"} onpress={() => hpassword()} />
+                            <Menu icon={imagesClass.pen1} name={"Register Admin"} onpress={() => hEdit()} />
+                        </View>
+                    ) : null}
                     <Menu icon={imagesClass.call} name={"Download report"} onpress={() => hcontact()} />
                     {/* <Menu icon={imagesClass.about} name={""} onpress={() => habout()} /> */}
                     <Menu icon={imagesClass.logout} name={"Logout"} onpress={() => hlogout()} />
