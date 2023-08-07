@@ -8,7 +8,7 @@ import {
     SafeAreaView,
     Image,
     TextInput,
-    TouchableOpacity, StatusBar, Alert
+    TouchableOpacity, StatusBar, Alert, ActivityIndicator
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -28,6 +28,7 @@ import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "rea
 // create a component
 const RegisterScreen = ({ navigation }) => {
     FlashMessageManager.setDisabled(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setemail] = useState('');
@@ -47,6 +48,7 @@ const RegisterScreen = ({ navigation }) => {
         console.log(username)
         console.log(phoneNumber)
         console.log(password)
+        setIsLoading(true)
         const token = await AsyncStorage.getItem("token")
         console.log(token, "-----");
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
@@ -68,10 +70,13 @@ const RegisterScreen = ({ navigation }) => {
         });
 
         if (!response.ok) {
+            setIsLoading(false)
+
             throw new Error('Network response was not ok');
         }
         if (response.ok) {
             const data = await response.json();
+            setIsLoading(false)
 
             if (data.success) {
                 showMessage({
@@ -96,6 +101,8 @@ const RegisterScreen = ({ navigation }) => {
                 });
             }
         } else {
+            setIsLoading(false)
+
             showMessage({
                 message: "data. s",
                 type: "Danger",
@@ -117,6 +124,7 @@ const RegisterScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
+
             <FlashMessage />
 
             <SafeAreaView>
@@ -140,6 +148,8 @@ const RegisterScreen = ({ navigation }) => {
                     Add Admin
                 </Text>
             </TouchableOpacity>
+            {isLoading && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
 
         </View >
     );

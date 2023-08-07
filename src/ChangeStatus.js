@@ -12,6 +12,7 @@ import {
     FlatList,
     TouchableOpacity,
     Image,
+    ActivityIndicator
 } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -20,9 +21,7 @@ import OneItem from '../Components/OneItem';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 
 const ChangeStatus = ({ navigation }) => {
-
-
-
+    const [isLoading, setIsLoading] = useState(false);
     const [rulesData, setData] = useState([]);
 
     useEffect(() => {
@@ -34,6 +33,7 @@ const ChangeStatus = ({ navigation }) => {
     const fetchBoxData = async () => {
         console.log("-----------");
         try {
+            setIsLoading(true)
             const token = await AsyncStorage.getItem("token")
 
             const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty', {
@@ -45,13 +45,17 @@ const ChangeStatus = ({ navigation }) => {
 
             if (!response.ok) {
                 console.log("not ok");
+                setIsLoading(false)
                 throw new Error('Network response was not ok');
+            } else {
+                setIsLoading(false)
             }
             const jsonData = await response.json();
             console.log(jsonData);
             setData(jsonData.admins);
         } catch (error) {
             console.log('Error:', error);
+            setIsLoading(false)
         }
     };
 
@@ -60,6 +64,7 @@ const ChangeStatus = ({ navigation }) => {
 
         const token = await AsyncStorage.getItem("token")
         console.log(token, "-----");
+        setIsLoading(true)
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=statusChangeForAdmin';
         const data = {
             id: item.id,
@@ -77,9 +82,11 @@ const ChangeStatus = ({ navigation }) => {
         });
 
         if (!response.ok) {
+            setIsLoading(false)
             throw new Error('Network response was not ok');
         }
         if (response.ok) {
+            setIsLoading(false)
             const data = await response.json();
 
             if (data.success) {
@@ -102,6 +109,7 @@ const ChangeStatus = ({ navigation }) => {
                 });
             }
         } else {
+            setIsLoading(false)
             showMessage({
                 message: "data. s",
                 type: "Danger",
@@ -113,7 +121,7 @@ const ChangeStatus = ({ navigation }) => {
     };
 
     const changeBooking = async (item) => {
-
+        setIsLoading(true)
         const token = await AsyncStorage.getItem("token")
         console.log(token, "-----");
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=statusChangeForAdmin';
@@ -133,9 +141,11 @@ const ChangeStatus = ({ navigation }) => {
         });
 
         if (!response.ok) {
+            setIsLoading(false)
             throw new Error('Network response was not ok');
         }
         if (response.ok) {
+            setIsLoading(false)
             const data = await response.json();
 
             if (data.success) {
@@ -158,6 +168,7 @@ const ChangeStatus = ({ navigation }) => {
                 });
             }
         } else {
+            setIsLoading(false)
             showMessage({
                 message: "data. s",
                 type: "Danger",
@@ -192,8 +203,10 @@ const ChangeStatus = ({ navigation }) => {
         </View>
     );
     return (
-        <SafeAreaView style={{ position: 'relative' }}>
+        <SafeAreaView style={{ position: 'relative', flex: 1 }}>
             <FlashMessage />
+            {isLoading && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%', }} />)}
 
             <View style={{ position: 'relative' }}>
                 <ScrollView >

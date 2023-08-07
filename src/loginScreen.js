@@ -135,7 +135,10 @@ const loginSceen = ({ navigation }) => {
       }
       if (response.ok) {
         setIsLoading(false);
-
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BoxList' }],
+        });
         const data = await response.json();
         if (data.success) {
 
@@ -151,6 +154,7 @@ const loginSceen = ({ navigation }) => {
               });
             }
           });
+
           console.log(data);
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
@@ -170,7 +174,10 @@ const loginSceen = ({ navigation }) => {
       }
     } catch (error) {
       setIsLoading(false);
-
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'BoxList' }],
+      });
       console.log('Error:', error.message);
     }
 
