@@ -14,15 +14,9 @@ import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import PhoneInput, { getCountryCallingCode } from 'react-phone-number-input/react-native-input'
-import PhoneInputWithCountry from 'react-phone-number-input/react-hook-form'
-import Svg, { Path } from 'react-native-svg';
-import Frame from '../asserts/svgs/Frame.svg';
-import imagesClass from '../asserts/imagepath';
 import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 
 // create a component

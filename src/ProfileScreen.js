@@ -8,7 +8,6 @@ import imagesClass from '../asserts/imagepath';
 import Menu from '../Components/Menu';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { StackActions } from '@react-navigation/native';
 
 const ProfileScreen = ({ navigation }) => {
     const [user, setuser] = useState('')

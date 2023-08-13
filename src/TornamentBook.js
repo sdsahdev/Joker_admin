@@ -1,5 +1,3 @@
-
-
 import { StyleSheet, Text, View, } from 'react-native'
 import React, { useState, useEffect, useRef } from 'react'
 import About from './About'
@@ -14,7 +12,6 @@ import SlotTime from '../Components/SlotTime'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const TornamentBook = () => {
-
 
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);

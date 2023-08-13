@@ -118,11 +118,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         color: '#027850',
-
-
-
-
-
     },
 });
 export default BoxeItems;
