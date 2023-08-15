@@ -31,6 +31,7 @@ import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 import ChangeStatus from './src/ChangeStatus';
+import CancelReq from './src/CancelReq';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,9 +87,11 @@ const App = () => {
         <Stack.Screen name="ContactUs" component={ContactUs} />
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="TornamentBook" component={TornamentBook} />
+        <Stack.Screen name="CancelReq" component={CancelReq} />
 
       </Stack.Navigator>
     </NavigationContainer>
+
 
   );
 };

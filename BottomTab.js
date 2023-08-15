@@ -16,6 +16,7 @@ import Rules from './src/Rules';
 import Inbox from './src/Inbox';
 import ProfileScreen from './src/ProfileScreen';
 import About from './src/About';
+import CancelReq from './src/CancelReq';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -71,6 +72,7 @@ const TabButton = ({ item, onPress, accessibilityState }) => {
 };
 
 const BottomTab = () => {
+
     const TabArr = [
         {
             route: 'Home',
@@ -82,14 +84,72 @@ const BottomTab = () => {
             alphaClr: '#C3EDC0',
         },
         {
-            route: 'Rules',
-            label: 'Rules',
-            type: imagesClass.document, // Replace with actual image paths
+            route: 'CancelReq',
+            label: 'Cancelattion',
+            type: imagesClass.multiply, // Replace with actual image paths
             icon: 'search',
-            component: Rules,
+            component: CancelReq,
             color: '#027850',
             alphaClr: '#C3EDC0',
         },
+
+        // {
+        //     route: 'Rules',
+        //     label: 'Rules',
+        //     type: imagesClass.document, // Replace with actual image paths
+        //     icon: 'search',
+        //     component: Rules,
+        //     color: '#027850',
+        //     alphaClr: '#C3EDC0',
+        // },
+        {
+            route: 'Inbox',
+            label: 'Inbox',
+            type: imagesClass.history, // Replace with actual image paths
+            icon: 'user-circle-o',
+            component: Inbox,
+            color: '#027850',
+            alphaClr: '#C3EDC0',
+        },
+        {
+            route: 'Profile',
+            label: 'Profile',
+            type: imagesClass.user, // Replace with actual image paths
+            icon: 'user-circle-o',
+            component: ProfileScreen,
+            color: '#027850',
+            alphaClr: '#C3EDC0',
+        },
+    ];
+    const TabArr2 = [
+        {
+            route: 'Home',
+            label: 'Home',
+            type: imagesClass.home, // Replace with actual image paths
+            icon: 'home',
+            component: BoxList,
+            color: '#027850',
+            alphaClr: '#C3EDC0',
+        },
+        // {
+        //     route: 'CancelReq',
+        //     label: 'Cancelattion',
+        //     type: imagesClass.multiply, // Replace with actual image paths
+        //     icon: 'search',
+        //     component: CancelReq,
+        //     color: '#027850',
+        //     alphaClr: '#C3EDC0',
+        // },
+
+        // {
+        //     route: 'Rules',
+        //     label: 'Rules',
+        //     type: imagesClass.document, // Replace with actual image paths
+        //     icon: 'search',
+        //     component: Rules,
+        //     color: '#027850',
+        //     alphaClr: '#C3EDC0',
+        // },
         {
             route: 'Inbox',
             label: 'Inbox',

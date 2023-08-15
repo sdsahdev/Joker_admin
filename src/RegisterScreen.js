@@ -48,7 +48,7 @@ const RegisterScreen = ({ navigation }) => {
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
         const data = {
             name: username,
-            email: email,
+            // email: email,
             phno: phoneNumber,
             password: password,
             type: 'insert'
@@ -128,9 +128,9 @@ const RegisterScreen = ({ navigation }) => {
                     Add new Admin
                 </Text>
 
-                <ChangePass name={"User Name"} headerText={null} onChangeText={handleuserChange} />
+                <ChangePass name={"Admin Name"} headerText={null} onChangeText={handleuserChange} />
 
-                <ChangePass name={"Email"} headerText={null} onChangeText={handleEmail} />
+                {/* <ChangePass name={"Email"} headerText={null} onChangeText={handleEmail} /> */}
                 <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
 
                 <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />

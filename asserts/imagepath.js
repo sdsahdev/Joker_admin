@@ -6,6 +6,7 @@ const imagesClass = {
   history: require('./Images/history.png'),
   user: require('./Images/user.png'),
   document: require('./Images/document.png'),
+  multiply: require('./Images/multiply.png'),
   customer: require('./Images/customer.png'),
   bluerike: require('./Images/blueTike.png'),
   backbig: require('./Images/backbg.png'),

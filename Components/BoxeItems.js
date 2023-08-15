@@ -48,33 +48,40 @@ const BoxeItems = ({ navigation }) => {
     };
 
     // const navigation = useNavigation();
+    const filteredData = Object.keys(data).filter(key => key !== 'keys').reduce((obj, key) => {
+        obj[key] = data[key];
+        return obj;
+    }, {});
 
     const renderItem = ({ item }) => (
-        <View style={styles.container}>
-            <TouchableOpacity
-                onPress={() => navigation.navigate("Details", { item })}
-            >
-                {console.log(item)}
-                <Image
-                    source={{ uri: item.images[0].url }}
-                    style={styles.image}
-                    resizeMode="cover"
-                />
-                <View style={styles.textContainer}>
-                    <Text style={styles.textLeft}>{item.name}</Text>
-                    <Text style={styles.textRight}>{parseInt(item.morning_price)} ₹</Text>
-                </View>
-            </TouchableOpacity>
+        <>
 
-        </View>
+            <View View style={styles.container}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate("Details", { item })} >
+                    {console.log(item)}
+                    <Image
+                        source={{ uri: item.images[0].url }}
+                        style={styles.image}
+                        resizeMode="cover"
+                    />
+                    <View style={styles.textContainer}>
+                        <Text style={styles.textLeft}>{item.name}</Text>
+                        <Text style={styles.textRight}>{parseInt(item.morning_price)} ₹</Text>
+                    </View>
+                </TouchableOpacity>
+
+            </View>
+        </>
     );
     return (
         <View style={styles.container}>
             {isLoading && (
                 <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
+            {console.log(data.keys)}
             <FlatList
                 style={{ marginBottom: wp(19) }}
-                data={data}
+                data={Object.values(filteredData)}
                 showsVerticalScrollIndicator={false}
                 keyExtractor={item => item.id}
                 renderItem={renderItem}

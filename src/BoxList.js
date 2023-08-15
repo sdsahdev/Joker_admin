@@ -8,11 +8,14 @@ import BackgroundSvg from '../asserts/svgs/BgImg.js';
 import BoxeItems from '../Components/BoxeItems';
 import NoticationSvg from '../asserts/svgs/NoticationSvg';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const BoxList = ({ navigation }) => {
 
-
+  const newclass = async () => {
+    console.log(await AsyncStorage.getItem('here'))
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -20,21 +23,20 @@ const BoxList = ({ navigation }) => {
           <BackgroundSvg />
         </View>
 
-        <View style={styles.botttombg}>
-          <BackgroundSvg />
-        </View>
+
         <View style={styles.topTexts}>
 
           <View style={styles.toptxt}>
             <Text>
               Hey, Jolly </Text>
             <Text style={styles.maintxt}>
-              Here is best criket box nearby you
+              Here is best cricket box nearby you
             </Text>
           </View>
 
           <View>
             <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")} >
+              {/* <TouchableOpacity onPress={() => newclass()} > */}
 
               <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
             </TouchableOpacity>
@@ -47,6 +49,9 @@ const BoxList = ({ navigation }) => {
 
         <BoxeItems navigation={navigation} />
 
+        {/* <View style={styles.botttombg}>
+          <BackgroundSvg />
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );
@@ -55,7 +60,7 @@ const BoxList = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1, height: '100%'
   },
   backgroundContainer: {
     ...StyleSheet.absoluteFillObject,
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center', marginTop: wp(2), marginRight: wp(3), color: 'yellow'
 
   }, botttombg: {
-    bottom: 0, position: 'absolute', transform: [{ rotate: '180deg' }],
+    bottom: 0, position: 'absolute', transform: [{ rotate: '180deg' }], flex: 1,
 
   },
   toptxt: { width: "85%" }, maintxt: { fontWeight: 'bold', color: '#000', fontSize: wp(6), marginBottom: wp(5), fontSize: wp(5) },

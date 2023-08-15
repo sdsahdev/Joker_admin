@@ -73,7 +73,7 @@ const ProfileScreen = ({ navigation }) => {
                             <Menu icon={imagesClass.pen1} name={"Register Admin"} onpress={() => hEdit()} />
                         </View>
                     ) : null}
-                    <Menu icon={imagesClass.call} name={"Download report"} onpress={() => hcontact()} />
+                    {/* <Menu icon={imagesClass.call} name={"Download report"} onpress={() => hcontact()} /> */}
                     {/* <Menu icon={imagesClass.about} name={""} onpress={() => habout()} /> */}
                     <Menu icon={imagesClass.logout} name={"Logout"} onpress={() => hlogout()} />
                 </View>

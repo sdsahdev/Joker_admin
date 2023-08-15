@@ -80,7 +80,6 @@ const loginSceen = ({ navigation }) => {
             backgroundColor: "green", // background color
             color: "#fff", // text color
             onHide: () => {
-
               navigation.reset({
                 index: 0,
                 routes: [{ name: 'BoxList' }],
@@ -135,10 +134,7 @@ const loginSceen = ({ navigation }) => {
       }
       if (response.ok) {
         setIsLoading(false);
-        navigation.reset({
-          index: 0,
-          routes: [{ name: 'BoxList' }],
-        });
+
         const data = await response.json();
         if (data.success) {
 
@@ -195,6 +191,7 @@ const loginSceen = ({ navigation }) => {
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
+          {/* <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} /> */}
           <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
         <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} />

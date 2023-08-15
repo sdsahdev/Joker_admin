@@ -75,6 +75,8 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
             (selectedEndTime && item.time === selectedEndTime);
 
         return (
+
+            // console.log(item , "");
             <TouchableOpacity
                 disabled={!item.status}
                 onPress={() => {
@@ -101,7 +103,6 @@ const SlotTime = ({ onStartTimeChange, onEndTimeChange, tor, data }) => {
 
         return 0; // Return 0 if start or end time is not selected
     };
-
 
     const renderSelectedItemsText = () => {
         const totalDuration = calculateTotalDuration();
