@@ -33,14 +33,6 @@ const BoxList = ({ navigation }) => {
               Here is best cricket box nearby you
             </Text>
           </View>
-
-          <View>
-            <TouchableOpacity onPress={() => navigation.navigate("RegisterScreen")} >
-              {/* <TouchableOpacity onPress={() => newclass()} > */}
-
-              <Image source={imagesClass.notification} style={styles.imageStyle} resizeMode='contain' />
-            </TouchableOpacity>
-          </View>
         </View>
 
         <View style={styles.swipest}>

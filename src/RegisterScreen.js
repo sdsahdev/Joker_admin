@@ -29,6 +29,14 @@ const RegisterScreen = ({ navigation }) => {
     const [username, setusername] = useState('');
     const [password, setpassword] = useState('');
     // const phoneInput = useRef < PhoneInput > (null);
+    const msgapi = () => {
+        navigation.navigate("Otp", {
+            phoneNumber: phoneNumber,
+            username: username,
+            password: password,
+        })
+    };
+
     const handlepassword = (input) => {
         setpassword(input)
     };
@@ -137,7 +145,7 @@ const RegisterScreen = ({ navigation }) => {
             </SafeAreaView >
             <FlashMessage position="bottom" />
 
-            <TouchableOpacity style={styles.bookbtn} onPress={() => callApi()}>
+            <TouchableOpacity style={styles.bookbtn} onPress={() => msgapi()}>
                 <Text style={styles.booktxt}>
                     Add Admin
                 </Text>

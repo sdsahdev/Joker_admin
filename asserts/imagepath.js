@@ -44,6 +44,8 @@ const imagesClass = {
 
   hide: require('./Images/hide.png'),
   backScreen: require('./Images/backScreen.png'),
+  headerbg: require('./Images/headerbg.png'),
+
 };
 
 export default imagesClass;

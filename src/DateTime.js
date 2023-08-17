@@ -1,6 +1,6 @@
 
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import About from './About';
 import CalanderFile from '../Components/CalanderFile';
@@ -27,6 +27,7 @@ import FlashMessage, {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DateTime = () => {
+  const [isLoading, setIsLoading] = useState(false);
 
   const route = useRoute();
   const { item } = route.params;
@@ -45,7 +46,9 @@ const DateTime = () => {
   useEffect(() => {
     // setdatea6(Object.values(data6))
     if (!hasLoaded) {
-      slotapi();
+      // slotapi();
+      handleAdminCheck();
+
       setHasLoaded(true);
     }
     if (startTimeData) {
@@ -54,18 +57,51 @@ const DateTime = () => {
         // If endTimeData is not set, set it to startTimeData.etime initially
         setEndTime(startTimeData.end_time);
       }
-      // booked
-      // can
-      // canreq
-      // ref
+
     }
     if (endTimeData) {
       setEndTime(endTimeData.end_time);
     }
   }, [startTimeData, endTimeData]);
 
+  const handleAdminCheck = async () => {
 
+    const phoneNumberToCheck = await AsyncStorage.getItem('adminnum');
+    const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
+    if (hasBookingRights) {
+      // Admin has booking rights
+      // Add your logic here, e.g., render specific UI, perform actions, etc.
+    } else {
+      // Admin does not have booking rights or is not active
+      // Add your logic here, if needed
+    }
+  };
+
+  const checkAdminByPhoneNumber = async (phoneNumber) => {
+    try {
+      const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data, '===admin');
+        if (data && data.admins) {
+          const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
+          // if (matchingAdmin && matchingAdmin.status === 'active') {
+          console.log(matchingAdmin, '=====match===');
+          return matchingAdmin.book_right;
+          // }
+        }
+        // const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
+        // // if (matchingAdmin && matchingAdmin.status === 'active') {
+        // return matchingAdmin;
+        // }
+      }
+    } catch (error) {
+      console.error('Error fetching admin data:', error);
+    }
+    return false; // Default to no booking rights or on error
+  };
   const slotapi = (date) => {
+    setIsLoading(true)
     fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllSlots', {
       method: 'POST', // Assuming you want to use POST method
       headers: {
@@ -78,6 +114,7 @@ const DateTime = () => {
     })
       .then(response => response.json())
       .then((data, index) => {
+        setIsLoading(false)
         function convertTimeFormat(time, index) {
           console.log(Object.values(data).length);
           if (index === 0) {
@@ -119,6 +156,7 @@ const DateTime = () => {
         // console.log(data);
       })
       .catch(error => {
+        setIsLoading(false)
         // Handle any errors here
         console.error('Error:', error);
       });
@@ -143,30 +181,16 @@ const DateTime = () => {
     }
   };
 
-  const BookingPro = () => {
-
-    // const startIndex = data.findIndex(item => item.start_time === startTime);
-    // const endIndex = data.findIndex(item => item.end_time === endTime);
-    // console.log(startIndex, 'start index');
-    // console.log(endIndex, "end index");
-    // let totalAmount = 0;
-
-    // if (startIndex !== -1 && endIndex !== -1) {
-    //   for (let i = startIndex; i <= endIndex; i++) {
-    //     totalAmount += data[i].price;
-    //   }
-    //   totalAmount = totalAmount * Object.keys(caldate).length;
-
-    // }
-    // console.log('Total Amount:', totalAmount);
-    // setamo(totalAmount)
-    // console.log('Total Amount:', Object.keys(caldate).length);
+  const BookingPro = async (amount) => {
+    const keys = await AsyncStorage.getItem('rkey')
+    console.log(keys);
     var options = {
       description: 'Credits towards ',
+
       image: 'https://i.imgur.com/3g7nmJC.jpg',
       currency: 'INR',
-      key: 'rzp_test_lFrGZBU3t0pDQ3',
-      amount: 24000 * 100,
+      key: keys,
+      amount: amount * 100,
       name: 'Acme Corp',
 
       order_id: '',//Replace this with an order_id created using Orders API.
@@ -180,6 +204,7 @@ const DateTime = () => {
       }
     }
     RazorpayCheckout.open(options).then((data) => {
+      console.log('success');
       // handle success
       // alert(`Success: ${data.razorpay_payment_id}`);
       showMessage({
@@ -189,14 +214,16 @@ const DateTime = () => {
         color: "#fff", // text color
         duration: 2000,
         onHide: () => {
-          bookm(data.razorpay_payment_id);
+          bookm(data.razorpay_payment_id, amount);
         }
       });
     }).catch((error) => {
       // handle failure
+      console.log('fails');
+
       // alert(`Error: ${error.code} | ${error.description}`);
       showMessage({
-        message: error.error.description,
+        message: error.description,
         type: "Danger",
         backgroundColor: "red", // background color
         duration: 5000,
@@ -237,6 +264,7 @@ const DateTime = () => {
   };
 
   const csapi = () => {
+    setIsLoading(true)
     const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=checkMultipleSlot';
 
     const requestData = {
@@ -257,13 +285,12 @@ const DateTime = () => {
     })
       .then(response => response.json())
       .then(data => {
+        setIsLoading(false)
         console.log('API response:', data);
         if (data.success) {
-          //user
-          // BookingPro();
-
-          //admin
+          // BookingPro(data.price);
           bookm();
+
         } else {
           showMessage({
             message: data.message,
@@ -278,12 +305,14 @@ const DateTime = () => {
         // Handle the API response data here
       })
       .catch(error => {
+        setIsLoading(false)
         console.error('Error calling API:', error);
         // Handle the error here
       });
   }
 
-  const bookm = async () => {
+  const bookm = async (paymentid, amounts) => {
+    setIsLoading(true)
     const Token = await AsyncStorage.getItem('token');
 
     const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=bookMultipleSlot';
@@ -294,7 +323,8 @@ const DateTime = () => {
       box_id: item.id,
       dates: apidate,
       type: "multi",
-
+      // payment_id: paymentid,
+      // amount: amounts
     };
     console.log(requestData, "===res");
 
@@ -302,22 +332,24 @@ const DateTime = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-      },
-      headers: {
         token: Token
+
       },
       body: JSON.stringify(requestData),
     })
       .then(response => response.json())
       .then(data => {
+        setIsLoading(false)
         console.log('API response:', data);
         if (data.success) {
+          slotapi()
           showMessage({
             message: `Your booking is successfull`,
             type: "Success",
             backgroundColor: "green", // background color
             color: "#fff", // text color
             onHide: () => {
+
             }
           });
         } else {
@@ -331,6 +363,7 @@ const DateTime = () => {
         // Handle the API response data here
       })
       .catch(error => {
+        setIsLoading(false)
         console.error('Error calling API:', error);
         // Handle the error here
       });
@@ -368,6 +401,8 @@ const DateTime = () => {
             tor={handletor}
             data={data} />
         </View>
+        {isLoading && (
+          <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
       </ScrollView>
     </View>
   );
@@ -387,7 +422,7 @@ const styles = StyleSheet.create({
     marginTop: hp(2),
   },
   mainView: { flex: 1, marginBottom: hp(5) },
-  btn: { margin: wp(3), height: 40, flex: 1 },
+  btn: { marginHorizontal: wp(4), marginTop: hp(2), height: wp(12), flex: 1, width: '80%', alignSelf: 'center' },
   payment: {
     color: '#fff',
     backgroundColor: '#027850',

@@ -1,6 +1,6 @@
 
 //import liraries
-import React, { Component, useState, useRef } from 'react';
+import React, { Component, useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -32,6 +32,32 @@ const loginSceen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [username, setusername] = useState('');
+  useEffect(() => {
+    // Call the API when the component mounts
+    console.log("+++++++");
+    fetchBoxData();
+  }, []);
+
+  const fetchBoxData = async () => {
+    console.log("-----------");
+    try {
+      const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
+      if (!response.ok) {
+        console.log("not ok");
+        throw new Error('Network response was not ok');
+      }
+      const jsonData = await response.json();
+      console.log(jsonData.keys.rkey, "==== datas");
+      AsyncStorage.setItem('msgkey', jsonData.keys.msgkey)
+      AsyncStorage.setItem('phn', jsonData.keys.phn)
+      AsyncStorage.setItem('rkey', jsonData.keys.rkey)
+      AsyncStorage.setItem('rskey', jsonData.keys.rskey)
+
+      // setData(jsonData);
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
   handleSubmit = () => {
     navigation.navigate("RegisterScreen");
 
@@ -89,6 +115,8 @@ const loginSceen = ({ navigation }) => {
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
           AsyncStorage.setItem("user", "admin");
+          AsyncStorage.setItem("adminnum", username);
+
           setPassword('')
           setusername('')
 
@@ -194,7 +222,7 @@ const loginSceen = ({ navigation }) => {
           {/* <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} /> */}
           <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
-        <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} />
+        <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} eye={true} />
         {/* <TouchableOpacity >
           <Text style={{ alignSelf: 'center', color: "#027850", fontSize: wp(4), marginTop: hp(2) }}>
             login for superAmdin

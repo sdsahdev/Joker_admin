@@ -40,7 +40,7 @@ const DetailsCompo = ({ navigation }) => {
                         />
                     </TouchableOpacity>
                     {/* <TouchableOpacity>
-
+​
                         <Image
                             source={imagesClass.share}
                             style={styles.image2}
@@ -64,7 +64,7 @@ const DetailsCompo = ({ navigation }) => {
                     <Image
                         source={imagesClass.location}
                         style={styles.mapimage}
-                        resizeMode="contain"
+                        resizeMode="cover"
                     />
                 </TouchableOpacity>
             </View>
@@ -87,12 +87,12 @@ const DetailsCompo = ({ navigation }) => {
             </SafeAreaView>
             <View style={{ flexDirection: 'row' }}>
 
-                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("TornamentBook")}>
+                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("TornamentBook", { item: item })}>
                     <Text style={styles.booktxt}>
                         Tounament Booking
                     </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime")}>
+                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime", { item: item })}>
                     <Text style={styles.booktxt}>
                         Slot Booking
                     </Text>
@@ -105,9 +105,45 @@ const DetailsCompo = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-    booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: { backgroundColor: '#027850', height: hp(6), flex: 1, alignSelf: 'center', borderRadius: wp(2), marginTop: hp(4), marginHorizontal: wp(2) },
-    facilityView: { flexDirection: 'row', justifyContent: 'space-around', marginHorizontal: wp(2), marginTop: hp(2) },
+    //   booktxt: {
+    //     color: '#fff',
+    //     alignSelf: 'center',
+    //     textAlignVertical: 'center',
+    //     flex: 1,
+    //     fontSize: wp(4),
+    //   },
+    // bookbtn: {
+    //     backgroundColor: '#027850',
+    //     height: hp(6),
+    //     flex: 1,
+    //     alignSelf: 'center',
+    //     borderRadius: wp(2),
+    //     marginTop: hp(4),
+    //     marginHorizontal: wp(2),
+    // },
+    booktxt: {
+        color: '#fff',
+        fontSize: wp(4),
+    },
+    bookbtn: {
+        backgroundColor: '#027850',
+        position: 'relative',
+        alignSelf: 'center',
+        borderRadius: wp(2),
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: hp(2)
+        , flex: 1,
+        marginHorizontal: wp(2), marginTop: hp(2)
+    },
+
+
+    facilityView: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginHorizontal: wp(2),
+        marginTop: hp(2),
+    },
     addrestxt: { marginLeft: wp(5), marginBottom: hp(1) },
     locationview: {
         width: "90%", backgroundColor: '#fff', alignSelf: 'center', justifyContent: 'center', borderRadius: wp(4), height: hp(18)
@@ -122,14 +158,15 @@ const styles = StyleSheet.create({
     imageContainer: {
         position: 'relative',
         width: '100%',
-        height: 200,
+        height: hp(30),
     },
     image: {
         top: 0,
         left: 0,
         width: '100%',
         height: '100%',
-        borderRadius: 8,
+        borderBottomLeftRadius: 8,
+        borderBottomRightRadius: 8,
     },
     imagesOverlay: {
         position: 'absolute',
@@ -178,4 +215,3 @@ const styles = StyleSheet.create({
 });
 
 export default DetailsCompo;
-

@@ -1,6 +1,6 @@
 
 
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import About from './About';
 import CalanderFile from '../Components/CalanderFile';
@@ -28,6 +28,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TornamentBook = () => {
 
+    const [isLoading, setIsLoading] = useState(false);
     const route = useRoute();
     const { item } = route.params;
     const [startTime, setStartTime] = useState(null);
@@ -39,13 +40,12 @@ const TornamentBook = () => {
     const [amo, setamo] = useState(0);
     const [apidate, setapidate] = useState([]);
 
-
     const [hasLoaded, setHasLoaded] = useState(false);
 
     useEffect(() => {
         // setdatea6(Object.values(data6))
         if (!hasLoaded) {
-            slotapi();
+            // slotapi();
             setHasLoaded(true);
         }
         if (startTimeData) {
@@ -54,10 +54,7 @@ const TornamentBook = () => {
                 // If endTimeData is not set, set it to startTimeData.etime initially
                 setEndTime(startTimeData.end_time);
             }
-            // booked
-            // can
-            // canreq
-            // ref
+
         }
         if (endTimeData) {
             setEndTime(endTimeData.end_time);
@@ -66,6 +63,7 @@ const TornamentBook = () => {
 
 
     const slotapi = (date) => {
+        setIsLoading(true)
         fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllSlots', {
             method: 'POST', // Assuming you want to use POST method
             headers: {
@@ -78,6 +76,8 @@ const TornamentBook = () => {
         })
             .then(response => response.json())
             .then((data, index) => {
+                setIsLoading(false)
+
                 function convertTimeFormat(time, index) {
                     console.log(Object.values(data).length);
                     if (index === 0) {
@@ -119,6 +119,8 @@ const TornamentBook = () => {
                 // console.log(data);
             })
             .catch(error => {
+                setIsLoading(false)
+
                 // Handle any errors here
                 console.error('Error:', error);
             });
@@ -143,30 +145,16 @@ const TornamentBook = () => {
         }
     };
 
-    const BookingPro = () => {
+    const BookingPro = async (amounts) => {
 
-        // const startIndex = data.findIndex(item => item.start_time === startTime);
-        // const endIndex = data.findIndex(item => item.end_time === endTime);
-        // console.log(startIndex, 'start index');
-        // console.log(endIndex, "end index");
-        // let totalAmount = 0;
 
-        // if (startIndex !== -1 && endIndex !== -1) {
-        //   for (let i = startIndex; i <= endIndex; i++) {
-        //     totalAmount += data[i].price;
-        //   }
-        //   totalAmount = totalAmount * Object.keys(caldate).length;
-
-        // }
-        // console.log('Total Amount:', totalAmount);
-        // setamo(totalAmount)
-        // console.log('Total Amount:', Object.keys(caldate).length);
+        const keys = await AsyncStorage.getItem('rkey')
         var options = {
             description: 'Credits towards ',
             image: 'https://i.imgur.com/3g7nmJC.jpg',
             currency: 'INR',
-            key: 'rzp_test_lFrGZBU3t0pDQ3',
-            amount: 24000 * 100,
+            key: keys,
+            amount: amounts * 100,
             name: 'Acme Corp',
 
             order_id: '',//Replace this with an order_id created using Orders API.
@@ -189,7 +177,7 @@ const TornamentBook = () => {
                 color: "#fff", // text color
                 duration: 2000,
                 onHide: () => {
-                    bookm(data.razorpay_payment_id);
+                    bookm(data.razorpay_payment_id, amounts);
                 }
             });
         }).catch((error) => {
@@ -209,7 +197,6 @@ const TornamentBook = () => {
         if (!time) {
             return;
         }
-
         const selectedStartTimeData = data.find(item => item.time === time);
 
         if (selectedStartTimeData) {
@@ -237,6 +224,8 @@ const TornamentBook = () => {
     };
 
     const csapi = () => {
+        setIsLoading(true)
+
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=checkMultipleSlot';
 
         const requestData = {
@@ -244,10 +233,9 @@ const TornamentBook = () => {
             end_time: endTime,
             box_id: item.id,
             dates: apidate,
-            type: 'multi'
+            type: 'tournament'
         };
         console.log(requestData, "===res");
-        //  {"amount": 10000, "box_id": "1", "dates": ["2023-08-15", "2023-08-16"], "end_time": 1691946000, "payment_id": "pay_MQH7xrcsaGSSe4", "start_time": 1691928000, "type": "tournament"} ===res
         fetch(`${apiUrl}`, {
             method: 'POST',
             headers: {
@@ -257,13 +245,13 @@ const TornamentBook = () => {
         })
             .then(response => response.json())
             .then(data => {
+                setIsLoading(false)
+
                 console.log('API response:', data);
                 if (data.success) {
-                    //user
-                    // BookingPro();
-
-                    //admin
+                    // BookingPro(data.price);
                     bookm();
+
                 } else {
                     showMessage({
                         message: data.message,
@@ -278,12 +266,16 @@ const TornamentBook = () => {
                 // Handle the API response data here
             })
             .catch(error => {
+                setIsLoading(false)
+
                 console.error('Error calling API:', error);
                 // Handle the error here
             });
     }
 
-    const bookm = async () => {
+    const bookm = async (paymentid, amounts) => {
+        setIsLoading(true)
+
         const Token = await AsyncStorage.getItem('token');
 
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=bookMultipleSlot';
@@ -293,8 +285,9 @@ const TornamentBook = () => {
             end_time: endTime,
             box_id: item.id,
             dates: apidate,
-            type: "multi",
-
+            type: "tournament",
+            // payment_id: paymentid,
+            // amount: amounts
         };
         console.log(requestData, "===res");
 
@@ -302,16 +295,17 @@ const TornamentBook = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            headers: {
                 token: Token
             },
             body: JSON.stringify(requestData),
         })
             .then(response => response.json())
             .then(data => {
+                setIsLoading(false)
+
                 console.log('API response:', data);
                 if (data.success) {
+                    slotapi()
                     showMessage({
                         message: `Your booking is successfull`,
                         type: "Success",
@@ -321,6 +315,7 @@ const TornamentBook = () => {
                         }
                     });
                 } else {
+
                     showMessage({
                         message: data.message,
                         type: "Danger",
@@ -331,6 +326,8 @@ const TornamentBook = () => {
                 // Handle the API response data here
             })
             .catch(error => {
+                setIsLoading(false)
+
                 console.error('Error calling API:', error);
                 // Handle the error here
             });
@@ -340,11 +337,8 @@ const TornamentBook = () => {
         <View style={styles.mainView}>
             <ScrollView>
                 <View>
-                    <TopHeader name={'Book Your Slot'} />
+                    <TopHeader name={'Book Your Tornament'} />
                 </View>
-
-                {/* {console.log(startTime, "==satrt===")}
-        {console.log(endTime, "==end===")} */}
 
                 <Text style={styles.datess}>select date is required</Text>
                 <View style={styles.thiView}>
@@ -369,6 +363,9 @@ const TornamentBook = () => {
                         data={data} />
                 </View>
             </ScrollView>
+            {isLoading && (
+                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
+
         </View>
     );
 }
@@ -387,7 +384,7 @@ const styles = StyleSheet.create({
         marginTop: hp(2),
     },
     mainView: { flex: 1, marginBottom: hp(5) },
-    btn: { margin: wp(3), height: 40, flex: 1 },
+    btn: { marginHorizontal: wp(4), marginTop: hp(2), height: wp(12), flex: 1, width: '80%', alignSelf: 'center' },
     payment: {
         color: '#fff',
         backgroundColor: '#027850',
