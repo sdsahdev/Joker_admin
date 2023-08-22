@@ -35,11 +35,14 @@ const Otp = ({ navigation, route }) => {
     const [randomOTP, setrandomOTP] = useState(0)
     const [otp, setOtp] = useState('');
     const MAX_CODE = 4;
+    const otpInputRefs = Array.from({ length: 4 }, () => useRef(null));
 
     useEffect(() => {
         console.log('0000000');
         wpmsg();
     }, [])
+
+
     const callApi = async () => {
         try {
             console.log(username);
@@ -130,9 +133,23 @@ const Otp = ({ navigation, route }) => {
             });
         }
     };
-    const handleOtpChange = (otp) => {
-        setOtp(otp);
-        // Your additional logic here, if needed
+    const handleOtpChange = (index, text) => {
+        const sanitizedText = text.replace(/[^0-9]/g, '').slice(0, 1);
+        setOtp(prevOtp => {
+            const newOtp = prevOtp.split('');
+            newOtp[index] = sanitizedText;
+            return newOtp.join('');
+        });
+
+        // Move to the previous input if the current input is empty
+        if (text === '' && index > 0) {
+            otpInputRefs[index - 1].current.focus();
+        }
+
+        // Move to the next input if available
+        if (text !== '' && index < otpInputRefs.length - 1) {
+            otpInputRefs[index + 1].current.focus();
+        }
     };
 
     const generateOTP = () => {
@@ -145,7 +162,7 @@ const Otp = ({ navigation, route }) => {
         const phone = await AsyncStorage.getItem('phn')
         const randomOTP2 = generateOTP();
         setrandomOTP(randomOTP2)
-        console.log("otpss" + randomOTP2);
+        // console.log("otpss" + randomOTP2);
 
         const apiUrl = 'http://msg.msgclub.net/rest/services/sendSMS/sendGroupSms';
         const apiKey = mkey; // Replace with your actual auth key
@@ -171,12 +188,18 @@ Please enter this OTP to complete your registration process.`,
             .then(data => {
                 console.log('SMS sent successfully:', data.responseCode);
                 if (data.responseCode === '3001') {
+                    showMessage({
+                        message: `message send successfully ${phone}`,
+                        type: "Success",
+                        backgroundColor: "green", // background color
+                        color: "#fff", // text color
 
+                    });
                 } else {
                     showMessage({
                         message: "Try Again after some time",
-                        type: "Success",
-                        backgroundColor: "green", // background color
+                        type: "Danager",
+                        backgroundColor: "red", // background color
                         color: "#fff", // text color
                         onHide: () => {
                             navigation.pop();
@@ -190,10 +213,15 @@ Please enter this OTP to complete your registration process.`,
             .catch(error => {
                 console.error('Error sending SMS:', error);
                 // Handle error or display an error message to the user
+                showMessage({
+                    message: `fail` + error,
+                    type: "Success",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+
+                });
             });
     }
-
-
     const handleSubmit = () => {
         console.log(randomOTP, "==otp scere")
         if (randomOTP === otp) {
@@ -208,30 +236,32 @@ Please enter this OTP to complete your registration process.`,
             });
 
         }
-        // console.log(navigation.getParam('randomOTP'), "==otp scere")
-        // const datt = navigation.navigate('Register', { phoneNumber: navigation.getParam('phoneNumber') });
-        // console.log(datt, '++++++')
+
     }
     return (
         <View style={{ flex: 1, }}>
-            <View style={{ position: 'absolute', }}>
+            <View style={{ position: 'absolute', width: '100%' }}>
                 <TopHeader name={'Otp Screen'} />
             </View>
             <View style={{ borderRadius: wp(10), justifyContent: 'center', flex: 1, }}>
-                <OTPInputView
-                    style={{ marginHorizontal: wp(11), height: hp(14) }} // Adjust the style as per your requirement
-                    pinCount={MAX_CODE}
-                    code={otp}
-                    autoFocusOnLoad={false}
-                    onCodeChanged={handleOtpChange}
-                    codeInputFieldStyle={{ color: '#000', borderColor: '#027850', borderRadius: 7, borderWidth: 2, width: wp(14), height: hp(7) }} // Change the text and border color to red
-                    codeInputHighlightStyle={{}}
-                    // Change the border color of the focused input
-                    inputBorderRadius={10} // Change the border radius to 10 or any other value you prefer
-                />
+
+                <View style={styles.otpContainer}>
+                    {Array.from({ length: 4 }).map((_, index) => (
+                        <TextInput
+                            key={index}
+                            ref={otpInputRefs[index]}
+                            style={[styles.input, otp.length === index ? styles.inputFocus : null]}
+                            keyboardType="numeric"
+                            maxLength={1}
+                            value={otp[index] || ''}
+                            onChangeText={text => handleOtpChange(index, text)}
+                        />
+                    ))}
+                </View>
+
                 <TouchableOpacity onPress={() => wpmsg()}>
 
-                    <Text style={{ alignSelf: 'center' }}>
+                    <Text style={{ alignSelf: 'center', marginTop: hp(2) }}>
                         Resend OTP
                     </Text>
                 </TouchableOpacity>
@@ -283,5 +313,27 @@ const styles = StyleSheet.create({
 
     underlineStyleHighLighted: {
         borderColor: "#000",
+    },
+    otpContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center'
+
+    },
+    input: {
+        width: wp(15),
+        height: hp(8),
+        borderColor: '#027850',
+        borderWidth: 1,
+        marginHorizontal: 5,
+        borderRadius: 8,
+        alignItems: 'center',
+        fontSize: wp(8),
+        textAlign: 'center'
+
+
+    },
+    inputFocus: {
+        borderColor: 'blue',
+        borderWidth: 2// Highlight the input in focus
     },
 })

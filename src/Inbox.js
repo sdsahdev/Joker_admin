@@ -22,7 +22,10 @@ import { useIsFocused } from '@react-navigation/native'; // Import the hook
 const Inbox = ({ navigation }) => {
     const [idata, setidata] = useState([])
     const isFocused = useIsFocused(); // Get the screen's focused state
+    useEffect(() => {
 
+        handleAdminCheck();
+    }, [])
     useEffect(() => {
         // Call the API when the component mounts
         console.log("+++++++");
@@ -59,6 +62,52 @@ const Inbox = ({ navigation }) => {
                 console.error('Error:', error);
             });
     }
+    const handleAdminCheck = async () => {
+
+        const phoneNumberToCheck = await AsyncStorage.getItem('adminnum');
+        const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
+        if (hasBookingRights) {
+            // Admin has booking rights
+            console.log(hasBookingRights.book_right, 'admin found');
+            console.log(hasBookingRights.status, 'admin found');
+            // setbookingrigh(hasBookingRights.book_right)
+            // setloginright(hasBookingRights.status)
+            if (hasBookingRights.status === 'block') {
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'loginSceen' }],
+                });
+            }
+            // Add your logic here, e.g., render specific UI, perform actions, etc.
+        } else {
+            console.log('superadmin found');
+            // Admin does not have booking rights or is not active
+            // Add your logic here, if needed
+        }
+    };
+
+    const checkAdminByPhoneNumber = async (phoneNumber) => {
+        try {
+            const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data, '===admin');
+                if (data && data.admins) {
+                    const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
+                    if (matchingAdmin) {
+
+                        console.log(matchingAdmin, '=====match===');
+                        return matchingAdmin;
+                    }
+                }
+
+            }
+        } catch (error) {
+            console.error('Error fetching admin data:', error);
+        }
+        return false; // Default to no booking rights or on error
+    };
+
     const rulesData = [
         { id: '0', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
         { id: '1', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
@@ -70,62 +119,79 @@ const Inbox = ({ navigation }) => {
         // { id: '5', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' , username:'kevin', phone:'1234567890'},
 
     ];
+    const formatDate = (inputDate) => {
+        const date = new Date(inputDate);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Month is 0-indexed
+        const year = date.getFullYear();
 
-    const renderItem = ({ item }) => (
-        <View style={styles.timeSlot}>
-            <View style={{ flexDirection: 'row' }}>
+        // Pad day and month with leading zero if needed
+        const formattedDay = day < 10 ? `0${day}` : day;
+        const formattedMonth = month < 10 ? `0${month}` : month;
 
-                <Text style={styles.textLeft}>code</Text>
-                <Text style={styles.textLeft}>{item.code}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
+        return `${formattedDay}-${formattedMonth}-${year}`;
+    };
+    const renderItem = ({ item }) => {
 
-                <Text style={styles.textLeft}>Username</Text>
-                <Text style={styles.textLeft}>{item.username}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.textLeft}>Phone</Text>
-                <Text style={styles.textLeft}>{item.phone}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', }}>
+        const formattedDate = formatDate(item.date)
 
-                <Text style={styles.textLeft}>Time</Text>
-                <Text style={styles.textLeft}>{item.time}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
+        return (
+            <View style={styles.timeSlot}>
+                <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.textLeft}>Date</Text>
-                <Text style={styles.textLeft}>{item.date}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.textLeft}>code</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.code}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.textLeft}>BoxName</Text>
-                <Text style={styles.textLeft}>{item.BoxName}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.textLeft}>Username</Text>
+                    <Text style={styles.textLeft}>{item.username}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.textLeft}>Amount</Text>
-                <Text style={styles.textLeft}>{item.amount}</Text>
-            </View>
+                    <Text style={styles.textLeft}>Phone</Text>
+                    <Text style={styles.textLeft}>{item.phone}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', }}>
 
-            <View style={{ flexDirection: 'row' }}>
+                    <Text style={styles.textLeft}>Time</Text>
+                    <Text style={styles.textLeft}>{item.time}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
 
-                <Text style={styles.textLeft}>message</Text>
-                <Text style={styles.textLeft}>{item.message}</Text>
-            </View>
-            {item.message === 'booked' ?
+                    <Text style={styles.textLeft}>Date</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{formattedDate}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>BoxName</Text>
+                    <Text style={styles.textLeft}>{item.BoxName}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Amount</Text>
+                    <Text style={styles.textLeft}>{item.amount}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>message</Text>
+                    <Text style={styles.textLeft}>{item.message}</Text>
+                </View>
+                {/* {item.message === 'booked' ?
                 <TouchableOpacity
                     style={styles.btn}
                     onPress={() => navigation.navigate('Cancel', {
                         ids: item.id
                     })} >
                     <Text style={styles.payment}>
-                        Cancellation
+                    Cancellation
                     </Text>
-                </TouchableOpacity> : null}
-        </View>
-    );
+                </TouchableOpacity> : null} */}
+            </View>
+        );
+    };
     return (
         <SafeAreaView style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>

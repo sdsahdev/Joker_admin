@@ -98,9 +98,9 @@ android {
 
     compileSdkVersion 33
 
-    namespace "com.awesomeproject"
+    namespace "com.awesomeproject1"
     defaultConfig {
-        applicationId "com.awesomeproject"
+        applicationId "com.awesomeproject1"
         minSdkVersion 25
         targetSdkVersion 33
         versionCode 1

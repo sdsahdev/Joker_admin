@@ -18,17 +18,91 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 import { useIsFocused } from '@react-navigation/native'; // Import the hook
-
+import base64 from 'react-native-base64';
+import axios from 'axios'
 const CancelReq = ({ navigation }) => {
     const [idata, setidata] = useState([])
     const isFocused = useIsFocused(); // Get the screen's focused state
+    const [user, setuser] = useState('')
 
     useEffect(() => {
         // Call the API when the component mounts
         console.log("+++++++");
+        fetchData();
         inboxapi();
     }, [isFocused]);
-    inboxapi = async () => {
+
+    const fetchData = async () => {
+        try {
+            const user1 = await AsyncStorage.getItem('superAdmin');
+            console.log(user1, "==end===");
+            setuser(user1);
+        } catch (error) {
+            console.log("Error fetching user:", error);
+        }
+    };
+
+
+    const processRefund = async (paymentId) => {
+
+        const keyId = await AsyncStorage.getItem('rkey')
+        const keySecret = await AsyncStorage.getItem('rskey')
+        // const keyId = 'rzp_test_lFrGZBU3t0pDQ3';
+        // const keySecret = 'Q60TScpB5c23CPYnyFMOoQe1';
+        // const paymentId = 'pay_MN47KRgAv7TAsL';
+        const url = `https://api.razorpay.com/v1/payments/${paymentId}/refund`;
+        const refundRequest = {
+            amount: 1000,
+            speed: 'normal',
+            notes: {
+                notes_key_1: 'Tea, Earl Grey, Hot',
+                notes_key_2: 'Tea, Earl Grey... decaf.',
+            },
+            receipt: 'Receipt No. #31',
+        };
+        const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
+        try {
+            const response = await axios.post(url, refundRequest, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: basicAuth,
+                },
+            });
+            if (response.status === 200) {
+                // console.log(response, '=======refund===');
+                // showMessage({
+                //     message: response.sta    tus,
+                //     type: "Success",
+                //     backgroundColor: "green", // background color
+                //     color: "#fff", // text color
+                // });
+                // Refund request successful
+                const responseData = response.data;
+                console.log('Refund success:', responseData);
+            } else {
+                // Refund request failed
+                // showMessage({
+                //     message: response.status,
+                //     type: "Danger",
+                //     backgroundColor: "red", // background color
+                //     duration: 5000,
+                //     color: "#fff", // text color
+                // });
+                console.log('Refund request failed with status code', response.status);
+            }
+        } catch (error) {
+            // Handle any exceptions
+            // showMessage({
+            //     message: error,
+            //     type: "Danger",
+            //     backgroundColor: "red", // background color
+            //     duration: 7000,
+            //     color: "#fff", // text color
+            // });
+            console.log('Error creating refund request:', error);
+        }
+    };
+    const inboxapi = async () => {
         const Token = await AsyncStorage.getItem('token');
 
         fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllCancelRequest', {
@@ -81,6 +155,9 @@ const CancelReq = ({ navigation }) => {
             .then(data => {
                 // Handle the data here
                 if (data.success) {
+                    console.log(data.user_data[0].payment_id, "---");
+                    processRefund(data.user_data[0].payment_id);
+
                     inboxapi();
                     showMessage({
                         message: data.message,
@@ -116,70 +193,91 @@ const CancelReq = ({ navigation }) => {
                 "end_time": "1691884800",
                 "message": "cancel_request",
     */
+    const formatDate = (inputDate) => {
+        const date = new Date(inputDate);
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Month is 0-indexed
+        const year = date.getFullYear();
 
-    const renderItem = ({ item }) => (
-        <View style={styles.timeSlot}>
-            <View style={{ flexDirection: 'row' }}>
+        // Pad day and month with leading zero if needed
+        const formattedDay = day < 10 ? `0${day}` : day;
+        const formattedMonth = month < 10 ? `0${month}` : month;
 
-                <Text style={styles.textLeft}>Username</Text>
-                <Text style={styles.textLeft}>{item.username}</Text>
+        return `${formattedDay}-${formattedMonth}-${year}`;
+    };
+    const renderItem = ({ item }) => {
+
+
+        const formattedDate = formatDate(item.date)
+
+        return (
+            <View style={styles.timeSlot}>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Username</Text>
+                    <Text style={styles.textLeft}>{item.username}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Phone</Text>
+                    <Text style={styles.textLeft}>{item.phone}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Date</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{formattedDate}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', }}>
+
+                    <Text style={styles.textLeft}>Time</Text>
+                    <Text style={styles.textLeft}>{item.time}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>BoxName</Text>
+                    <Text style={styles.textLeft}>{item.BoxName}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Amount</Text>
+                    <Text style={styles.textLeft}>{item.amount}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>code</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{item.code}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>message</Text>
+                    <Text style={styles.textLeft}>{item.message}</Text>
+                </View>
+
+                {
+                    user === 'true' ?
+
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={styles.btn}
+                                onPress={() => appApi(item.id, "approve")} >
+                                <Text style={styles.payment}>
+                                    Approve
+                                </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.btn}
+                                onPress={() => appApi(item.id, "deny")} >
+                                <Text style={styles.payment}>
+                                    Denied
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        : null}
             </View>
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>Phone</Text>
-                <Text style={styles.textLeft}>{item.phone}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>Date</Text>
-                <Text style={styles.textLeft}>{item.date}</Text>
-            </View>
-            <View style={{ flexDirection: 'row', }}>
-
-                <Text style={styles.textLeft}>Time</Text>
-                <Text style={styles.textLeft}>{item.time}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>BoxName</Text>
-                <Text style={styles.textLeft}>{item.BoxName}</Text>
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>Amount</Text>
-                <Text style={styles.textLeft}>{item.amount}</Text>
-            </View>
-
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>code</Text>
-                <Text style={styles.textLeft}>{item.code}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-
-                <Text style={styles.textLeft}>message</Text>
-                <Text style={styles.textLeft}>{item.message}</Text>
-            </View>
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    style={styles.btn}
-                    onPress={() => appApi(item.id, "approve")} >
-                    <Text style={styles.payment}>
-                        Approve
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={styles.btn}
-                    onPress={() => appApi(item.id, "deny")} >
-                    <Text style={styles.payment}>
-                        Denied
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
-    );
+        );
+    }
     return (
         <SafeAreaView style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>

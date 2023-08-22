@@ -14,7 +14,7 @@ const ProfileScreen = ({ navigation }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const user1 = await AsyncStorage.getItem('user');
+                const user1 = await AsyncStorage.getItem('superAdmin');
                 console.log(user1, "==end===");
                 setuser(user1);
             } catch (error) {
@@ -65,8 +65,9 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={{ color: '#000', fontSize: wp(5) }}>
                         123456789</Text>
                 </View> */}
+                {console.log(user, "===")}
                 <View style={{ marginTop: hp(10) }}>
-                    {user === 'superadmin' ? (
+                    {user === 'true' ? (
                         <View >
 
                             <Menu icon={imagesClass.password} name={"Change access"} onpress={() => hpassword()} />

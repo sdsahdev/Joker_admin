@@ -30,11 +30,25 @@ const RegisterScreen = ({ navigation }) => {
     const [password, setpassword] = useState('');
     // const phoneInput = useRef < PhoneInput > (null);
     const msgapi = () => {
-        navigation.navigate("Otp", {
-            phoneNumber: phoneNumber,
-            username: username,
-            password: password,
-        })
+
+        {
+            phoneNumber && username && password ?
+                navigation.navigate("Otp", {
+                    phoneNumber: phoneNumber,
+                    username: username,
+                    password: password,
+                })
+                :
+                showMessage({
+                    message: "please enter all details",
+                    type: 'Danger',
+                    backgroundColor: 'red', // background color
+                    color: '#fff', // text color
+
+                });
+        }
+
+
     };
 
     const handlepassword = (input) => {

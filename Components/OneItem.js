@@ -7,9 +7,8 @@ import {
 const OneItem = ({ name, keyname }) => {
     return (
         <View style={{ flexDirection: 'row' }}>
-            {console.log(name)}
             <Text style={styles.textLeft}>{keyname}</Text>
-            <Text style={styles.textLeft}>{`${name}`}</Text>
+            <Text style={name === 'on' ? [styles.textLeft, { color: 'red' }] : name === 'off' ? [styles.textLeft, { color: 'green' }] : styles.textLeft} >{`${name}`}</Text>
         </View>
     );
 };

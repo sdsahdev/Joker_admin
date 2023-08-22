@@ -185,8 +185,9 @@ const ChangeStatus = ({ navigation }) => {
             <OneItem name={item.name} keyname={"Name"} />
             <OneItem name={item.email} keyname={'Email'} />
             <OneItem name={item.phone} keyname={'phone'} />
-            <OneItem name={item.status} keyname={'Login'} />
-            <OneItem name={item.book_right} keyname={'book status'} />
+            <OneItem name={item.status === 'active' ? 'on' : 'off'} keyname={'Login'} />
+            <OneItem name={item.book_right === true ? 'on' : 'off'} keyname={'book status'} />
+
             <View style={{ flexDirection: 'row' }}>
 
                 <TouchableOpacity style={styles.bookbtn} onPress={() => changeLogin(item)}>
@@ -196,7 +197,7 @@ const ChangeStatus = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.bookbtn} onPress={() => changeBooking(item)}>
                     <Text style={styles.booktxt}>
-                        Boking Status change
+                        permission
                     </Text>
                 </TouchableOpacity>
             </View>

@@ -26,7 +26,7 @@ import FlashMessage, {
 } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DateTime = () => {
+const DateTime = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const route = useRoute();
@@ -39,17 +39,35 @@ const DateTime = () => {
   const [data, setdatea6] = useState([])
   const [amo, setamo] = useState(0);
   const [apidate, setapidate] = useState([]);
+  const [bookingrights, setbookingrigh] = useState();
+  const [loginright, setloginright] = useState();
+  const [isSuper, setisSuper] = useState();
 
 
   const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
+
+
+    fetchSuperAdminStatus();
+  }, [])
+  const fetchSuperAdminStatus = async () => {
+    try {
+
+      handleAdminCheck();
+      const isUser = await AsyncStorage.getItem('superAdmin');
+      setisSuper(isUser); // Convert the string to a boolean
+    } catch (error) {
+      // Handle error
+    }
+  };
+  useEffect(() => {
     // setdatea6(Object.values(data6))
     if (!hasLoaded) {
       // slotapi();
-      handleAdminCheck();
 
       setHasLoaded(true);
+
     }
     if (startTimeData) {
       setStartTime(startTimeData.start_time);
@@ -70,8 +88,19 @@ const DateTime = () => {
     const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
     if (hasBookingRights) {
       // Admin has booking rights
+      console.log(hasBookingRights.book_right, 'admin found');
+      console.log(hasBookingRights.status, 'admin found');
+      setbookingrigh(hasBookingRights.book_right)
+      setloginright(hasBookingRights.status)
+      if (hasBookingRights.status === 'block') {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'loginSceen' }],
+        });
+      }
       // Add your logic here, e.g., render specific UI, perform actions, etc.
     } else {
+      console.log('superadmin found');
       // Admin does not have booking rights or is not active
       // Add your logic here, if needed
     }
@@ -85,15 +114,13 @@ const DateTime = () => {
         console.log(data, '===admin');
         if (data && data.admins) {
           const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
-          // if (matchingAdmin && matchingAdmin.status === 'active') {
-          console.log(matchingAdmin, '=====match===');
-          return matchingAdmin.book_right;
-          // }
+          if (matchingAdmin) {
+
+            console.log(matchingAdmin, '=====match===');
+            return matchingAdmin;
+          }
         }
-        // const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
-        // // if (matchingAdmin && matchingAdmin.status === 'active') {
-        // return matchingAdmin;
-        // }
+
       }
     } catch (error) {
       console.error('Error fetching admin data:', error);
@@ -385,14 +412,28 @@ const DateTime = () => {
         </View>
         <View>
 
-          {Object.keys(caldate).length !== 0 && startTime !== null && (
-            // <TouchableOpacity style={styles.btn} onPress={() => BookingPro()}>
-            <TouchableOpacity style={styles.btn} onPress={() => csapi()}>
-              <Text style={styles.payment}>
-                Book Now
-              </Text>
-            </TouchableOpacity>
-          )}
+          {
+            Object.keys(caldate).length !== 0 && startTime !== null && (
+              isSuper === 'true' ? (
+                // Super admin: Show the "Book Now" button
+                <TouchableOpacity style={styles.btn} onPress={() => csapi()}>
+                  <Text style={styles.payment}>Book Now</Text>
+                </TouchableOpacity>
+              ) : (
+                // Not a super admin: Check bookingrights
+                bookingrights === true ? (
+                  // User has booking rights: Show the "Book Now" button
+                  <TouchableOpacity style={styles.btn} onPress={() => csapi()}>
+                    <Text style={styles.payment}>Book Now</Text>
+                  </TouchableOpacity>
+                ) : (
+                  // User doesn't have booking rights: Show message
+                  <Text style={styles.message}>You are not allowed to book.</Text>
+                )
+              )
+            )
+          }
+
         </View>
         <View style={styles.sendView}>
           <SlotTime
@@ -432,4 +473,9 @@ const styles = StyleSheet.create({
     fontSize: wp(5),
     borderRadius: wp(2),
   },
+  message: {
+    color: 'red',
+    textAlign: 'center',
+    marginTop: hp(2)
+  }
 });

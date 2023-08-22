@@ -114,7 +114,7 @@ const loginSceen = ({ navigation }) => {
           });
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
-          AsyncStorage.setItem("user", "admin");
+          AsyncStorage.setItem("superAdmin", 'false');
           AsyncStorage.setItem("adminnum", username);
 
           setPassword('')
@@ -182,7 +182,7 @@ const loginSceen = ({ navigation }) => {
           console.log(data);
           console.log(data.token);
           AsyncStorage.setItem("token", data.token);
-          AsyncStorage.setItem("user", "superadmin");
+          AsyncStorage.setItem("superAdmin", 'true');
           setPassword('')
           setusername('')
         } else {
@@ -215,7 +215,7 @@ const loginSceen = ({ navigation }) => {
         <TopHeader />
         <Text style={styles.titelText}>
           Hi~{'\n'}
-          Welcome Back!
+          Welcome Bck!
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
