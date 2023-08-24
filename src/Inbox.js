@@ -12,15 +12,21 @@ import {
     FlatList,
     TouchableOpacity,
     Image,
+    Modal,
+    TouchableWithoutFeedback
 } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 import { useIsFocused } from '@react-navigation/native'; // Import the hook
+import SearchBar from '../Components/SearchBar';
 
 const Inbox = ({ navigation }) => {
     const [idata, setidata] = useState([])
+    const [searchText, setSearchText] = useState('');
+    const [idata2, setidata2] = useState([]);
+    const [Visible, setVisible] = useState([]);
     const isFocused = useIsFocused(); // Get the screen's focused state
     useEffect(() => {
 
@@ -31,7 +37,7 @@ const Inbox = ({ navigation }) => {
         console.log("+++++++");
         inboxapi();
     }, [isFocused]);
-    inboxapi = async () => {
+    const inboxapi = async () => {
         const Token = await AsyncStorage.getItem('token');
 
         fetch('https://boxclub.in/Joker/Admin/index.php?what=showInboxAdmin', {
@@ -47,6 +53,8 @@ const Inbox = ({ navigation }) => {
                 console.log(data)
                 if (data.success) {
                     setidata(data.bookings)
+                    setidata2(data.bookings)
+
                 } else {
                     showMessage({
                         message: data.message,
@@ -131,6 +139,34 @@ const Inbox = ({ navigation }) => {
 
         return `${formattedDay}-${formattedMonth}-${year}`;
     };
+    const handleSerach = e => {
+        setSearchText(e)
+        let text = e.toLowerCase();
+        let filteredData = idata2.filter(item => {
+            return (
+                item.code.toLowerCase().match(text) ||
+                item.time.toLowerCase().match(text) ||
+                item.date.toLowerCase().match(text) ||
+                item.BoxName.toLowerCase().match(text) ||
+                item.amount.toLowerCase().match(text) ||
+                item.message.toLowerCase().match(text)
+            );
+        });
+
+        if (!text || text === '') {
+            setSearchText('');
+            inboxapi();
+        } else if (!filteredData.length) {
+            console.log('no data');
+        } else if (Array.isArray(filteredData)) {
+            setidata(filteredData);
+        }
+    };
+
+    const handlemodal = () => {
+        console.log("truew");
+        setVisible(true)
+    }
     const renderItem = ({ item }) => {
 
 
@@ -200,15 +236,49 @@ const Inbox = ({ navigation }) => {
                     <View >
                         <TopHeader name={"Inbox"} />
                     </View>
+                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} />
 
                     <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>
                         <FlatList
-                            style={{ marginTop: hp(4), alignSelf: 'center', width: '95%', }}
+                            style={{ marginTop: hp(1), alignSelf: 'center', width: '95%', }}
                             data={idata}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
                             renderItem={renderItem}
                         />
+                        <Modal
+                            visible={Visible}
+                            transparent={true}
+                            animationType="slide">
+                            <TouchableWithoutFeedback onPress={() => setVisible(false)}>
+
+                                <View style={styles.modalContent}>
+
+
+                                    <View style={{
+                                        paddingVertical: hp(1), borderRadius: 8, backgroundColor: 'rgba(0, 0, 0, 0.5)', backgroundColor: '#fff',
+                                        padding: 20,
+                                        borderRadius: 8,
+                                        elevation: 5,
+                                        position: 'absolute',
+                                        alignSelf: 'center',
+                                        top: '40%',
+                                    }}>
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+                                            <Text style={{ color: '#fff' }}>Booked</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+                                            <Text style={{ color: '#fff' }}>Cancel Booking</Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+
+                                            <Text style={{ color: '#fff' }}>Confirm Booking</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            </TouchableWithoutFeedback >
+
+                        </Modal >
                     </View>
 
                 </ScrollView>
@@ -222,6 +292,22 @@ const Inbox = ({ navigation }) => {
 export default Inbox
 
 const styles = StyleSheet.create({
+    mbtn: { alignSelf: 'center', marginVertical: hp(0.5), backgroundColor: '#027850', padding: hp(2), borderRadius: 3, width: wp(40), alignItems: 'center' }
+    , modalContent: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.5)'
+
+    },
+    modalText: {
+        marginBottom: hp(2),
+        color: 'red',
+        flex: 1,
+        fontSize: 15
+    },
+    modalText2: {
+        color: 'red',
+        flex: 1,
+    },
     btn: { margin: wp(3), height: 40, flex: 1 },
     payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },
     timeSlot: {

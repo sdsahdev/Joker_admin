@@ -36,7 +36,6 @@ const BoxeItems = ({ navigation }) => {
                 setIsLoading(false);
                 console.log("not ok");
                 throw new Error('Network response was not ok');
-
             }
             const jsonData = await response.json();
             console.log(jsonData[0].images[0].url, "==== datas");
@@ -52,33 +51,37 @@ const BoxeItems = ({ navigation }) => {
         obj[key] = data[key];
         return obj;
     }, {});
-
     const renderItem = ({ item }) => (
-        <>
+        <View style={styles.container}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate("Details", { item })}
+            >
+                <View style={{ flexDirection: 'row' }}>
 
-            <View View style={styles.container}>
-                <TouchableOpacity
-                    onPress={() => navigation.navigate("Details", { item })} >
                     {console.log(item)}
-                    <Image
+                    {item.images[0] && <Image
                         source={{ uri: item.images[0].url }}
                         style={styles.image}
+                        resizeMode="stretch"
+                    />}
+                    {item.images[1] && <Image
+                        source={{ uri: item.images[0].url }}
+                        style={styles.image2}
                         resizeMode="cover"
-                    />
-                    <View style={styles.textContainer}>
-                        <Text style={styles.textLeft}>{item.name}</Text>
-                        <Text style={styles.textRight}>{parseInt(item.morning_price)} ₹</Text>
-                    </View>
-                </TouchableOpacity>
+                    />}
+                </View>
+                <View style={styles.textContainer}>
+                    {item.name && <Text style={styles.textLeft}>{item.name}</Text>}
+                    {item.morning_price && <Text style={styles.textRight}>{parseInt(item.morning_price)} ₹</Text>}
+                </View>
+            </TouchableOpacity>
 
-            </View>
-        </>
+        </View>
     );
     return (
         <View style={styles.container}>
             {isLoading && (
                 <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
-            {console.log(data.keys)}
             <FlatList
                 style={{ marginBottom: wp(19) }}
                 data={Object.values(filteredData)}
@@ -98,9 +101,16 @@ const styles = StyleSheet.create({
 
     },
     image: {
-        width: "100%",
+        width: "70%",
         height: 200,
-        borderRadius: wp(2),
+        borderTopLeftRadius: wp(2),
+        borderBottomLeftRadius: wp(2),
+    },
+    image2: {
+        width: "30%",
+        height: 200,
+        borderTopRightRadius: wp(2),
+        borderBottomRightRadius: wp(2),
     },
     textContainer: {
         bottom: 0,

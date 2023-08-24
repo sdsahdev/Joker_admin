@@ -20,11 +20,14 @@ import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "rea
 import { useIsFocused } from '@react-navigation/native'; // Import the hook
 import base64 from 'react-native-base64';
 import axios from 'axios'
+import SearchBar from '../Components/SearchBar';
+
 const CancelReq = ({ navigation }) => {
     const [idata, setidata] = useState([])
     const isFocused = useIsFocused(); // Get the screen's focused state
     const [user, setuser] = useState('')
-
+    const [searchText, setSearchText] = useState('');
+    const [idata2, setidata2] = useState([]);
     useEffect(() => {
         // Call the API when the component mounts
         console.log("+++++++");
@@ -118,6 +121,7 @@ const CancelReq = ({ navigation }) => {
                 console.log(data)
                 if (data.success) {
                     setidata(data.bookings)
+                    setidata2(data.bookings)
                 } else {
                     showMessage({
                         message: data.message,
@@ -133,6 +137,29 @@ const CancelReq = ({ navigation }) => {
                 console.error('Error:', error);
             });
     }
+    const handleSerach = e => {
+        setSearchText(e)
+        let text = e.toLowerCase();
+        let filteredData = idata2.filter(item => {
+            return (
+                item.code.toLowerCase().match(text) ||
+                item.time.toLowerCase().match(text) ||
+                item.date.toLowerCase().match(text) ||
+                item.BoxName.toLowerCase().match(text) ||
+                item.amount.toLowerCase().match(text) ||
+                item.message.toLowerCase().match(text)
+            );
+        });
+
+        if (!text || text === '') {
+            setSearchText('');
+            inboxapi();
+        } else if (!filteredData.length) {
+            console.log('no data');
+        } else if (Array.isArray(filteredData)) {
+            setidata(filteredData);
+        }
+    };
 
     const appApi = async (id, event) => {
         const token = await AsyncStorage.getItem("token")
@@ -205,10 +232,31 @@ const CancelReq = ({ navigation }) => {
 
         return `${formattedDay}-${formattedMonth}-${year}`;
     };
+
+    const formatDateTime = (inputDateTime) => {
+        const date = new Date(inputDateTime);
+
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Month is 0-indexed
+        const year = date.getFullYear();
+
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        const formattedDay = day < 10 ? `0${day}` : day;
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${formattedDay}-${formattedMonth}-${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
+    };
     const renderItem = ({ item }) => {
 
 
         const formattedDate = formatDate(item.date)
+        const cancelRequestTime = formatDateTime(item.cancelRequestTime)
+        const bookingTime = formatDateTime(item.bookingTime)
 
         return (
             <View style={styles.timeSlot}>
@@ -251,6 +299,16 @@ const CancelReq = ({ navigation }) => {
                 </View>
                 <View style={{ flexDirection: 'row' }}>
 
+                    <Text style={styles.textLeft}>Booking date</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{bookingTime}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Cancel Time</Text>
+                    <Text style={[styles.textLeft, { color: 'red' }]}>{cancelRequestTime}</Text>
+                </View>
+                <View style={{ flexDirection: 'row' }}>
+
                     <Text style={styles.textLeft}>message</Text>
                     <Text style={styles.textLeft}>{item.message}</Text>
                 </View>
@@ -286,10 +344,12 @@ const CancelReq = ({ navigation }) => {
                     <View >
                         <TopHeader name={"Cancellation Request"} />
                     </View>
+                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} />
+
 
                     <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>
                         <FlatList
-                            style={{ marginTop: hp(4), alignSelf: 'center', width: '95%', }}
+                            style={{ marginTop: hp(0.2), alignSelf: 'center', width: '95%', }}
                             data={idata}
                             showsVerticalScrollIndicator={false}
                             keyExtractor={item => item.id}
