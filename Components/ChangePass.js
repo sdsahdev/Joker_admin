@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'reac
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-const ChangePass = ({ name, onChangeText, headerText, eye, called }) => {
+const ChangePass = ({ name, onChangeText, headerText, eye, called, defaults }) => {
     const [secure, setSecure] = useState(false);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue, setInputValue] = useState(defaults);
 
     const handleTextChange = (text) => {
         setInputValue(text);
@@ -14,8 +14,8 @@ const ChangePass = ({ name, onChangeText, headerText, eye, called }) => {
 
     return (
         <View style={{ marginVertical: hp(0.8), }}>
-            {headerText === null ? null : <Text style={{ marginTop: 10, marginHorizontal: wp(5) }}>
-                {headerText}h
+            {headerText === null ? null : <Text style={{ marginTop: 10, marginHorizontal: wp(5), color: '#027850', fontWeight: 'bold' }}>
+                {headerText}
             </Text>
             }
             <View style={styles.fillDetails}>
@@ -45,6 +45,7 @@ const ChangePass = ({ name, onChangeText, headerText, eye, called }) => {
                 </View> : null}
 
             </View>
+
         </View>
     );
 };

@@ -26,10 +26,8 @@ import FlashMessage, {
 } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DateTime = ({ navigation }) => {
+const DateTime = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
-
-  const route = useRoute();
   const { item } = route.params;
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
@@ -42,25 +40,9 @@ const DateTime = ({ navigation }) => {
   const [bookingrights, setbookingrigh] = useState();
   const [loginright, setloginright] = useState();
   const [isSuper, setisSuper] = useState();
-
-
   const [hasLoaded, setHasLoaded] = useState(false);
 
-  useEffect(() => {
 
-
-    fetchSuperAdminStatus();
-  }, [])
-  const fetchSuperAdminStatus = async () => {
-    try {
-
-      handleAdminCheck();
-      const isUser = await AsyncStorage.getItem('superAdmin');
-      setisSuper(isUser); // Convert the string to a boolean
-    } catch (error) {
-      // Handle error
-    }
-  };
   useEffect(() => {
     // setdatea6(Object.values(data6))
     if (!hasLoaded) {
@@ -82,14 +64,30 @@ const DateTime = ({ navigation }) => {
     }
   }, [startTimeData, endTimeData]);
 
+
+  useEffect(() => {
+    fetchSuperAdminStatus();
+  }, [])
+
+  const fetchSuperAdminStatus = async () => {
+    try {
+      handleAdminCheck();
+      const isUser = await AsyncStorage.getItem('superAdmin');
+      setisSuper(isUser); // Convert the string to a boolean
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+
   const handleAdminCheck = async () => {
 
     const phoneNumberToCheck = await AsyncStorage.getItem('adminnum');
     const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
     if (hasBookingRights) {
       // Admin has booking rights
-      console.log(hasBookingRights.book_right, 'admin found');
-      console.log(hasBookingRights.status, 'admin found');
+      //console.log(hasBookingRights.book_right, 'admin found');
+      //console.log(hasBookingRights.status, 'admin found');
       setbookingrigh(hasBookingRights.book_right)
       setloginright(hasBookingRights.status)
       if (hasBookingRights.status === 'block') {
@@ -99,10 +97,6 @@ const DateTime = ({ navigation }) => {
         });
       }
       // Add your logic here, e.g., render specific UI, perform actions, etc.
-    } else {
-      console.log('superadmin found');
-      // Admin does not have booking rights or is not active
-      // Add your logic here, if needed
     }
   };
 
@@ -111,12 +105,12 @@ const DateTime = ({ navigation }) => {
       const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
       if (response.ok) {
         const data = await response.json();
-        console.log(data, '===admin');
+        //console.log(data, '===admin');
         if (data && data.admins) {
           const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
           if (matchingAdmin) {
 
-            console.log(matchingAdmin, '=====match===');
+            //console.log(matchingAdmin, '=====match===');
             return matchingAdmin;
           }
         }
@@ -127,6 +121,8 @@ const DateTime = ({ navigation }) => {
     }
     return false; // Default to no booking rights or on error
   };
+
+
   const slotapi = (date) => {
     setIsLoading(true)
     fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllSlots', {
@@ -143,7 +139,7 @@ const DateTime = ({ navigation }) => {
       .then((data, index) => {
         setIsLoading(false)
         function convertTimeFormat(time, index) {
-          console.log(Object.values(data).length);
+          //console.log(Object.values(data).length);
           if (index === 0) {
             return '01-02 am'
           }
@@ -157,13 +153,6 @@ const DateTime = ({ navigation }) => {
 
           return `${newsHour}-${neweHour} ${ampm}`;
         }
-        const customTimeArray = [
-          "12:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am",
-          "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am",
-          "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm",
-          "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm",
-          "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm"
-        ];
 
         // Create a new array of modified response objects
         const modifiedResponse = Object.values(data).map((slot, index) => {
@@ -176,11 +165,8 @@ const DateTime = ({ navigation }) => {
           return slot;
         });
 
-        console.log(modifiedResponse);
         setdatea6(Object.values(modifiedResponse))
 
-        // Handle the response data here
-        // console.log(data);
       })
       .catch(error => {
         setIsLoading(false)
@@ -191,73 +177,68 @@ const DateTime = ({ navigation }) => {
 
 
   const handleDateSelect = date => {
-    console.log(date, "****data");
-    // Reset startTime and endTime to null when the date is removed
+
     setcalldat(date);
 
     const selectedDates = Object.keys(date).filter(key => date[key].selected);
     setapidate(selectedDates)
-    console.log(selectedDates, '---');
+    //console.log(selectedDates, '---');
     if (selectedDates.length === 1) {
       const firstSelectedDate = selectedDates[0];
-
       slotapi(firstSelectedDate)
-      console.log("First selected date:", firstSelectedDate);
-      // slotapi(firstSelectedDate);
-      // Do something with the first selected date
     }
   };
 
-  const BookingPro = async (amount) => {
-    const keys = await AsyncStorage.getItem('rkey')
-    console.log(keys);
-    var options = {
-      description: 'Credits towards ',
+  // const BookingPro = async (amount) => {
+  //   const keys = await AsyncStorage.getItem('rkey')
+  //   //console.log(keys);
+  //   var options = {
+  //     description: 'Credits towards ',
 
-      image: 'https://i.imgur.com/3g7nmJC.jpg',
-      currency: 'INR',
-      key: keys,
-      amount: amount * 100,
-      name: 'Acme Corp',
+  //     image: 'https://i.imgur.com/3g7nmJC.jpg',
+  //     currency: 'INR',
+  //     key: keys,
+  //     amount: amount * 100,
+  //     name: 'Acme Corp',
 
-      order_id: '',//Replace this with an order_id created using Orders API.
-      prefill: {
-        email: 'gaurav.kumar@example.com',
-        contact: '9191919191',
-        name: 'Gaurav Kumar'
-      },
-      theme: {
-        color: '#027850',
-      }
-    }
-    RazorpayCheckout.open(options).then((data) => {
-      console.log('success');
-      // handle success
-      // alert(`Success: ${data.razorpay_payment_id}`);
-      showMessage({
-        message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
-        type: "Success",
-        backgroundColor: "green", // background color
-        color: "#fff", // text color
-        duration: 2000,
-        onHide: () => {
-          bookm(data.razorpay_payment_id, amount);
-        }
-      });
-    }).catch((error) => {
-      // handle failure
-      console.log('fails');
+  //     order_id: '',//Replace this with an order_id created using Orders API.
+  //     prefill: {
+  //       email: 'gaurav.kumar@example.com',
+  //       contact: '9191919191',
+  //       name: 'Gaurav Kumar'
+  //     },
+  //     theme: {
+  //       color: '#027850',
+  //     }
+  //   }
+  //   RazorpayCheckout.open(options).then((data) => {
+  //     //console.log('success');
+  //     // handle success
+  //     // alert(`Success: ${data.razorpay_payment_id}`);
+  //     showMessage({
+  //       message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
+  //       type: "Success",
+  //       backgroundColor: "green", // background color
+  //       color: "#fff", // text color
+  //       duration: 2000,
+  //       onHide: () => {
+  //         bookm(data.razorpay_payment_id, amount);
+  //       }
+  //     });
+  //   }).catch((error) => {
+  //     // handle failure
+  //     //console.log('fails');
 
-      // alert(`Error: ${error.code} | ${error.description}`);
-      showMessage({
-        message: error.description,
-        type: "Danger",
-        backgroundColor: "red", // background color
-        duration: 5000,
-        color: "#fff", // text color
-      });
-    });
-  };
+  //     // alert(`Error: ${error.code} | ${error.description}`);
+  //     showMessage({
+  //       message: error.description,
+  //       type: "Danger",
+  //       backgroundColor: "red", // background color
+  //       duration: 5000,
+  //       color: "#fff", // text color
+  //     });
+  //   });
+  // };
 
   const handleStartTimeChange = time => {
     if (!time) {
@@ -287,7 +268,7 @@ const DateTime = ({ navigation }) => {
 
   const handletor = time => {
     // setEndTime(time);
-    // console.log(time, "++++end Times++++++++");
+    // //console.log(time, "++++end Times++++++++");
   };
 
   const csapi = () => {
@@ -301,8 +282,6 @@ const DateTime = ({ navigation }) => {
       dates: apidate,
       type: 'multi'
     };
-    console.log(requestData, "===res");
-    //  {"amount": 10000, "box_id": "1", "dates": ["2023-08-15", "2023-08-16"], "end_time": 1691946000, "payment_id": "pay_MQH7xrcsaGSSe4", "start_time": 1691928000, "type": "tournament"} ===res
     fetch(`${apiUrl}`, {
       method: 'POST',
       headers: {
@@ -313,7 +292,7 @@ const DateTime = ({ navigation }) => {
       .then(response => response.json())
       .then(data => {
         setIsLoading(false)
-        console.log('API response:', data);
+        //console.log('API response:', data);
         if (data.success) {
           // BookingPro(data.price);
           bookm();
@@ -353,7 +332,7 @@ const DateTime = ({ navigation }) => {
       // payment_id: paymentid,
       // amount: amounts
     };
-    console.log(requestData, "===res");
+    //console.log(requestData, "===res");
 
     fetch(`${apiUrl}`, {
       method: 'POST',
@@ -367,7 +346,7 @@ const DateTime = ({ navigation }) => {
       .then(response => response.json())
       .then(data => {
         setIsLoading(false)
-        console.log('API response:', data);
+        //console.log('API response:', data);
         if (data.success) {
           slotapi()
           showMessage({
@@ -402,9 +381,8 @@ const DateTime = ({ navigation }) => {
         <View>
           <TopHeader name={'Book Your Slot'} />
         </View>
-
-        {/* {console.log(startTime, "==satrt===")}
-        {console.log(endTime, "==end===")} */}
+        {/* {//console.log(startTime, "==satrt===")}
+        {//console.log(endTime, "==end===")} */}
 
         <Text style={styles.datess}>select date is required</Text>
         <View style={styles.thiView}>

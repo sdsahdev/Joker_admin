@@ -26,12 +26,12 @@ const ChangeStatus = ({ navigation }) => {
 
     useEffect(() => {
         // Call the API when the component mounts
-        console.log("+++++++");
+        //console.log("+++++++");
         fetchBoxData();
     }, []);
 
     const fetchBoxData = async () => {
-        console.log("-----------");
+        //console.log("-----------");
         try {
             setIsLoading(true)
             const token = await AsyncStorage.getItem("token")
@@ -44,17 +44,17 @@ const ChangeStatus = ({ navigation }) => {
             })
 
             if (!response.ok) {
-                console.log("not ok");
+                //console.log("not ok");
                 setIsLoading(false)
                 throw new Error('Network response was not ok');
             } else {
                 setIsLoading(false)
             }
             const jsonData = await response.json();
-            console.log(jsonData);
+            //console.log(jsonData);
             setData(jsonData.admins);
         } catch (error) {
-            console.log('Error:', error);
+            //console.log('Error:', error);
             setIsLoading(false)
         }
     };
@@ -63,7 +63,7 @@ const ChangeStatus = ({ navigation }) => {
     const changeLogin = async (item) => {
 
         const token = await AsyncStorage.getItem("token")
-        console.log(token, "-----");
+        //console.log(token, "-----");
         setIsLoading(true)
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=statusChangeForAdmin';
         const data = {
@@ -99,7 +99,7 @@ const ChangeStatus = ({ navigation }) => {
                 });
                 fetchBoxData();
             } else {
-                console.log(data.message, "jj");
+                //console.log(data.message, "jj");
                 showMessage({
                     message: data.message,
                     type: "Danger",
@@ -123,14 +123,14 @@ const ChangeStatus = ({ navigation }) => {
     const changeBooking = async (item) => {
         setIsLoading(true)
         const token = await AsyncStorage.getItem("token")
-        console.log(token, "-----");
+        //console.log(token, "-----");
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=statusChangeForAdmin';
         const data = {
             id: item.id,
             status: item.book_right === true ? "0" : "1",
             type: "right_update"
         };
-        console.log(item.book_right === true ? "0" : "1");
+        //console.log(item.book_right === true ? "0" : "1");
         const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
@@ -139,11 +139,6 @@ const ChangeStatus = ({ navigation }) => {
             },
             body: JSON.stringify(data),
         });
-
-        if (!response.ok) {
-            setIsLoading(false)
-            throw new Error('Network response was not ok');
-        }
         if (response.ok) {
             setIsLoading(false)
             const data = await response.json();
@@ -158,7 +153,7 @@ const ChangeStatus = ({ navigation }) => {
                 });
                 fetchBoxData();
             } else {
-                console.log(data.message, "jj");
+                //console.log(data.message, "jj");
                 showMessage({
                     message: data.message,
                     type: "Danger",
@@ -186,7 +181,7 @@ const ChangeStatus = ({ navigation }) => {
             <OneItem name={item.email} keyname={'Email'} />
             <OneItem name={item.phone} keyname={'phone'} />
             <OneItem name={item.status === 'active' ? 'on' : 'off'} keyname={'Login'} />
-            <OneItem name={item.book_right === true ? 'on' : 'off'} keyname={'book status'} />
+            <OneItem name={item.book_right === true ? 'on' : 'off'} keyname={'book permission'} />
 
             <View style={{ flexDirection: 'row' }}>
 

@@ -34,38 +34,20 @@ const loginSceen = ({ navigation }) => {
   const [username, setusername] = useState('');
   useEffect(() => {
     // Call the API when the component mounts
-    console.log("+++++++");
+    //console.log("+++++++");
     fetchBoxData();
   }, []);
 
-  useEffect(() => {
-    checkAuthStatus();
-  }, []);
-
-  const checkAuthStatus = async () => {
-    try {
-      const userToken = await AsyncStorage.getItem('token');
-      console.log(userToken, '====token');
-      if (userToken) {
-        // User is authenticated, navigate to DateTime or other screen
-        navigation.navigate('BoxList'); // Adjust this based on your navigation structure
-      }
-    } catch (error) {
-      // Handle error
-    }
-  };
-
-
   const fetchBoxData = async () => {
-    console.log("-----------");
+    //console.log("-----------");
     try {
       const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
       if (!response.ok) {
-        console.log("not ok");
+        //console.log("not ok");
         throw new Error('Network response was not ok');
       }
       const jsonData = await response.json();
-      console.log(jsonData.keys.rkey, "==== datas");
+      //console.log(jsonData.keys.rkey, "==== datas");
       AsyncStorage.setItem('msgkey', jsonData.keys.msgkey)
       AsyncStorage.setItem('phn', jsonData.keys.phn)
       AsyncStorage.setItem('rkey', jsonData.keys.rkey)
@@ -73,15 +55,11 @@ const loginSceen = ({ navigation }) => {
 
       // setData(jsonData);
     } catch (error) {
-      console.log('Error:', error);
+      //console.log('Error:', error);
     }
   };
   handleSubmit = () => {
     navigation.navigate("RegisterScreen");
-
-    console.log("name ", username);
-    console.log("pass ", password);
-
   };
   const handleuserChange = (newUser) => {
     setusername(newUser);
@@ -94,10 +72,7 @@ const loginSceen = ({ navigation }) => {
       setIsLoading(true);
       const url = 'https://boxclub.in/Joker/Admin/index.php?what=loginThirdParty';
       const fcmToken = await AsyncStorage.getItem('fcmToken');
-      console.log(fcmToken, "==storae");
-      console.log(username);
-      console.log(password);
-      console.log(fcmToken);
+
       const requestBody = {
         phone: username,
         password: password,
@@ -108,12 +83,8 @@ const loginSceen = ({ navigation }) => {
         method: 'POST',
         body: JSON.stringify(requestBody),
       });
-      console.log(response.status);
-      if (!response.ok) {
-        setIsLoading(false);
-        throw new Error('Network response was not ok');
+      //console.log(response.status);
 
-      }
       if (response.ok) {
         setIsLoading(false);
         const data = await response.json();
@@ -130,7 +101,7 @@ const loginSceen = ({ navigation }) => {
               });
             }
           });
-          console.log(data.token);
+          //console.log(data.token);
           AsyncStorage.setItem("token", data.token);
           AsyncStorage.setItem("superAdmin", 'false');
           AsyncStorage.setItem("adminnum", username);
@@ -139,10 +110,12 @@ const loginSceen = ({ navigation }) => {
           setusername('')
 
         } else {
-          console.log(data.message);
+          setIsLoading(false);
+          //console.log(data.message);
           showMessage({
             message: data.message,
-            type: "Danger",
+            type: "danger",
+            icon: "danger",
             backgroundColor: "red", // background color
             color: "#fff", // text color
           });
@@ -150,8 +123,7 @@ const loginSceen = ({ navigation }) => {
       }
     } catch (error) {
       setIsLoading(false);
-
-      console.log('Error:', error.message);
+      //console.log('Error:', error.message);
     }
   }
   const handleSuperAdmin = async () => {
@@ -160,7 +132,7 @@ const loginSceen = ({ navigation }) => {
 
       const url = 'https://boxclub.in/Joker/Admin/index.php?what=adminLogin';
       const fcmToken = await AsyncStorage.getItem('fcmToken');
-      console.log(fcmToken, "==storae");
+      //console.log(fcmToken, "==storae");
 
       const requestBody = {
         phno: username,
@@ -173,11 +145,7 @@ const loginSceen = ({ navigation }) => {
         body: JSON.stringify(requestBody),
       });
 
-      if (!response.ok) {
-        setIsLoading(false);
 
-        throw new Error('Network response was not ok');
-      }
       if (response.ok) {
         setIsLoading(false);
 
@@ -197,17 +165,19 @@ const loginSceen = ({ navigation }) => {
             }
           });
 
-          console.log(data);
-          console.log(data.token);
+          //console.log(data);
+          //console.log(data.token);
           AsyncStorage.setItem("token", data.token);
           AsyncStorage.setItem("superAdmin", 'true');
           setPassword('')
           setusername('')
         } else {
-          console.log(data.message);
+          setIsLoading(false);
+          //console.log(data.message);
           showMessage({
             message: data.message,
-            type: "Danger",
+            type: "danger",
+            icon: "danger",
             backgroundColor: "red", // background color
             color: "#fff", // text color
             duration: 3000
@@ -220,10 +190,11 @@ const loginSceen = ({ navigation }) => {
         index: 0,
         routes: [{ name: 'BoxList' }],
       });
-      console.log('Error:', error.message);
+      //console.log('Error:', error.message);
     }
 
   }
+
   return (
     <View style={styles.container}>
       <FlashMessage />
@@ -241,11 +212,11 @@ const loginSceen = ({ navigation }) => {
           <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
         <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} eye={true} />
-        {/* <TouchableOpacity >
+        <TouchableOpacity onPress={() => navigation.navigate("ForgotP")}>
           <Text style={{ alignSelf: 'center', color: "#027850", fontSize: wp(4), marginTop: hp(2) }}>
-            login for superAmdin
+            Forgot password
           </Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
       </SafeAreaView >
       <View style={{ flexDirection: 'row', height: '100%' }}>
 

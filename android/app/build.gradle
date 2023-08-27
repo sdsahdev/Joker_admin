@@ -68,7 +68,7 @@ def enableProguardInReleaseBuilds = false
 // stop auto run emulator
 project.ext.react = [
   // Other existing configuration options...
-  enableCliRunAndroid: false
+  enableCliRunAndroid: true
 ]
 /**
  * The preferred build flavor of JavaScriptCore (JSC)

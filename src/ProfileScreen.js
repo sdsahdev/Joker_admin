@@ -15,36 +15,37 @@ const ProfileScreen = ({ navigation }) => {
         const fetchData = async () => {
             try {
                 const user1 = await AsyncStorage.getItem('superAdmin');
-                console.log(user1, "==end===");
+                //console.log(user1, "==end===");
                 setuser(user1);
             } catch (error) {
-                console.log("Error fetching user:", error);
+                //console.log("Error fetching user:", error);
             }
         };
 
         fetchData();
     }, []);
     const hEdit = () => {
-        console.log("edit");
+        //console.log("edit");
         navigation.navigate("RegisterScreen");
     }
     const hpassword = () => {
-        console.log("Edit Profile pressed!");
+        //console.log("Edit Profile pressed!");
         navigation.navigate("ChangeStatus")
     };
     const hcontact = () => {
-        console.log("Contact");
+        //console.log("Contact");
         navigation.navigate("ContactUs");
     }
     const habout = () => {
         navigation.navigate("About");
 
-        console.log("About");
+        //console.log("About");
     }
-    const hlogout = () => {
-        // console.log("Logout");
+    const hlogout = async () => {
+        // //console.log("Logout");
         // navigation.("loginSceen");
 
+        await AsyncStorage.clear()
         navigation.reset({
             index: 0,
             routes: [{ name: 'loginSceen' }],
@@ -65,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
                     <Text style={{ color: '#000', fontSize: wp(5) }}>
                         123456789</Text>
                 </View> */}
-                {console.log(user, "===")}
+                {/* {console.log(user, "===")} */}
                 <View style={{ marginTop: hp(10) }}>
                     {user === 'true' ? (
                         <View >

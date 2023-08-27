@@ -3,19 +3,6 @@ import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity, ActivityIndi
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
-
-
-// const data = [
-//     { id: '1', image: imagesClass.banner2, leftText: 'Box 1', rightText: '$100/hr' },
-//     { id: '2', image: imagesClass.box2, leftText: 'Box 2', rightText: '$200/hr' },
-//     { id: '3', image: imagesClass.box3, leftText: 'Box 3', rightText: '$300/hr' },
-//     { id: '4', image: imagesClass.box4, leftText: 'Box 3', rightText: '$300/hr' },
-
-//     // Add more items as needed
-// ];
-
-
-
 const BoxeItems = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,26 +10,26 @@ const BoxeItems = ({ navigation }) => {
 
     useEffect(() => {
         // Call the API when the component mounts
-        console.log("+++++++");
+        // //console.log("+++++++");
         fetchBoxData();
     }, []);
 
     const fetchBoxData = async () => {
-        console.log("-----------");
+        // //console.log("-----------");
         try {
             setIsLoading(true);
             const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
             if (!response.ok) {
                 setIsLoading(false);
-                console.log("not ok");
+                //console.log("not ok");
                 throw new Error('Network response was not ok');
             }
             const jsonData = await response.json();
-            console.log(jsonData[0].images[0].url, "==== datas");
+            //console.log(jsonData[0].images[0].url, "==== datas");
             setData(jsonData);
         } catch (error) {
             setIsLoading(false);
-            console.log('Error:', error);
+            //console.log('Error:', error);
         }
     };
 
@@ -51,24 +38,25 @@ const BoxeItems = ({ navigation }) => {
         obj[key] = data[key];
         return obj;
     }, {});
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <View style={styles.container}>
+            {/* {//console.log(index, '===index')} */}
             <TouchableOpacity
-                onPress={() => navigation.navigate("Details", { item })}
+                onPress={() => navigation.navigate("Details", { item: item, index: index })}
             >
                 <View style={{ flexDirection: 'row' }}>
 
-                    {console.log(item)}
+                    {/* {console.log(item)} */}
                     {item.images[0] && <Image
                         source={{ uri: item.images[0].url }}
-                        style={styles.image}
+                        style={[item.images[1] ? [styles.image] : [item.images[1], { width: '100%', height: '100%' }]]}
                         resizeMode="stretch"
                     />}
-                    {item.images[1] && <Image
-                        source={{ uri: item.images[0].url }}
+                    <Image
+                        source={{ uri: item.images[1] ? item.images[1].url : item.images[0].url }}
                         style={styles.image2}
-                        resizeMode="cover"
-                    />}
+                        resizeMode="stretch"
+                    />
                 </View>
                 <View style={styles.textContainer}>
                     {item.name && <Text style={styles.textLeft}>{item.name}</Text>}

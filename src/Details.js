@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import DetailsCompo from '../Components/DetailsCompo'
 
-const Details = ({ navigation }) => {
+const Details = ({ navigation, route }) => {
     return (
         <View style={styles.mainView}>
             <DetailsCompo navigation={navigation} />

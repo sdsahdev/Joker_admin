@@ -13,7 +13,7 @@ import { useRoute } from '@react-navigation/native';
 
 const DetailsCompo = ({ navigation }) => {
     const route = useRoute();
-    const { item } = route.params;
+    const { item, index } = route.params;
     const openMaps = () => {
 
         const latitude = 21.21382748197297; // Replace with the destination latitude
@@ -26,6 +26,7 @@ const DetailsCompo = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.imageContainer}>
+                {console.log(index, "********index")}
                 <Image
                     source={imagesClass.GroudDetails}
                     style={styles.image}
@@ -39,14 +40,14 @@ const DetailsCompo = ({ navigation }) => {
                             resizeMode="cover"
                         />
                     </TouchableOpacity>
-                    {/* <TouchableOpacity>
-​
+                    <TouchableOpacity onPress={() => navigation.navigate("EditBoxD", { item: item, index: index })}>
+
                         <Image
                             source={imagesClass.share}
                             style={styles.image2}
                             resizeMode="cover"
                         />
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                 </View>
             </View>
             <Titels text1={item.name} text2={`${parseInt(item.morning_price) + " ₹"}`} />

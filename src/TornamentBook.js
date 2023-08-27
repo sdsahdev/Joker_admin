@@ -83,8 +83,8 @@ const TornamentBook = () => {
         const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
         if (hasBookingRights) {
             // Admin has booking rights
-            console.log(hasBookingRights.book_right, 'admin found');
-            console.log(hasBookingRights.status, 'admin found');
+            //console.log(hasBookingRights.book_right, 'admin found');
+            //console.log(hasBookingRights.status, 'admin found');
             setbookingrigh(hasBookingRights.book_right)
             setloginright(hasBookingRights.status)
             if (hasBookingRights.status === 'block') {
@@ -94,10 +94,6 @@ const TornamentBook = () => {
                 });
             }
             // Add your logic here, e.g., render specific UI, perform actions, etc.
-        } else {
-            console.log('superadmin found');
-            // Admin does not have booking rights or is not active
-            // Add your logic here, if needed
         }
     };
 
@@ -106,12 +102,12 @@ const TornamentBook = () => {
             const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
             if (response.ok) {
                 const data = await response.json();
-                console.log(data, '===admin');
+                //console.log(data, '===admin');
                 if (data && data.admins) {
                     const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
                     if (matchingAdmin) {
 
-                        console.log(matchingAdmin, '=====match===');
+                        //console.log(matchingAdmin, '=====match===');
                         return matchingAdmin;
                     }
                 }
@@ -140,7 +136,7 @@ const TornamentBook = () => {
                 setIsLoading(false)
 
                 function convertTimeFormat(time, index) {
-                    console.log(Object.values(data).length);
+                    //console.log(Object.values(data).length);
                     if (index === 0) {
                         return '01-02 am'
                     }
@@ -154,13 +150,7 @@ const TornamentBook = () => {
 
                     return `${newsHour}-${neweHour} ${ampm}`;
                 }
-                const customTimeArray = [
-                    "12:00 am", "01:00 am", "02:00 am", "03:00 am", "04:00 am",
-                    "05:00 am", "06:00 am", "07:00 am", "08:00 am", "09:00 am",
-                    "10:00 am", "11:00 am", "12:00 pm", "01:00 pm", "02:00 pm",
-                    "03:00 pm", "04:00 pm", "05:00 pm", "06:00 pm", "07:00 pm",
-                    "08:00 pm", "09:00 pm", "10:00 pm", "11:00 pm"
-                ];
+
 
                 // Create a new array of modified response objects
                 const modifiedResponse = Object.values(data).map((slot, index) => {
@@ -173,86 +163,75 @@ const TornamentBook = () => {
                     return slot;
                 });
 
-                console.log(modifiedResponse);
                 setdatea6(Object.values(modifiedResponse))
-
-                // Handle the response data here
-                // console.log(data);
             })
             .catch(error => {
                 setIsLoading(false)
-
-                // Handle any errors here
                 console.error('Error:', error);
             });
     }
 
 
     const handleDateSelect = date => {
-        console.log(date, "****data");
-        // Reset startTime and endTime to null when the date is removed
         setcalldat(date);
 
         const selectedDates = Object.keys(date).filter(key => date[key].selected);
         setapidate(selectedDates)
-        console.log(selectedDates, '---');
+        //console.log(selectedDates, '---');
         if (selectedDates.length === 1) {
             const firstSelectedDate = selectedDates[0];
 
             slotapi(firstSelectedDate)
-            console.log("First selected date:", firstSelectedDate);
-            // slotapi(firstSelectedDate);
-            // Do something with the first selected date
         }
     };
 
-    const BookingPro = async (amounts) => {
+    // const BookingPro = async (amounts) => {
 
 
-        const keys = await AsyncStorage.getItem('rkey')
-        var options = {
-            description: 'Credits towards ',
-            image: 'https://i.imgur.com/3g7nmJC.jpg',
-            currency: 'INR',
-            key: keys,
-            amount: amounts * 100,
-            name: 'Acme Corp',
+    //     const keys = await AsyncStorage.getItem('rkey')
+    //     var options = {
+    //         description: 'Credits towards ',
+    //         image: 'https://i.imgur.com/3g7nmJC.jpg',
+    //         currency: 'INR',
+    //         key: keys,
+    //         amount: amounts * 100,
+    //         name: 'Acme Corp',
 
-            order_id: '',//Replace this with an order_id created using Orders API.
-            prefill: {
-                email: 'gaurav.kumar@example.com',
-                contact: '9191919191',
-                name: 'Gaurav Kumar'
-            },
-            theme: {
-                color: '#027850',
-            }
-        }
-        RazorpayCheckout.open(options).then((data) => {
-            // handle success
-            // alert(`Success: ${data.razorpay_payment_id}`);
-            showMessage({
-                message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
-                type: "Success",
-                backgroundColor: "green", // background color
-                color: "#fff", // text color
-                duration: 2000,
-                onHide: () => {
-                    bookm(data.razorpay_payment_id, amounts);
-                }
-            });
-        }).catch((error) => {
-            // handle failure
-            // alert(`Error: ${error.code} | ${error.description}`);
-            showMessage({
-                message: error.error.description,
-                type: "Danger",
-                backgroundColor: "red", // background color
-                duration: 5000,
-                color: "#fff", // text color
-            });
-        });
-    };
+    //         order_id: '',//Replace this with an order_id created using Orders API.
+    //         prefill: {
+    //             email: 'gaurav.kumar@example.com',
+    //             contact: '9191919191',
+    //             name: 'Gaurav Kumar'
+    //         },
+    //         theme: {
+    //             color: '#027850',
+    //         }
+    //     }
+    //     RazorpayCheckout.open(options).then((data) => {
+    //         // handle success
+    //         // alert(`Success: ${data.razorpay_payment_id}`);
+    //         showMessage({
+    //             message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
+    //             type: "Success",
+    //             backgroundColor: "green", // background color
+    //             color: "#fff", // text color
+    //             duration: 2000,
+    //             onHide: () => {
+    //                 bookm(data.razorpay_payment_id, amounts);
+    //             }
+    //         });
+    //     }).catch((error) => {
+    //         // handle failure
+    //         // alert(`Error: ${error.code} | ${error.description}`);
+    //         showMessage({
+    //             message: error.error.description,
+    //             type: "Danger",
+    //             backgroundColor: "red", // background color
+    //             duration: 5000,
+    //             color: "#fff", // text color
+    //         });
+    //     });
+    // };
 
     const handleStartTimeChange = time => {
         if (!time) {
@@ -281,7 +260,7 @@ const TornamentBook = () => {
 
     const handletor = time => {
         // setEndTime(time);
-        // console.log(time, "++++end Times++++++++");
+        // //console.log(time, "++++end Times++++++++");
     };
 
     const csapi = () => {
@@ -296,7 +275,7 @@ const TornamentBook = () => {
             dates: apidate,
             type: 'tournament'
         };
-        console.log(requestData, "===res");
+        //console.log(requestData, "===res");
         fetch(`${apiUrl}`, {
             method: 'POST',
             headers: {
@@ -308,7 +287,7 @@ const TornamentBook = () => {
             .then(data => {
                 setIsLoading(false)
 
-                console.log('API response:', data);
+                //console.log('API response:', data);
                 if (data.success) {
                     // BookingPro(data.price);
                     bookm();
@@ -350,7 +329,7 @@ const TornamentBook = () => {
             // payment_id: paymentid,
             // amount: amounts
         };
-        console.log(requestData, "===res");
+        //console.log(requestData, "===res");
 
         fetch(`${apiUrl}`, {
             method: 'POST',
@@ -364,7 +343,7 @@ const TornamentBook = () => {
             .then(data => {
                 setIsLoading(false)
 
-                console.log('API response:', data);
+                //console.log('API response:', data);
                 if (data.success) {
                     slotapi()
                     showMessage({

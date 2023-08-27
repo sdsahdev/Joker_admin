@@ -6,7 +6,7 @@ import {
     heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 
-const SearchBar = ({ searchText, onChangeSearchText, press }) => {
+const SearchBar = ({ searchText, onChangeSearchText, press, filter }) => {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.container}>
@@ -18,9 +18,10 @@ const SearchBar = ({ searchText, onChangeSearchText, press }) => {
                     onChangeText={onChangeSearchText}
                 />
             </View>
-            <TouchableOpacity onPress={press}>
-                <Image source={imagesClass.filter} style={styles.icon} />
-            </TouchableOpacity>
+            {filter &&
+                <TouchableOpacity onPress={press}>
+                    <Image source={imagesClass.filter} style={styles.icon} />
+                </TouchableOpacity>}
         </View>
 
     );

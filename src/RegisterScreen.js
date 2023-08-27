@@ -61,12 +61,12 @@ const RegisterScreen = ({ navigation }) => {
         setemail(input)
     }
     const callApi = async () => {
-        console.log(username)
-        console.log(phoneNumber)
-        console.log(password)
+        //console.log(username)
+        //console.log(phoneNumber)
+        //console.log(password)
         setIsLoading(true)
         const token = await AsyncStorage.getItem("token")
-        console.log(token, "-----");
+        //console.log(token, "-----");
         const apiUrl = 'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
         const data = {
             name: username,
@@ -105,9 +105,9 @@ const RegisterScreen = ({ navigation }) => {
                     }
                 });
 
-                console.log(data, " logg");
+                //console.log(data, " logg");
             } else {
-                console.log(data.message, "jj");
+                //console.log(data.message, "jj");
                 showMessage({
                     message: data.message,
                     type: "Danger",

@@ -30,7 +30,7 @@ const CancelReq = ({ navigation }) => {
     const [idata2, setidata2] = useState([]);
     useEffect(() => {
         // Call the API when the component mounts
-        console.log("+++++++");
+        //console.log("+++++++");
         fetchData();
         inboxapi();
     }, [isFocused]);
@@ -38,30 +38,116 @@ const CancelReq = ({ navigation }) => {
     const fetchData = async () => {
         try {
             const user1 = await AsyncStorage.getItem('superAdmin');
-            console.log(user1, "==end===");
+            //console.log(user1, "==end===");
             setuser(user1);
         } catch (error) {
-            console.log("Error fetching user:", error);
+            //console.log("Error fetching user:", error);
         }
     };
 
 
-    const processRefund = async (paymentId) => {
+    const getPaymentDetails = async (paymentId) => {
+        try {
+            const keyId = await AsyncStorage.getItem('rkey');
+            const keySecret = await AsyncStorage.getItem('rskey');
 
+            const url = `https://api.razorpay.com/v1/payments/${paymentId}`;
+            const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
+
+            const response = await axios.get(url, {
+                headers: {
+                    Authorization: basicAuth,
+                },
+            });
+
+            if (response.status === 200) {
+                const paymentDetails = response.data;
+                return paymentDetails;
+            } else {
+                showMessage({
+                    message: 'Failed to get payment details with status code',
+                    type: "Danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                });
+                //console.log('====Failed to get payment details with status code=====', response.status);
+                throw new Error('Failed to get payment details');
+            }
+        } catch (error) {
+
+            showMessage({
+                message: 'something went wrong',
+                type: "Danger",
+                backgroundColor: "red", // background color
+                color: "#fff", // text color
+            });
+            //console.log('====Error getting payment details:=====', error);
+            throw error;
+        }
+    };
+
+    async function capturePayment(paymentId, amount, uPhone) {
+        const keyId = await AsyncStorage.getItem('rkey');
+        const keySecret = await AsyncStorage.getItem('rskey');
+
+        const url = `https://api.razorpay.com/v1/payments/${paymentId}/capture`;
+        const captureRequest = {
+            amount: amount, // Amount in smallest currency unit (e.g., paise for INR)
+        };
+
+        const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
+
+        try {
+            const response = await axios.post(url, captureRequest, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: basicAuth,
+                },
+            });
+
+            if (response.status === 200) {
+                const responseData = response.data;
+                //console.log('Capture success:', responseData);
+                refundFinal(amount, paymentId)
+                return responseData;
+            } else {
+                //console.log('Capture request failed with status code', response);
+                showMessage({
+                    message: 'Capture request failed',
+                    type: "Danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                });
+
+                throw new Error('===Capture request failed====');
+            }
+        } catch (error) {
+            showMessage({
+                message: 'something went wrong',
+                type: "Danger",
+                backgroundColor: "red", // background color
+                color: "#fff", // text color
+            });
+            //console.log('=====Error capturing payment:=====', error);
+            throw error;
+        }
+    }
+
+    const refundFinal = async (amount, paymentId, uPhone) => {
         const keyId = await AsyncStorage.getItem('rkey')
         const keySecret = await AsyncStorage.getItem('rskey')
-        // const keyId = 'rzp_test_lFrGZBU3t0pDQ3';
-        // const keySecret = 'Q60TScpB5c23CPYnyFMOoQe1';
-        // const paymentId = 'pay_MN47KRgAv7TAsL';
+
+        const refundPercentage = 80; // 20% refund
+        const refundAmount = Math.floor(amount * (refundPercentage / 100));
+
         const url = `https://api.razorpay.com/v1/payments/${paymentId}/refund`;
         const refundRequest = {
-            amount: 1000,
+            amount: refundAmount,
             speed: 'normal',
             notes: {
-                notes_key_1: 'Tea, Earl Grey, Hot',
-                notes_key_2: 'Tea, Earl Grey... decaf.',
+                notes_key_1: `Refund bye app ${uPhone} `,
             },
-            receipt: 'Receipt No. #31',
+
         };
         const basicAuth = `Basic ${base64.encode(`${keyId}:${keySecret}`)}`;
         try {
@@ -72,40 +158,50 @@ const CancelReq = ({ navigation }) => {
                 },
             });
             if (response.status === 200) {
-                // console.log(response, '=======refund===');
-                // showMessage({
-                //     message: response.sta    tus,
-                //     type: "Success",
-                //     backgroundColor: "green", // background color
-                //     color: "#fff", // text color
-                // });
-                // Refund request successful
+                showMessage({
+                    message: 'Refund success',
+                    type: "success",
+                    backgroundColor: "green", // background color
+                    color: "#fff", // text color
+                });
                 const responseData = response.data;
-                console.log('Refund success:', responseData);
+                //console.log('=====Refund success:=====', responseData);
             } else {
-                // Refund request failed
-                // showMessage({
-                //     message: response.status,
-                //     type: "Danger",
-                //     backgroundColor: "red", // background color
-                //     duration: 5000,
-                //     color: "#fff", // text color
-                // });
-                console.log('Refund request failed with status code', response.status);
+                showMessage({
+                    message: 'Refund request failed with status code ',
+                    type: "Danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                });
+                //console.log('===Refund request failed with status code=========', response);
             }
+
         } catch (error) {
-            // Handle any exceptions
-            // showMessage({
-            //     message: error,
-            //     type: "Danger",
-            //     backgroundColor: "red", // background color
-            //     duration: 7000,
-            //     color: "#fff", // text color
-            // });
-            console.log('Error creating refund request:', error);
+            showMessage({
+                message: "something went wrong",
+                type: "Danger",
+                backgroundColor: "red", // background color
+                color: "#fff", // text color
+            });
+            //console.log('====Error creating refund request:=====', error);
+        }
+
+    }
+    const processRefund = async (paymentId, uPhone) => {
+
+        const captureResponse = await getPaymentDetails(paymentId);
+
+        //console.log(captureResponse.captured, "=====check capture==");
+        if (captureResponse && captureResponse.captured === 'true') {
+            refundFinal(captureResponse.amount, paymentId, uPhone)
+        } else {
+            capturePayment(paymentId, captureResponse.amount, uPhone)
+            // throw new Error('Payment capture failed');
         }
     };
+
     const inboxapi = async () => {
+
         const Token = await AsyncStorage.getItem('token');
 
         fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllCancelRequest', {
@@ -118,7 +214,7 @@ const CancelReq = ({ navigation }) => {
             .then(response => response.json())
             .then(data => {
                 // Handle the response data here
-                console.log(data)
+                //console.log(data)
                 if (data.success) {
                     setidata(data.bookings)
                     setidata2(data.bookings)
@@ -141,13 +237,20 @@ const CancelReq = ({ navigation }) => {
         setSearchText(e)
         let text = e.toLowerCase();
         let filteredData = idata2.filter(item => {
+            // "phone": "1234567111",
+
             return (
                 item.code.toLowerCase().match(text) ||
+                item.username.toLowerCase().match(text) ||
+                item.phone.toLowerCase().match(text) ||
                 item.time.toLowerCase().match(text) ||
                 item.date.toLowerCase().match(text) ||
                 item.BoxName.toLowerCase().match(text) ||
                 item.amount.toLowerCase().match(text) ||
-                item.message.toLowerCase().match(text)
+                item.message.toLowerCase().match(text) ||
+                item.cancelRequestTime.toLowerCase().match(text) ||
+                item.bookingTime.toLowerCase().match(text)
+
             );
         });
 
@@ -155,16 +258,16 @@ const CancelReq = ({ navigation }) => {
             setSearchText('');
             inboxapi();
         } else if (!filteredData.length) {
-            console.log('no data');
+            //console.log('no data');
         } else if (Array.isArray(filteredData)) {
             setidata(filteredData);
         }
     };
 
-    const appApi = async (id, event) => {
+    const appApi = async (id, event, uPhone) => {
         const token = await AsyncStorage.getItem("token")
 
-        console.log(id);
+        //console.log(id);
         fetch('https://boxclub.in/Joker/Admin/index.php?what=updateRequestStatus', {
             method: 'POST', // Assuming you want to use POST method
             headers: {
@@ -182,19 +285,23 @@ const CancelReq = ({ navigation }) => {
             .then(data => {
                 // Handle the data here
                 if (data.success) {
-                    console.log(data.user_data[0].payment_id, "---");
-                    processRefund(data.user_data[0].payment_id);
+                    //console.log(data.user_data[0].payment_id, "---");
+                    processRefund(data.user_data[0].payment_id, uPhone);
 
                     inboxapi();
+                    //console.log(data, '=======apicalling if');
                     showMessage({
-                        message: data.message,
+                        message: 'Success',
                         type: "Success",
                         backgroundColor: "green", // background color
                         color: "#fff", // text color
                     });
                 } else {
+                    //console.log(data);
+                    //console.log(data, '=======apicalling else');
+
                     showMessage({
-                        message: data.message,
+                        message: 'Fail the event',
                         type: "Danger",
                         backgroundColor: "red", // background color
                         color: "#fff", // text color
@@ -203,23 +310,18 @@ const CancelReq = ({ navigation }) => {
                 }
             })
             .catch(error => {
+                showMessage({
+                    message: 'something went wrong',
+                    type: "Danger",
+                    backgroundColor: "red", // background color
+                    color: "#fff", // text color
+                });
                 // Handle errors here
-                console.error('API  error:', error);
+                console.error('=====API  error:=========', error);
             });
     }
-    /*
-     "id": "3",
-     "username": "testuser",
-     "phone": "6359268603",
-     "date": "2023-08-12",
-     "time": "11:00PM-12:00AM"  
-     "BoxName": "king",
-     "amount": "1000.00",
-     "code": "JOKE3",
-     "start_time": "1691881200",
-                "end_time": "1691884800",
-                "message": "cancel_request",
-    */
+
+
     const formatDate = (inputDate) => {
         const date = new Date(inputDate);
         const day = date.getDate();
@@ -319,14 +421,14 @@ const CancelReq = ({ navigation }) => {
                         <View style={{ flexDirection: 'row' }}>
                             <TouchableOpacity
                                 style={styles.btn}
-                                onPress={() => appApi(item.id, "approve")} >
+                                onPress={() => appApi(item.id, "approve", item.phone)} >
                                 <Text style={styles.payment}>
                                     Approve
                                 </Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.btn}
-                                onPress={() => appApi(item.id, "deny")} >
+                                onPress={() => appApi(item.id, "deny", item.phone)} >
                                 <Text style={styles.payment}>
                                     Denied
                                 </Text>
@@ -344,7 +446,7 @@ const CancelReq = ({ navigation }) => {
                     <View >
                         <TopHeader name={"Cancellation Request"} />
                     </View>
-                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} />
+                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} filter={false} />
 
 
                     <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>

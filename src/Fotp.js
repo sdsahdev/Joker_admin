@@ -1,3 +1,4 @@
+//import liraries
 import React, { useState, useRef, useEffect } from 'react';
 import {
     View,
@@ -28,8 +29,8 @@ import FlashMessage, {
 import OTPInputView from '@twotalltotems/react-native-otp-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Otp = ({ navigation, route }) => {
-    const { phoneNumber, username, password } = route.params;
+const Fotp = ({ navigation, route }) => {
+    const { phoneNumber, type } = route.params;
     const [isLoading, setIsLoading] = useState(false);
     const [randomOTP, setrandomOTP] = useState(0)
     const [otp, setOtp] = useState('');
@@ -41,87 +42,6 @@ const Otp = ({ navigation, route }) => {
         wpmsg();
     }, [])
 
-
-    const callApi = async () => {
-        try {
-            setIsLoading(true);
-            const token = await AsyncStorage.getItem('token');
-            //console.log(token, '-----');
-            const apiUrl =
-                'https://boxclub.in/Joker/Admin/index.php?what=addThirdParty';
-
-            const data = {
-                name: username,
-                phno: phoneNumber,
-                password: password,
-                type: 'insert',
-            };
-
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: {
-                    token: token,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-
-            if (response.ok) {
-                const data = await response.json();
-                setIsLoading(false);
-
-                if (data.success) {
-                    showMessage({
-                        message: data.message,
-                        type: 'Success',
-                        backgroundColor: 'green', // background color
-                        color: '#fff', // text color
-
-                    });
-
-                } else {
-                    showMessage({
-                        message: data.message,
-                        type: 'Danger',
-                        duration: 3000,
-                        backgroundColor: 'red', // background color
-                        color: '#fff',
-                        onHide: () => {
-                            navigation.pop();
-                        }, // text color
-                    });
-                }
-            } else {
-                setIsLoading(false);
-
-                showMessage({
-                    message: 'data. s',
-                    type: 'Danger',
-                    backgroundColor: 'red', // background color
-                    color: '#fff', // text color
-                    duration: 3000,
-                    onHide: () => {
-                        navigation.pop();
-                    },
-                });
-            }
-
-        } catch (error) {
-            console.error('Network error:', error);
-            setIsLoading(false);
-            showMessage({
-                message: 'Network error occurred',
-                type: 'Danger',
-                backgroundColor: 'red',
-                color: '#fff',
-                duration: 3000,
-                onHide: () => {
-                    navigation.pop();
-                },
-            });
-        }
-    };
     const handleOtpChange = (index, text) => {
         const sanitizedText = text.replace(/[^0-9]/g, '').slice(0, 1);
         setOtp(prevOtp => {
@@ -144,6 +64,7 @@ const Otp = ({ navigation, route }) => {
     const generateOTP = () => {
         return Math.floor(1000 + Math.random() * 9000).toString();
     };
+
     const wpmsg = async () => {
         //console.log("ot first ");
 
@@ -196,9 +117,12 @@ Please enter this OTP to complete your registration process.`,
                     });
                 }
 
+                //hey llopa sayne  yution shere uis 
+                // Handle success or display a message to the user
             })
             .catch(error => {
                 console.error('Error sending SMS:', error);
+                // Handle error or display an error message to the user
                 showMessage({
                     message: `fail` + error,
                     type: "Success",
@@ -208,18 +132,21 @@ Please enter this OTP to complete your registration process.`,
                 });
             });
     }
+
     const handleSubmit = () => {
-        //console.log(randomOTP, "==otp scere")
-        if (randomOTP === otp) {
-            callApi();
+        if (randomOTP === otp && otp !== '') {
+            navigation.navigate("PasswordScreen", { phoneNumber: phoneNumber, type: type })
         } else {
             showMessage({
                 message: "please enter valid otp",
-                type: 'Danger',
+                type: 'danger',
                 backgroundColor: 'red', // background color
                 color: '#fff', // text color
+
             });
+
         }
+
     }
     return (
         <View style={{ flex: 1, }}>
@@ -261,7 +188,7 @@ Please enter this OTP to complete your registration process.`,
     );
 };
 
-export default Otp;
+export default Fotp;
 const styles = StyleSheet.create({
     booktxt: {
         color: '#fff',

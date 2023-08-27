@@ -32,7 +32,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 import ChangeStatus from './src/ChangeStatus';
 import CancelReq from './src/CancelReq';
-
+import Fotp from './src/Fotp';
+import ForgotP from './src/ForgotP';
+import EditBoxD from './src/EditBoxD';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -88,7 +90,9 @@ const App = () => {
         <Stack.Screen name="About" component={About} />
         <Stack.Screen name="TornamentBook" component={TornamentBook} />
         <Stack.Screen name="CancelReq" component={CancelReq} />
-
+        <Stack.Screen name="Fotp" component={Fotp} />
+        <Stack.Screen name="ForgotP" component={ForgotP} />
+        <Stack.Screen name="EditBoxD" component={EditBoxD} />
       </Stack.Navigator>
     </NavigationContainer>
 

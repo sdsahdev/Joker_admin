@@ -34,9 +34,10 @@ const Inbox = ({ navigation }) => {
     }, [])
     useEffect(() => {
         // Call the API when the component mounts
-        console.log("+++++++");
+        //console.log("+++++++");
         inboxapi();
     }, [isFocused]);
+
     const inboxapi = async () => {
         const Token = await AsyncStorage.getItem('token');
 
@@ -50,7 +51,7 @@ const Inbox = ({ navigation }) => {
             .then(response => response.json())
             .then(data => {
                 // Handle the response data here
-                console.log(data)
+                //console.log(data)
                 if (data.success) {
                     setidata(data.bookings)
                     setidata2(data.bookings)
@@ -76,8 +77,8 @@ const Inbox = ({ navigation }) => {
         const hasBookingRights = await checkAdminByPhoneNumber(phoneNumberToCheck);
         if (hasBookingRights) {
             // Admin has booking rights
-            console.log(hasBookingRights.book_right, 'admin found');
-            console.log(hasBookingRights.status, 'admin found');
+            //console.log(hasBookingRights.book_right, 'admin found');
+            //console.log(hasBookingRights.status, 'admin found');
             // setbookingrigh(hasBookingRights.book_right)
             // setloginright(hasBookingRights.status)
             if (hasBookingRights.status === 'block') {
@@ -88,7 +89,7 @@ const Inbox = ({ navigation }) => {
             }
             // Add your logic here, e.g., render specific UI, perform actions, etc.
         } else {
-            console.log('superadmin found');
+            //console.log('superadmin found');
             // Admin does not have booking rights or is not active
             // Add your logic here, if needed
         }
@@ -99,12 +100,12 @@ const Inbox = ({ navigation }) => {
             const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
             if (response.ok) {
                 const data = await response.json();
-                console.log(data, '===admin');
+                //console.log(data, '===admin');
                 if (data && data.admins) {
                     const matchingAdmin = data.admins.find(admin => admin.phone === phoneNumber);
                     if (matchingAdmin) {
 
-                        console.log(matchingAdmin, '=====match===');
+                        //console.log(matchingAdmin, '=====match===');
                         return matchingAdmin;
                     }
                 }
@@ -116,17 +117,6 @@ const Inbox = ({ navigation }) => {
         return false; // Default to no booking rights or on error
     };
 
-    const rulesData = [
-        { id: '0', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        { id: '1', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        { id: '2', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        { id: '3', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        { id: '4', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        { id: '5', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' },
-        // for admin
-        // { id: '5', message: 'book success', code: '111', date: '05-11-2023', time: '01-04 am', BoxName: 'King', amount: '400' , username:'kevin', phone:'1234567890'},
-
-    ];
     const formatDate = (inputDate) => {
         const date = new Date(inputDate);
         const day = date.getDate();
@@ -157,18 +147,46 @@ const Inbox = ({ navigation }) => {
             setSearchText('');
             inboxapi();
         } else if (!filteredData.length) {
-            console.log('no data');
+            //console.log('no data');
         } else if (Array.isArray(filteredData)) {
             setidata(filteredData);
         }
     };
 
     const handlemodal = () => {
-        console.log("truew");
+        //console.log("truew");
         setVisible(true)
     }
+    const filterData = (keywork) => {
+        const filtered = idata2.filter(item => {
+            // Replace this condition with your own filtering logic
+            return item.message === keywork;
+        });
+
+        setidata(filtered);
+        setVisible(false)
+    };
+    const formatDateTime = (inputDateTime) => {
+        const date = new Date(inputDateTime);
+
+        const day = date.getDate();
+        const month = date.getMonth() + 1; // Month is 0-indexed
+        const year = date.getFullYear();
+
+        const hours = date.getHours();
+        const minutes = date.getMinutes();
+        const ampm = hours >= 12 ? 'PM' : 'AM';
+
+        const formattedDay = day < 10 ? `0${day}` : day;
+        const formattedMonth = month < 10 ? `0${month}` : month;
+        const formattedHours = hours % 12 === 0 ? 12 : hours % 12;
+        const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+        return `${formattedDay}-${formattedMonth}-${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
+    };
     const renderItem = ({ item }) => {
 
+        const bookingTime = formatDateTime(item.bookingTime)
 
         const formattedDate = formatDate(item.date)
 
@@ -209,6 +227,11 @@ const Inbox = ({ navigation }) => {
                     <Text style={styles.textLeft}>Amount</Text>
                     <Text style={styles.textLeft}>{item.amount}</Text>
                 </View>
+                <View style={{ flexDirection: 'row' }}>
+
+                    <Text style={styles.textLeft}>Amount</Text>
+                    <Text style={styles.textLeft}>{bookingTime}</Text>
+                </View>
 
                 <View style={{ flexDirection: 'row' }}>
 
@@ -236,7 +259,7 @@ const Inbox = ({ navigation }) => {
                     <View >
                         <TopHeader name={"Inbox"} />
                     </View>
-                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} />
+                    <SearchBar searchText={searchText} onChangeSearchText={handleSerach} press={() => handlemodal()} filter={true} />
 
                     <View style={{ marginRight: wp(9), width: '100%', marginBottom: hp(12) }}>
                         <FlatList
@@ -249,7 +272,7 @@ const Inbox = ({ navigation }) => {
                         <Modal
                             visible={Visible}
                             transparent={true}
-                            animationType="slide">
+                            mationType="slide">
                             <TouchableWithoutFeedback onPress={() => setVisible(false)}>
 
                                 <View style={styles.modalContent}>
@@ -264,20 +287,19 @@ const Inbox = ({ navigation }) => {
                                         alignSelf: 'center',
                                         top: '40%',
                                     }}>
-                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => filterData("booked")} >
                                             <Text style={{ color: '#fff' }}>Booked</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => filterData("cancel_request")} >
                                             <Text style={{ color: '#fff' }}>Cancel Booking</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.mbtn} onPress={() => console.log("ook")} >
+                                        <TouchableOpacity style={styles.mbtn} onPress={() => filterData("cancelled")} >
 
                                             <Text style={{ color: '#fff' }}>Confirm Booking</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </TouchableWithoutFeedback >
-
                         </Modal >
                     </View>
 

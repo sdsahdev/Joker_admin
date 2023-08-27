@@ -1,4 +1,6 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+>
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -17,6 +19,7 @@
         android:launchMode="singleTask"
         android:windowSoftInputMode="adjustNothing"
         android:usesCleartextTraffic="true"
+        android:screenOrientation="portrait" 
         android:exported="true">
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
