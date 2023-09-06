@@ -3,6 +3,7 @@ import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity, ActivityIndi
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
+import ProgressLoader from 'rn-progress-loader';
 const BoxeItems = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,6 +24,8 @@ const BoxeItems = ({ navigation }) => {
                 setIsLoading(false);
                 //console.log("not ok");
                 throw new Error('Network response was not ok');
+            } else {
+                setIsLoading(false);
             }
             const jsonData = await response.json();
             //console.log(jsonData[0].images[0].url, "==== datas");
@@ -68,8 +71,11 @@ const BoxeItems = ({ navigation }) => {
     );
     return (
         <View style={styles.container}>
-            {isLoading && (
-                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
+            <ProgressLoader
+                visible={isLoading}
+                isModal={true} isHUD={true}
+                hudColor={"#fff"}
+                color={"#027850"} />
             <FlatList
                 style={{ marginBottom: wp(19) }}
                 data={Object.values(filteredData)}

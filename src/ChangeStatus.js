@@ -19,7 +19,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import OneItem from '../Components/OneItem';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
-
+import ProgressLoader from 'rn-progress-loader';
 const ChangeStatus = ({ navigation }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [rulesData, setData] = useState([]);
@@ -201,9 +201,11 @@ const ChangeStatus = ({ navigation }) => {
     return (
         <SafeAreaView style={{ position: 'relative', flex: 1 }}>
             <FlashMessage />
-            {isLoading && (
-                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%', }} />)}
-
+            <ProgressLoader
+                visible={isLoading}
+                isModal={true} isHUD={true}
+                hudColor={"#fff"}
+                color={"#027850"} />
             <View style={{ position: 'relative' }}>
                 <ScrollView >
 

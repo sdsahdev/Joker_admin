@@ -25,6 +25,7 @@ import FlashMessage, {
   FlashMessageManager,
 } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import ProgressLoader from 'rn-progress-loader';
 
 const DateTime = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -312,8 +313,11 @@ const DateTime = ({ navigation, route }) => {
             tor={handletor}
             data={data} />
         </View>
-        {isLoading && (
-          <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
+        <ProgressLoader
+          visible={isLoading}
+          isModal={true} isHUD={true}
+          hudColor={"#fff"}
+          color={"#027850"} />
       </ScrollView>
     </View>
   );

@@ -18,7 +18,7 @@ import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
-
+import ProgressLoader from 'rn-progress-loader';
 // create a component
 const RegisterScreen = ({ navigation }) => {
     FlashMessageManager.setDisabled(false);
@@ -57,7 +57,90 @@ const RegisterScreen = ({ navigation }) => {
     const handleuserChange = (input) => {
         setusername(input)
     }
-    const handleEmail = (input) => {
+
+    const isValidPhoneNumber = (input) => {
+        const formattedPhoneNumber = input.replace(/\D/g, '');
+        const limitedPhoneNumber = formattedPhoneNumber.slice(0, 10);
+        setPhoneNumber(limitedPhoneNumber);
+        const phoneNumberPattern = /^\d{10}$/;
+        return phoneNumberPattern;
+    };
+
+    return (
+        <View style={styles.container}>
+
+            <FlashMessage />
+
+            <SafeAreaView>
+                <TopHeader />
+                <Text style={styles.titelText}>
+                    Hi~{'\n'}
+                    Add new Admin
+                </Text>
+
+                <ChangePass name={"Admin Name"} headerText={null} onChangeText={handleuserChange} />
+
+                {/* <ChangePass name={"Email"} headerText={null} onChangeText={handleEmail} /> */}
+                <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
+
+                <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />
+            </SafeAreaView >
+            <FlashMessage position="bottom" />
+
+            <TouchableOpacity style={styles.bookbtn} onPress={() => msgapi()}>
+                <Text style={styles.booktxt}>
+                    Add Admin
+                </Text>
+            </TouchableOpacity>
+            <ProgressLoader
+                visible={isLoading}
+                isModal={true} isHUD={true}
+                hudColor={"#fff"}
+                color={"#027850"} />
+        </View >
+    );
+};
+
+// define your styles
+const styles = StyleSheet.create({
+    phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
+    booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
+    bookbtn: {
+        backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)
+
+    },
+    container: {
+        flex: 1,
+    },
+    titelText: {
+        width: wp(80),
+        height: hp(9),
+        color: '#027850',
+        fontSize: wp(7),
+        marginTop: hp(10),
+        marginHorizontal: hp(4),
+        fontWeight: 'bold',
+    },
+    fillDetails: {
+        backgroundColor: '#fff',
+        margin: wp(2),
+        marginHorizontal: wp(5), padding: wp(3),
+        borderRadius: wp(2),
+        color: ' #4b92b4',
+        flexDirection: 'row',
+        borderBottomColor: '#027850',
+        borderBottomWidth: 2,
+    },
+    inputFild: {
+        height: hp(5), width: wp(50), color: 'black', paddingLeft: wp(4),
+    },
+});
+
+//make this component available to the app
+export default RegisterScreen;
+
+/*  
+ const handleEmail = (input) => {
         setemail(input)
     }
     const callApi = async () => {
@@ -128,84 +211,4 @@ const RegisterScreen = ({ navigation }) => {
             });
         }
     };
-
-
-    const isValidPhoneNumber = (input) => {
-        const formattedPhoneNumber = input.replace(/\D/g, '');
-        const limitedPhoneNumber = formattedPhoneNumber.slice(0, 10);
-        setPhoneNumber(limitedPhoneNumber);
-        const phoneNumberPattern = /^\d{10}$/;
-        return phoneNumberPattern;
-    };
-
-    return (
-        <View style={styles.container}>
-
-            <FlashMessage />
-
-            <SafeAreaView>
-                <TopHeader />
-                <Text style={styles.titelText}>
-                    Hi~{'\n'}
-                    Add new Admin
-                </Text>
-
-                <ChangePass name={"Admin Name"} headerText={null} onChangeText={handleuserChange} />
-
-                {/* <ChangePass name={"Email"} headerText={null} onChangeText={handleEmail} /> */}
-                <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
-
-                <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />
-            </SafeAreaView >
-            <FlashMessage position="bottom" />
-
-            <TouchableOpacity style={styles.bookbtn} onPress={() => msgapi()}>
-                <Text style={styles.booktxt}>
-                    Add Admin
-                </Text>
-            </TouchableOpacity>
-            {isLoading && (
-                <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
-
-        </View >
-    );
-};
-
-// define your styles
-const styles = StyleSheet.create({
-    phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
-    booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: {
-        backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)
-
-    },
-    container: {
-        flex: 1,
-    },
-    titelText: {
-        width: wp(80),
-        height: hp(9),
-        color: '#027850',
-        fontSize: wp(7),
-        marginTop: hp(10),
-        marginHorizontal: hp(4),
-        fontWeight: 'bold',
-    },
-    fillDetails: {
-        backgroundColor: '#fff',
-        margin: wp(2),
-        marginHorizontal: wp(5), padding: wp(3),
-        borderRadius: wp(2),
-        color: ' #4b92b4',
-        flexDirection: 'row',
-        borderBottomColor: '#027850',
-        borderBottomWidth: 2,
-    },
-    inputFild: {
-        height: hp(5), width: wp(50), color: 'black', paddingLeft: wp(4),
-    },
-});
-
-//make this component available to the app
-export default RegisterScreen;
-
+*/

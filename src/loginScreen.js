@@ -24,7 +24,7 @@ import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
-
+import ProgressLoader from 'rn-progress-loader';
 // create a component
 const loginSceen = ({ navigation }) => {
   FlashMessageManager.setDisabled(false);
@@ -198,8 +198,11 @@ const loginSceen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlashMessage />
-      {isLoading && (
-        <ActivityIndicator size="large" color="#0000ff" style={{ position: 'absolute', justifyContent: 'center', alignSelf: 'center', height: '100%' }} />)}
+      <ProgressLoader
+        visible={isLoading}
+        isModal={true} isHUD={true}
+        hudColor={"#fff"}
+        color={"#027850"} />
       <SafeAreaView>
         <TopHeader />
         <Text style={styles.titelText}>
@@ -208,7 +211,6 @@ const loginSceen = ({ navigation }) => {
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
-          {/* <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} /> */}
           <ChangePass name={"Phone Number"} headerText={null} onChangeText={handleuserChange} called={true} />
         </View>
         <ChangePass name={"Password"} headerText={null} onChangeText={handletxtChange} eye={true} />

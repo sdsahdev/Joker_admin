@@ -7,6 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundSvg from '../asserts/svgs/BgImg';
 import SwipList from '../Components/SwipList';
 import BoxeItems from '../Components/BoxeItems';
+import ProgressLoader from 'rn-progress-loader';
 
 const BoxList = ({ navigation }) => {
   const isFocused = useIsFocused();
