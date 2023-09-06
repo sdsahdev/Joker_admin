@@ -32,37 +32,12 @@ const DateTime = ({ navigation, route }) => {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
   const [caldate, setcalldat] = useState({});
-  const [startTimeData, setStartTimeData] = useState(null);
-  const [endTimeData, setEndTimeData] = useState(null);
   const [data, setdatea6] = useState([])
-  const [amo, setamo] = useState(0);
   const [apidate, setapidate] = useState([]);
   const [bookingrights, setbookingrigh] = useState();
   const [loginright, setloginright] = useState();
   const [isSuper, setisSuper] = useState();
-  const [hasLoaded, setHasLoaded] = useState(false);
-
-
-  useEffect(() => {
-    // setdatea6(Object.values(data6))
-    if (!hasLoaded) {
-      // slotapi();
-
-      setHasLoaded(true);
-
-    }
-    if (startTimeData) {
-      setStartTime(startTimeData.start_time);
-      if (!endTimeData) {
-        // If endTimeData is not set, set it to startTimeData.etime initially
-        setEndTime(startTimeData.end_time);
-      }
-
-    }
-    if (endTimeData) {
-      setEndTime(endTimeData.end_time);
-    }
-  }, [startTimeData, endTimeData]);
+  const [fDate, setfDate] = useState('')
 
 
   useEffect(() => {
@@ -138,28 +113,13 @@ const DateTime = ({ navigation, route }) => {
       .then(response => response.json())
       .then((data, index) => {
         setIsLoading(false)
-        function convertTimeFormat(time, index) {
-          //console.log(Object.values(data).length);
-          if (index === 0) {
-            return '01-02 am'
-          }
-          if (data.length === 23) {
-            return '22-01 pm'
-          }
-          const [hourMinute, ampm] = time.split(' ');
-          const [shour, ehour] = hourMinute.split('-');
-          const newsHour = String(parseInt(shour, 10) + 1).padStart(2, '0');
-          const neweHour = String(parseInt(ehour, 10) + 1).padStart(2, '0');
-
-          return `${newsHour}-${neweHour} ${ampm}`;
-        }
 
         // Create a new array of modified response objects
         const modifiedResponse = Object.values(data).map((slot, index) => {
           if (typeof slot === 'object' && slot.time) {
             return {
               ...slot,
-              time: convertTimeFormat(slot.time, index)
+              id: index + 1
             };
           }
           return slot;
@@ -171,6 +131,14 @@ const DateTime = ({ navigation, route }) => {
       .catch(error => {
         setIsLoading(false)
         // Handle any errors here
+        console.error('Error:', error);
+        showMessage({
+          message: "Please Try again later",
+          type: "Danger",
+          backgroundColor: "red", // background color
+          duration: 5000,
+          color: "#fff", // text color
+        });
         console.error('Error:', error);
       });
   }
@@ -185,86 +153,10 @@ const DateTime = ({ navigation, route }) => {
     //console.log(selectedDates, '---');
     if (selectedDates.length === 1) {
       const firstSelectedDate = selectedDates[0];
+      setfDate(firstSelectedDate);
       slotapi(firstSelectedDate)
     }
   };
-
-  // const BookingPro = async (amount) => {
-  //   const keys = await AsyncStorage.getItem('rkey')
-  //   //console.log(keys);
-  //   var options = {
-  //     description: 'Credits towards ',
-
-  //     image: 'https://i.imgur.com/3g7nmJC.jpg',
-  //     currency: 'INR',
-  //     key: keys,
-  //     amount: amount * 100,
-  //     name: 'Acme Corp',
-
-  //     order_id: '',//Replace this with an order_id created using Orders API.
-  //     prefill: {
-  //       email: 'gaurav.kumar@example.com',
-  //       contact: '9191919191',
-  //       name: 'Gaurav Kumar'
-  //     },
-  //     theme: {
-  //       color: '#027850',
-  //     }
-  //   }
-  //   RazorpayCheckout.open(options).then((data) => {
-  //     //console.log('success');
-  //     // handle success
-  //     // alert(`Success: ${data.razorpay_payment_id}`);
-  //     showMessage({
-  //       message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
-  //       type: "Success",
-  //       backgroundColor: "green", // background color
-  //       color: "#fff", // text color
-  //       duration: 2000,
-  //       onHide: () => {
-  //         bookm(data.razorpay_payment_id, amount);
-  //       }
-  //     });
-  //   }).catch((error) => {
-  //     // handle failure
-  //     //console.log('fails');
-
-  //     // alert(`Error: ${error.code} | ${error.description}`);
-  //     showMessage({
-  //       message: error.description,
-  //       type: "Danger",
-  //       backgroundColor: "red", // background color
-  //       duration: 5000,
-  //       color: "#fff", // text color
-  //     });
-  //   });
-  // };
-
-  const handleStartTimeChange = time => {
-    if (!time) {
-      return;
-    }
-
-    const selectedStartTimeData = data.find(item => item.time === time);
-
-    if (selectedStartTimeData) {
-      setStartTimeData(selectedStartTimeData);
-    }
-  };
-
-  const handleEndTimeChange = time => {
-    if (!time) {
-      console.error('endTime is not valid:', time);
-      setEndTimeData(null)
-      return;
-    }
-
-    const selectedEndTimeData = data.find(item => item.time === time);
-    if (selectedEndTimeData) {
-      setEndTimeData(selectedEndTimeData);
-    }
-  };
-
 
   const handletor = time => {
     // setEndTime(time);
@@ -348,7 +240,7 @@ const DateTime = ({ navigation, route }) => {
         setIsLoading(false)
         //console.log('API response:', data);
         if (data.success) {
-          slotapi()
+          slotapi(fDate)
           showMessage({
             message: `Your booking is successfull`,
             type: "Success",
@@ -379,7 +271,7 @@ const DateTime = ({ navigation, route }) => {
     <View style={styles.mainView}>
       <ScrollView>
         <View>
-          <TopHeader name={'Book Your Slot'} />
+          <TopHeader name={'Book Your Slot'} back={true} navigation={navigation} />
         </View>
         {/* {//console.log(startTime, "==satrt===")}
         {//console.log(endTime, "==end===")} */}
@@ -415,8 +307,8 @@ const DateTime = ({ navigation, route }) => {
         </View>
         <View style={styles.sendView}>
           <SlotTime
-            onStartTimeChange={handleStartTimeChange}
-            onEndTimeChange={handleEndTimeChange}
+            onStartTimeChange={(e) => setStartTime(e)}
+            onEndTimeChange={(e) => setEndTime(e)}
             tor={handletor}
             data={data} />
         </View>

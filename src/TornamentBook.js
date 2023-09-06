@@ -26,7 +26,7 @@ import FlashMessage, {
 } from 'react-native-flash-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const TornamentBook = () => {
+const TornamentBook = ({ navigation }) => {
 
     const [isLoading, setIsLoading] = useState(false);
     const route = useRoute();
@@ -34,16 +34,12 @@ const TornamentBook = () => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [caldate, setcalldat] = useState({});
-    const [startTimeData, setStartTimeData] = useState(null);
-    const [endTimeData, setEndTimeData] = useState(null);
     const [data, setdatea6] = useState([])
-    const [amo, setamo] = useState(0);
     const [apidate, setapidate] = useState([]);
     const [bookingrights, setbookingrigh] = useState();
     const [loginright, setloginright] = useState();
     const [isSuper, setisSuper] = useState();
-    const [hasLoaded, setHasLoaded] = useState(false);
-
+    const [fDate, setfDate] = useState('')
 
     useEffect(() => {
         fetchSuperAdminStatus();
@@ -58,24 +54,6 @@ const TornamentBook = () => {
         }
     };
 
-    useEffect(() => {
-        // setdatea6(Object.values(data6))
-        if (!hasLoaded) {
-            // slotapi();
-            setHasLoaded(true);
-        }
-        if (startTimeData) {
-            setStartTime(startTimeData.start_time);
-            if (!endTimeData) {
-                // If endTimeData is not set, set it to startTimeData.etime initially
-                setEndTime(startTimeData.end_time);
-            }
-
-        }
-        if (endTimeData) {
-            setEndTime(endTimeData.end_time);
-        }
-    }, [startTimeData, endTimeData]);
 
     const handleAdminCheck = async () => {
 
@@ -135,29 +113,11 @@ const TornamentBook = () => {
             .then((data, index) => {
                 setIsLoading(false)
 
-                function convertTimeFormat(time, index) {
-                    //console.log(Object.values(data).length);
-                    if (index === 0) {
-                        return '01-02 am'
-                    }
-                    if (data.length === 23) {
-                        return '22-01 pm'
-                    }
-                    const [hourMinute, ampm] = time.split(' ');
-                    const [shour, ehour] = hourMinute.split('-');
-                    const newsHour = String(parseInt(shour, 10) + 1).padStart(2, '0');
-                    const neweHour = String(parseInt(ehour, 10) + 1).padStart(2, '0');
-
-                    return `${newsHour}-${neweHour} ${ampm}`;
-                }
-
-
-                // Create a new array of modified response objects
                 const modifiedResponse = Object.values(data).map((slot, index) => {
                     if (typeof slot === 'object' && slot.time) {
                         return {
                             ...slot,
-                            time: convertTimeFormat(slot.time, index)
+                            id: index + 1
                         };
                     }
                     return slot;
@@ -180,88 +140,13 @@ const TornamentBook = () => {
         //console.log(selectedDates, '---');
         if (selectedDates.length === 1) {
             const firstSelectedDate = selectedDates[0];
-
+            setfDate(firstSelectedDate);
             slotapi(firstSelectedDate)
         }
     };
 
-    // const BookingPro = async (amounts) => {
 
-
-    //     const keys = await AsyncStorage.getItem('rkey')
-    //     var options = {
-    //         description: 'Credits towards ',
-    //         image: 'https://i.imgur.com/3g7nmJC.jpg',
-    //         currency: 'INR',
-    //         key: keys,
-    //         amount: amounts * 100,
-    //         name: 'Acme Corp',
-
-    //         order_id: '',//Replace this with an order_id created using Orders API.
-    //         prefill: {
-    //             email: 'gaurav.kumar@example.com',
-    //             contact: '9191919191',
-    //             name: 'Gaurav Kumar'
-    //         },
-    //         theme: {
-    //             color: '#027850',
-    //         }
-    //     }
-    //     RazorpayCheckout.open(options).then((data) => {
-    //         // handle success
-    //         // alert(`Success: ${data.razorpay_payment_id}`);
-    //         showMessage({
-    //             message: `Success Your Payment, Payment id : ${data.razorpay_payment_id}`,
-    //             type: "Success",
-    //             backgroundColor: "green", // background color
-    //             color: "#fff", // text color
-    //             duration: 2000,
-    //             onHide: () => {
-    //                 bookm(data.razorpay_payment_id, amounts);
-    //             }
-    //         });
-    //     }).catch((error) => {
-    //         // handle failure
-    //         // alert(`Error: ${error.code} | ${error.description}`);
-    //         showMessage({
-    //             message: error.error.description,
-    //             type: "Danger",
-    //             backgroundColor: "red", // background color
-    //             duration: 5000,
-    //             color: "#fff", // text color
-    //         });
-    //     });
-    // };
-
-    const handleStartTimeChange = time => {
-        if (!time) {
-            return;
-        }
-        const selectedStartTimeData = data.find(item => item.time === time);
-
-        if (selectedStartTimeData) {
-            setStartTimeData(selectedStartTimeData);
-        }
-    };
-
-    const handleEndTimeChange = time => {
-        if (!time) {
-            console.error('endTime is not valid:', time);
-            setEndTimeData(null)
-            return;
-        }
-
-        const selectedEndTimeData = data.find(item => item.time === time);
-        if (selectedEndTimeData) {
-            setEndTimeData(selectedEndTimeData);
-        }
-    };
-
-
-    const handletor = time => {
-        // setEndTime(time);
-        // //console.log(time, "++++end Times++++++++");
-    };
+    const handletor = time => { };
 
     const csapi = () => {
         setIsLoading(true)
@@ -345,7 +230,7 @@ const TornamentBook = () => {
 
                 //console.log('API response:', data);
                 if (data.success) {
-                    slotapi()
+                    slotapi(fDate)
                     showMessage({
                         message: `Your booking is successfull`,
                         type: "Success",
@@ -377,7 +262,7 @@ const TornamentBook = () => {
         <View style={styles.mainView}>
             <ScrollView>
                 <View>
-                    <TopHeader name={'Book Your Tornament'} />
+                    <TopHeader name={'Book Your Tornament'} back={true} navigation={navigation} />
                 </View>
 
                 <Text style={styles.datess}>select date is required</Text>
@@ -412,8 +297,8 @@ const TornamentBook = () => {
                 </View>
                 <View style={styles.sendView}>
                     <SlotTime
-                        onStartTimeChange={handleStartTimeChange}
-                        onEndTimeChange={handleEndTimeChange}
+                        onStartTimeChange={(e) => setStartTime(e)}
+                        onEndTimeChange={(e) => setEndTime(e)}
                         tor={handletor}
                         data={data} />
                 </View>
