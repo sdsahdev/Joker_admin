@@ -21,12 +21,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import FlashMessage, { showMessage, hideMessage, FlashMessageManager } from "react-native-flash-message";
 import { useIsFocused } from '@react-navigation/native'; // Import the hook
 import SearchBar from '../Components/SearchBar';
-
+import ProgressLoader from 'rn-progress-loader';
 const Inbox = ({ navigation }) => {
     const [idata, setidata] = useState([])
     const [searchText, setSearchText] = useState('');
     const [idata2, setidata2] = useState([]);
     const [Visible, setVisible] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
     const isFocused = useIsFocused(); // Get the screen's focused state
     useEffect(() => {
 
@@ -39,6 +40,7 @@ const Inbox = ({ navigation }) => {
     }, [isFocused]);
 
     const inboxapi = async () => {
+        setIsLoading(true)
         const Token = await AsyncStorage.getItem('token');
 
         fetch('https://boxclub.in/Joker/Admin/index.php?what=showInboxAdmin', {
@@ -50,6 +52,7 @@ const Inbox = ({ navigation }) => {
         })
             .then(response => response.json())
             .then(data => {
+                setIsLoading(false)
                 // Handle the response data here
                 //console.log(data)
                 if (data.success) {
@@ -67,6 +70,8 @@ const Inbox = ({ navigation }) => {
                 }
             })
             .catch(error => {
+
+                setIsLoading(false)
                 // Handle any errors here
                 console.error('Error:', error);
             });
@@ -252,7 +257,7 @@ const Inbox = ({ navigation }) => {
         );
     };
     return (
-        <SafeAreaView style={{ position: 'relative' }}>
+        <View style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
                 <ScrollView >
 
@@ -306,8 +311,12 @@ const Inbox = ({ navigation }) => {
                 </ScrollView>
 
             </View>
-
-        </SafeAreaView>
+            <ProgressLoader
+                visible={isLoading}
+                isModal={true} isHUD={true}
+                hudColor={"#fff"}
+                color={"#027850"} />
+        </View>
     )
 }
 

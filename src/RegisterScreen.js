@@ -71,7 +71,7 @@ const RegisterScreen = ({ navigation }) => {
 
             <FlashMessage />
 
-            <SafeAreaView>
+            <View>
                 <TopHeader />
                 <Text style={styles.titelText}>
                     Hi~{'\n'}
@@ -84,7 +84,7 @@ const RegisterScreen = ({ navigation }) => {
                 <ChangePass name={"Phone Number"} headerText={null} onChangeText={isValidPhoneNumber} called={true} />
 
                 <ChangePass name={"Password"} headerText={null} onChangeText={handlepassword} />
-            </SafeAreaView >
+            </View >
             <FlashMessage position="bottom" />
 
             <TouchableOpacity style={styles.bookbtn} onPress={() => msgapi()}>
@@ -104,10 +104,21 @@ const RegisterScreen = ({ navigation }) => {
 // define your styles
 const styles = StyleSheet.create({
     phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
-    booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: {
-        backgroundColor: '#027850', height: hp(6), width: "90%", position: 'absolute', bottom: 0, alignSelf: 'center', marginBottom: hp(5), borderRadius: wp(2)
-
+    booktxt: {
+        color: '#fff',
+        alignSelf: 'center',
+        textAlignVertical: 'center',
+        fontSize: wp(4)
+    }, bookbtn: {
+        backgroundColor: '#027850',
+        alignSelf: 'center',
+        borderRadius: wp(2),
+        marginHorizontal: wp(2),
+        bottom: hp(7),
+        justifyContent: 'center',
+        paddingVertical: wp(5),
+        paddingHorizontal: wp(15),
+        position: 'absolute',
     },
     container: {
         flex: 1,

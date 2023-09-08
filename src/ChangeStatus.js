@@ -199,7 +199,7 @@ const ChangeStatus = ({ navigation }) => {
         </View>
     );
     return (
-        <SafeAreaView style={{ position: 'relative', flex: 1 }}>
+        <View style={{ position: 'relative', flex: 1 }}>
             <FlashMessage />
             <ProgressLoader
                 visible={isLoading}
@@ -227,7 +227,7 @@ const ChangeStatus = ({ navigation }) => {
 
             </View>
 
-        </SafeAreaView>
+        </View>
     )
 }
 

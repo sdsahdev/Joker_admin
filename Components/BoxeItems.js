@@ -2,64 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { View, FlatList, Image, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
 import imagesClass from '../asserts/imagepath';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-
 import ProgressLoader from 'rn-progress-loader';
-const BoxeItems = ({ navigation }) => {
+import FastImage from 'react-native-fast-image';
+
+const BoxeItems = ({ navigation, boxData }) => {
     const [isLoading, setIsLoading] = useState(false);
 
-    const [data, setData] = useState([]);
+    const renderItem = ({ item }) => (
 
-    useEffect(() => {
-        // Call the API when the component mounts
-        // //console.log("+++++++");
-        fetchBoxData();
-    }, []);
-
-    const fetchBoxData = async () => {
-        // //console.log("-----------");
-        try {
-            setIsLoading(true);
-            const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
-            if (!response.ok) {
-                setIsLoading(false);
-                //console.log("not ok");
-                throw new Error('Network response was not ok');
-            } else {
-                setIsLoading(false);
-            }
-            const jsonData = await response.json();
-            //console.log(jsonData[0].images[0].url, "==== datas");
-            setData(jsonData);
-        } catch (error) {
-            setIsLoading(false);
-            //console.log('Error:', error);
-        }
-    };
-
-    // const navigation = useNavigation();
-    const filteredData = Object.keys(data).filter(key => key !== 'keys').reduce((obj, key) => {
-        obj[key] = data[key];
-        return obj;
-    }, {});
-    const renderItem = ({ item, index }) => (
         <View style={styles.container}>
-            {/* {//console.log(index, '===index')} */}
             <TouchableOpacity
-                onPress={() => navigation.navigate("Details", { item: item, index: index })}
-            >
+                onPress={() => navigation.navigate("Details", { item })} >
                 <View style={{ flexDirection: 'row' }}>
 
-                    {/* {console.log(item)} */}
-                    {item.images[0] && <Image
-                        source={{ uri: item.images[0].url }}
+                    {console.log(item.images[0])}
+                    {console.log(item.images[1])}
+
+
+                    <FastImage
+                        source={item.images[0] ? { uri: item.images[0].url } : imagesClass.box4}
                         style={[item.images[1] ? [styles.image] : [item.images[1], { width: '100%', height: '100%' }]]}
                         resizeMode="stretch"
-                    />}
-                    <Image
-                        source={{ uri: item.images[1] ? item.images[1].url : item.images[0].url }}
+                    />
+                    <FastImage
+                        source={item.images[1] ? { uri: item.images[1].url } : imagesClass.box4}
                         style={styles.image2}
                         resizeMode="stretch"
                     />
+
+
                 </View>
                 <View style={styles.textContainer}>
                     {item.name && <Text style={styles.textLeft}>{item.name}</Text>}
@@ -69,20 +40,24 @@ const BoxeItems = ({ navigation }) => {
 
         </View>
     );
+
     return (
         <View style={styles.container}>
+
+            {/* {console.log(boxData)}
+            {console.log(Object.values(boxData))} */}
+            <FlatList
+                style={{ marginBottom: wp(19) }}
+                data={boxData}
+                showsVerticalScrollIndicator={false}
+                keyExtractor={item => item.id}
+                renderItem={renderItem}
+            />
             <ProgressLoader
                 visible={isLoading}
                 isModal={true} isHUD={true}
                 hudColor={"#fff"}
                 color={"#027850"} />
-            <FlatList
-                style={{ marginBottom: wp(19) }}
-                data={Object.values(filteredData)}
-                showsVerticalScrollIndicator={false}
-                keyExtractor={item => item.id}
-                renderItem={renderItem}
-            />
         </View>
     );
 };

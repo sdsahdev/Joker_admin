@@ -16,7 +16,7 @@ const Menu = ({ icon, name, onpress }) => {
 
                     <View style={{ flexDirection: 'row', }}>
 
-                        <Image source={icon} style={{ height: hp(6), width: wp(20), resizeMode: 'center', marginVertical: hp(2) }} />
+                        <Image source={icon} style={{ height: hp(6), width: wp(20), resizeMode: 'contain', marginVertical: hp(2) }} />
                         <Text style={{ fontSize: wp(5), color: '#000', alignSelf: 'center' }}>
                             {name}
                         </Text>

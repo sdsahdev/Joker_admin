@@ -57,7 +57,7 @@ const CalanderFile = ({ datesselect }) => {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Calendar
                 style={{
                     borderWidth: 1,
@@ -70,7 +70,7 @@ const CalanderFile = ({ datesselect }) => {
                 maxDate={new Date(Date.now() + 365 * 24 * 60 * 60 * 1000)} // Show up to 1 year ahead
             />
 
-        </SafeAreaView>
+        </View>
     );
 };
 

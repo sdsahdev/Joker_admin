@@ -37,6 +37,25 @@ const loginSceen = ({ navigation }) => {
     //console.log("+++++++");
     fetchBoxData();
   }, []);
+  useEffect(() => {
+    checkAuthStatus();
+  }, []);
+
+  const checkAuthStatus = async () => {
+    try {
+      const userToken = await AsyncStorage.getItem('superAdmin');
+      console.log(userToken, '====token');
+      if (userToken) {
+        // User is authenticated, navigate to DateTime or other screen
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'BoxList' }],
+        });
+      }
+    } catch (error) {
+      // Handle error
+    }
+  };
 
   const fetchBoxData = async () => {
     //console.log("-----------");
@@ -203,7 +222,7 @@ const loginSceen = ({ navigation }) => {
         isModal={true} isHUD={true}
         hudColor={"#fff"}
         color={"#027850"} />
-      <SafeAreaView>
+      <View>
         <TopHeader />
         <Text style={styles.titelText}>
           Hi~{'\n'}
@@ -219,8 +238,8 @@ const loginSceen = ({ navigation }) => {
             Forgot password
           </Text>
         </TouchableOpacity>
-      </SafeAreaView >
-      <View style={{ flexDirection: 'row', height: '100%' }}>
+      </View >
+      <View style={{ flexDirection: 'row', height: '100%', }}>
 
         <TouchableOpacity style={styles.bookbtn} onPress={() => handleAdmin()}>
           <Text style={styles.booktxt}>
@@ -241,8 +260,21 @@ const loginSceen = ({ navigation }) => {
 // define your styles
 const styles = StyleSheet.create({
   phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
-  booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-  bookbtn: { backgroundColor: '#027850', height: hp(6), flex: 1, alignSelf: 'center', borderRadius: wp(2), marginHorizontal: wp(2), bottom: hp(7), },
+  booktxt: {
+    color: '#fff',
+    alignSelf: 'center',
+    textAlignVertical: 'center',
+    fontSize: wp(4),
+  },
+  bookbtn: {
+    backgroundColor: '#027850',
+    alignSelf: 'center',
+    borderRadius: wp(2),
+    marginHorizontal: wp(2),
+    bottom: hp(7),
+    padding: wp(4),
+    flex: 1
+  },
   container: {
     flex: 1,
   },
@@ -251,7 +283,6 @@ const styles = StyleSheet.create({
     height: hp(9),
     color: '#027850',
     fontSize: wp(7),
-    marginTop: hp(10),
     marginHorizontal: hp(4),
     fontWeight: 'bold',
   },

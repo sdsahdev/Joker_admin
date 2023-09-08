@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity, Linking } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Linking, ScrollView } from 'react-native'
 import React from 'react'
 import imagesClass from '../asserts/imagepath'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -24,82 +24,86 @@ const DetailsCompo = ({ navigation }) => {
             .catch(error => console.error('Error opening Google Maps', error));
     }
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.imageContainer}>
-                {console.log(index, "********index")}
-                <Image
-                    source={imagesClass.GroudDetails}
-                    style={styles.image}
-                    resizeMode="cover"
-                />
-                <View style={styles.imagesOverlay}>
-                    <TouchableOpacity onPress={() => navigation.pop()}>
-                        <Image
-                            source={imagesClass.backbig}
-                            style={styles.image1}
-                            resizeMode="cover"
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("EditBoxD", { item: item, index: index })}>
+        <View style={styles.container}>
+            <ScrollView >
+
+                <View style={styles.imageContainer}>
+                    {console.log(index, "********index")}
+                    <Image
+                        source={imagesClass.GroudDetails}
+                        style={styles.image}
+                        resizeMode="cover"
+                    />
+                    <View style={styles.imagesOverlay}>
+                        <TouchableOpacity onPress={() => navigation.pop()}>
+                            <Image
+                                source={imagesClass.backbig}
+                                style={styles.image1}
+                                resizeMode="cover"
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate("EditBoxD", { item: item, index: index })}>
+
+                            <Image
+                                source={imagesClass.share}
+                                style={styles.image2}
+                                resizeMode="cover"
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <Titels text1={item.name} text2={`${parseInt(item.morning_price) + " ₹"}`} />
+
+
+
+                <TimeComp img={imagesClass.clock} text={"Open: 24 hours"} />
+                {/* <TimeComp img={imagesClass.bluerike} text={"2 Slot available"} /> */}
+
+                <Titels text1={"Location"} />
+                <Text style={styles.addrestxt}>Anthem compound, NR. Harekrishna village Restaurant, simada kenal road</Text>
+                <View style={styles.locationview}>
+                    <TouchableOpacity onPress={openMaps}>
 
                         <Image
-                            source={imagesClass.share}
-                            style={styles.image2}
+                            source={imagesClass.location}
+                            style={styles.mapimage}
                             resizeMode="cover"
                         />
                     </TouchableOpacity>
                 </View>
-            </View>
-            <Titels text1={item.name} text2={`${parseInt(item.morning_price) + " ₹"}`} />
+                <View style={{ marginTop: hp(1) }}>
 
+                    <Titels text1={"Facilities provided"} />
+                </View>
+                <View style={styles.facilityView}>
 
+                    <View>
+                        <Facilities img={imagesClass.waiting} text3={"Waiting Area"} />
+                        <Facilities img={imagesClass.bat} text3={"bat"} />
 
-            <TimeComp img={imagesClass.clock} text={"Open: 24 hours"} />
-            {/* <TimeComp img={imagesClass.bluerike} text={"2 Slot available"} /> */}
+                    </View>
+                    <View>
+                        <Facilities img={imagesClass.water} text3={"Water"} />
+                        <Facilities img={imagesClass.parking} text3={"Parking"} />
 
-            <Titels text1={"Location"} />
-            <Text style={styles.addrestxt}>Anthem compound, NR. Harekrishna village Restaurant, simada kenal road</Text>
-            <View style={styles.locationview}>
-                <TouchableOpacity onPress={openMaps}>
+                    </View>
+                </View>
+                <View style={{ flexDirection: 'row', marginBottom: hp(2) }}>
 
-                    <Image
-                        source={imagesClass.location}
-                        style={styles.mapimage}
-                        resizeMode="cover"
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={{ marginTop: hp(1) }}>
+                    <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("TornamentBook", { item: item })}>
+                        <Text style={styles.booktxt}>
+                            Tounament Booking
+                        </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime", { item: item })}>
+                        <Text style={styles.booktxt}>
+                            Slot Booking
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
 
-                <Titels text1={"Facilities provided"} />
-            </View>
-            <SafeAreaView style={styles.facilityView}>
-
-                <SafeAreaView>
-                    <Facilities img={imagesClass.waiting} text3={"Waiting Area"} />
-                    <Facilities img={imagesClass.bat} text3={"bat"} />
-
-                </SafeAreaView>
-                <SafeAreaView>
-                    <Facilities img={imagesClass.water} text3={"Water"} />
-                    <Facilities img={imagesClass.parking} text3={"Parking"} />
-
-                </SafeAreaView>
-            </SafeAreaView>
-            <View style={{ flexDirection: 'row' }}>
-
-                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("TornamentBook", { item: item })}>
-                    <Text style={styles.booktxt}>
-                        Tounament Booking
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.bookbtn} onPress={() => navigation.navigate("DateTime", { item: item })}>
-                    <Text style={styles.booktxt}>
-                        Slot Booking
-                    </Text>
-                </TouchableOpacity>
-            </View>
-        </SafeAreaView >
+        </View >
 
 
     );

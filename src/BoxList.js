@@ -1,16 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundSvg from '../asserts/svgs/BgImg';
 import SwipList from '../Components/SwipList';
 import BoxeItems from '../Components/BoxeItems';
 import ProgressLoader from 'rn-progress-loader';
+import { useIsFocused } from '@react-navigation/native'; // Import the hook
 
 const BoxList = ({ navigation }) => {
-  const isFocused = useIsFocused();
+  const [isLoading, setIsLoading] = useState(false);
+  const isFocused = useIsFocused(); // Get the screen's focused state
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // Call the API when the component mounts
+    console.log("+++++++");
+    fetchBoxData();
+  }, [useIsFocused]);
+
+  const fetchBoxData = async () => {
+    console.log("-----------");
+    try {
+      setIsLoading(true);
+      const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
+      if (!response.ok) {
+        setIsLoading(false);
+        console.log("not ok");
+        throw new Error('Network response was not ok');
+      } else {
+        setIsLoading(false);
+      }
+      const jsonData = await response.json();
+      console.log(jsonData[0].images[0].url, "==== datas");
+      setData(jsonData);
+    } catch (error) {
+      setIsLoading(false);
+      console.log('Error:', error);
+    }
+  };
+
+  // const navigation = useNavigation();
+  const filteredData = Object.keys(data).filter(key => key !== 'keys').reduce((obj, key) => {
+    obj[key] = data[key];
+    return obj;
+  }, {});
 
   useEffect(() => {
     handleAdminCheck();
@@ -45,7 +81,7 @@ const BoxList = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView>
         <View style={styles.backgroundContainer}>
           <BackgroundSvg />
@@ -57,14 +93,14 @@ const BoxList = ({ navigation }) => {
             <Text style={styles.maintxt}>Here is the best cricket box nearby you</Text>
           </View>
         </View>
-
         <View style={styles.swipest}>
-          <SwipList />
+          <SwipList boxData={Object.values(filteredData)} />
         </View>
 
-        <BoxeItems navigation={navigation} />
+        <BoxeItems navigation={navigation} boxData={Object.values(filteredData)} />
+
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 };
 

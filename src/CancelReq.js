@@ -439,7 +439,7 @@ const CancelReq = ({ navigation }) => {
         );
     }
     return (
-        <SafeAreaView style={{ position: 'relative' }}>
+        <View style={{ position: 'relative' }}>
             <View style={{ position: 'relative' }}>
                 <ScrollView >
 
@@ -463,7 +463,7 @@ const CancelReq = ({ navigation }) => {
 
             </View>
 
-        </SafeAreaView>
+        </View>
     )
 }
 
