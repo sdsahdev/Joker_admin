@@ -158,6 +158,19 @@ dependencies {
 //firebase
 implementation platform('com.google.firebase:firebase-bom:32.2.0')
 implementation 'com.google.firebase:firebase-analytics-ktx'
+  implementation project(':react-native-notifications')
+    // implementation 'com.google.firebase:firebase-core:16.0.0'
+
+
+
+
+// implementation 'com.google.android.gms:play-services-vision:20.0.0'
+
+// implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+// implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
+
+
+
 
  implementation "com.facebook.react:react-android:0.65.1"
 implementation "com.facebook.react:react-native:0.65.1"

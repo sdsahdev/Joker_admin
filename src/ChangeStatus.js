@@ -235,7 +235,16 @@ export default ChangeStatus
 
 const styles = StyleSheet.create({
     booktxt: { color: '#fff', alignSelf: 'center', textAlignVertical: 'center', flex: 1, fontSize: wp(4) },
-    bookbtn: { backgroundColor: '#027850', height: hp(5), flex: 1, alignSelf: 'center', borderRadius: wp(2), marginVertical: hp(2), marginHorizontal: wp(2) },
+    bookbtn: {
+        backgroundColor: '#027850',
+        paddingHorizontal: wp(2),
+        paddingVertical: wp(3),
+        flex: 1,
+        alignSelf: 'center',
+        borderRadius: wp(2),
+        marginVertical: hp(2),
+        marginHorizontal: wp(2)
+    },
 
     btn: { margin: wp(3), height: 40, flex: 1 },
     payment: { color: '#fff', backgroundColor: '#027850', flex: 1, textAlign: 'center', textAlignVertical: 'center', fontSize: wp(5), borderRadius: wp(2), },

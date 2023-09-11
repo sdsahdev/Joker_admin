@@ -20,24 +20,24 @@
 // const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
-import messaging from '@react-native-firebase/messaging';
+// import messaging from '@react-native-firebase/messaging';
 
-export default async function requestUserPermission() {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-        authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-        authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+// export default async function requestUserPermission() {
+//     const authStatus = await messaging().requestPermission();
+//     const enabled =
+//         authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+//         authStatus === messaging.AuthorizationStatus.PROVISIONAL;
 
-    if (enabled) {
-        console.log('Authorization status:', authStatus);
-        GetFcmToken();
-    }
-}
-async function GetFcmToken() {
-    try {
-        let fcmToken = await messaging().getToken();
-        console.log(fcmToken, "==firebase token==");
-    } catch (error) {
-        console.log(error, 'error');
-    }
-}
+//     if (enabled) {
+//         console.log('Authorization status:', authStatus);
+//         GetFcmToken();
+//     }
+// }
+// async function GetFcmToken() {
+//     try {
+//         let fcmToken = await messaging().getToken();
+//         console.log(fcmToken, "==firebase token==");
+//     } catch (error) {
+//         console.log(error, 'error');
+//     }
+// }

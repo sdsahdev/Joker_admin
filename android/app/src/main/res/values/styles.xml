@@ -7,4 +7,5 @@
         <item name="android:forceDarkAllowed">false</item>
     </style>
 
+    <color name="colorAccent">#C60C30</color>
 </resources>

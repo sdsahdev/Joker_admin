@@ -8,17 +8,13 @@ import {
   SafeAreaView,
   Image,
   TextInput,
-  TouchableOpacity, StatusBar, Alert, ActivityIndicator
+  TouchableOpacity, StatusBar, Alert, ActivityIndicator,
+  Platform
 } from 'react-native';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
-import PhoneInput, { getCountryCallingCode } from 'react-phone-number-input/react-native-input'
-import PhoneInputWithCountry from 'react-phone-number-input/react-hook-form'
-import Svg, { Path } from 'react-native-svg';
-import Frame from '../asserts/svgs/Frame.svg';
-import imagesClass from '../asserts/imagepath';
 import TopHeader from '../Components/TopHeader';
 import ChangePass from '../Components/ChangePass';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -151,7 +147,7 @@ const loginSceen = ({ navigation }) => {
 
       const url = 'https://boxclub.in/Joker/Admin/index.php?what=adminLogin';
       const fcmToken = await AsyncStorage.getItem('fcmToken');
-      //console.log(fcmToken, "==storae");
+      console.log(fcmToken, "==storae");
 
       const requestBody = {
         phno: username,
@@ -222,11 +218,14 @@ const loginSceen = ({ navigation }) => {
         isModal={true} isHUD={true}
         hudColor={"#fff"}
         color={"#027850"} />
-      <View>
-        <TopHeader />
+      <View >
+        <View style={{ marginBottom: hp(10) }}>
+
+          <TopHeader />
+        </View>
         <Text style={styles.titelText}>
           Hi~{'\n'}
-          Welcome Bck!
+          Welcome Back!
         </Text>
         <View style={{ marginTop: hp(4) }}>
 
@@ -238,7 +237,7 @@ const loginSceen = ({ navigation }) => {
             Forgot password
           </Text>
         </TouchableOpacity>
-      </View >
+      </View>
       <View style={{ flexDirection: 'row', height: '100%', }}>
 
         <TouchableOpacity style={styles.bookbtn} onPress={() => handleAdmin()}>
@@ -253,13 +252,13 @@ const loginSceen = ({ navigation }) => {
         </TouchableOpacity>
 
       </View>
-    </View >
+    </View>
   );
 };
 
 // define your styles
 const styles = StyleSheet.create({
-  phnimage: { width: wp(5), height: hp(5), tintColor: '#027850' },
+  phnimage: { width: Platform === 'ios' ? wp(5) : wp(2), height: hp(5), tintColor: '#027850' },
   booktxt: {
     color: '#fff',
     alignSelf: 'center',
@@ -271,7 +270,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: wp(2),
     marginHorizontal: wp(2),
-    bottom: hp(7),
+    bottom: hp(10),
     padding: wp(4),
     flex: 1
   },
@@ -285,6 +284,7 @@ const styles = StyleSheet.create({
     fontSize: wp(7),
     marginHorizontal: hp(4),
     fontWeight: 'bold',
+
   },
   fillDetails: {
     backgroundColor: '#fff',

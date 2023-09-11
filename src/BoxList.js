@@ -8,6 +8,7 @@ import SwipList from '../Components/SwipList';
 import BoxeItems from '../Components/BoxeItems';
 import ProgressLoader from 'rn-progress-loader';
 import { useIsFocused } from '@react-navigation/native'; // Import the hook
+import TopHeader from '../Components/TopHeader';
 
 const BoxList = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -84,7 +85,7 @@ const BoxList = ({ navigation }) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={styles.backgroundContainer}>
-          <BackgroundSvg />
+          <TopHeader />
         </View>
 
         <View style={styles.topTexts}>

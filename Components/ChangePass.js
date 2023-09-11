@@ -54,7 +54,12 @@ export default ChangePass;
 
 // define your styles
 const styles = StyleSheet.create({
-    phnimage: { width: wp(5), height: hp(5), tintColor: '#027850', alignSelf: 'center' },
+    phnimage: {
+        width: wp(5),
+        height: hp(5),
+        tintColor: '#027850',
+        alignSelf: 'center'
+    },
     booktxt: {
         color: '#fff',
         alignSelf: 'center',

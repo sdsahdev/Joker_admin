@@ -49,10 +49,13 @@ const App = () => {
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    console.log('Authorization status:', authStatus);
 
     if (enabled) {
       console.log('Authorization status:', authStatus);
       GetFcmToken();
+    } else {
+      console.log(" else here");
     }
   }
 
@@ -63,7 +66,7 @@ const App = () => {
 
       console.log(fcmToken, "==firebase token==");
     } catch (error) {
-      console.log(error, 'error');
+      console.log(error, 'error========');
     }
   }
   return (
