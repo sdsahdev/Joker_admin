@@ -90,7 +90,7 @@ const BoxList = ({ navigation }) => {
 
         <View style={styles.topTexts}>
           <View style={styles.toptxt}>
-            <Text>Hey, Jolly</Text>
+            <Text>Hey, Jouhu8hlly</Text>
             <Text style={styles.maintxt}>Here is the best cricket box nearby you</Text>
           </View>
         </View>
