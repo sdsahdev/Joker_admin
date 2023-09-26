@@ -62,7 +62,7 @@ const TabButton = ({item, onPress, accessibilityState}) => {
               alignItems: 'center',
               alignSelf: 'center',
             }}
-            resizeMode="center"
+            resizeMode="contain"
           />
           <Animatable.View ref={textViewRef}>
             {focused && (

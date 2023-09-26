@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
+import React, {useEffect, useState} from 'react';
+import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundSvg from '../asserts/svgs/BgImg';
 import SwipList from '../Components/SwipList';
 import BoxeItems from '../Components/BoxeItems';
 import ProgressLoader from 'rn-progress-loader';
-import { useIsFocused } from '@react-navigation/native'; // Import the hook
+import {useIsFocused} from '@react-navigation/native'; // Import the hook
 import TopHeader from '../Components/TopHeader';
 
-const BoxList = ({ navigation }) => {
+const BoxList = ({navigation}) => {
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused(); // Get the screen's focused state
 
@@ -18,24 +18,26 @@ const BoxList = ({ navigation }) => {
 
   useEffect(() => {
     // Call the API when the component mounts
-    console.log("+++++++");
+    console.log('+++++++');
     fetchBoxData();
   }, [useIsFocused]);
 
   const fetchBoxData = async () => {
-    console.log("-----------");
+    console.log('-----------');
     try {
       setIsLoading(true);
-      const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getBox');
+      const response = await fetch(
+        'https://boxclub.in/Joker/Admin/index.php?what=getBox',
+      );
       if (!response.ok) {
         setIsLoading(false);
-        console.log("not ok");
+        console.log('not ok');
         throw new Error('Network response was not ok');
       } else {
         setIsLoading(false);
       }
       const jsonData = await response.json();
-      console.log(jsonData[0].images[0].url, "==== datas");
+      console.log(jsonData[0].images[0].url, '==== datas');
       setData(jsonData);
     } catch (error) {
       setIsLoading(false);
@@ -44,10 +46,12 @@ const BoxList = ({ navigation }) => {
   };
 
   // const navigation = useNavigation();
-  const filteredData = Object.keys(data).filter(key => key !== 'keys').reduce((obj, key) => {
-    obj[key] = data[key];
-    return obj;
-  }, {});
+  const filteredData = Object.keys(data)
+    .filter(key => key !== 'keys')
+    .reduce((obj, key) => {
+      obj[key] = data[key];
+      return obj;
+    }, {});
 
   useEffect(() => {
     handleAdminCheck();
@@ -60,19 +64,23 @@ const BoxList = ({ navigation }) => {
     if (hasBookingRights && hasBookingRights.status === 'block') {
       navigation.reset({
         index: 0,
-        routes: [{ name: 'loginSceen' }],
+        routes: [{name: 'loginSceen'}],
       });
     }
   };
 
-  const checkAdminByPhoneNumber = async (phoneNumber) => {
+  const checkAdminByPhoneNumber = async phoneNumber => {
     try {
-      const response = await fetch('https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty');
+      const response = await fetch(
+        'https://boxclub.in/Joker/Admin/index.php?what=getAllThirdParty',
+      );
       if (response.ok) {
         const data = await response.json();
 
         if (data && data.admins) {
-          return data.admins.find(admin => admin.phone === phoneNumber) || false;
+          return (
+            data.admins.find(admin => admin.phone === phoneNumber) || false
+          );
         }
       }
     } catch (error) {
@@ -91,15 +99,19 @@ const BoxList = ({ navigation }) => {
         <View style={styles.topTexts}>
           <View style={styles.toptxt}>
             <Text>Hey, Jouhu8hlly</Text>
-            <Text style={styles.maintxt}>Here is the best cricket box nearby you</Text>
+            <Text style={styles.maintxt}>
+              Here is the best cricket box nearby you
+            </Text>
           </View>
         </View>
         <View style={styles.swipest}>
           <SwipList boxData={Object.values(filteredData)} />
         </View>
 
-        <BoxeItems navigation={navigation} boxData={Object.values(filteredData)} />
-
+        <BoxeItems
+          navigation={navigation}
+          boxData={Object.values(filteredData)}
+        />
       </ScrollView>
     </View>
   );

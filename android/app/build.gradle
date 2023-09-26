@@ -158,7 +158,7 @@ dependencies {
 //firebase
 implementation platform('com.google.firebase:firebase-bom:32.2.0')
 implementation 'com.google.firebase:firebase-analytics-ktx'
-  implementation project(':react-native-notifications')
+
     // implementation 'com.google.firebase:firebase-core:16.0.0'
 
 

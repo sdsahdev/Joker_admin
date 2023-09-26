@@ -13,7 +13,8 @@ import {
   createBottomTabNavigator,
 } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Notifications} from 'react-native-notifications';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
 import * as Animatable from 'react-native-animatable';
 import imagesClass from './asserts/imagepath';
 import BoxList from './src/BoxList';
@@ -57,72 +58,41 @@ const Stack = createStackNavigator();
 
 const App = () => {
   useEffect(() => {
-    // Call the function when the App component mounts
     requestUserPermission();
-
-    Notifications.registerRemoteNotifications();
-
-    Notifications.events().registerNotificationReceivedForeground(
-      (notification, completion) => {
-        console.log(
-          `Notification received in foreground: ${notification.title} : ${notification.body}`,
-        );
-        completion({alert: true, sound: true, badge: true});
-      },
-    );
-
-    Notifications.events().registerNotificationOpened(
-      (notification, completion) => {
-        console.log(`Notification opened: ${notification.payload}`);
-        completion();
-      },
-    );
+    notificationConfig();
 
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       console.log('A new FCM message arrived!', JSON.stringify(remoteMessage));
-
-      if (Platform.OS == 'ios') {
-        Notifications.postLocalNotification({
-          id: remoteMessage.messageId,
-          body: remoteMessage.notification.body,
+      if (Platform.OS == 'android') {
+        PushNotification.createChannel(
+          {
+            channelId: 'BoxCricket',
+            channelName: 'BoxCricket',
+            importance: 4,
+            vibrate: true,
+          },
+          created => console.log(`createChannel returned '${created}'`),
+        );
+        PushNotification.localNotification({
+          message: remoteMessage.notification.body,
           title: remoteMessage.notification.title,
+          channelId: 'BoxCricket',
         });
       } else {
-        setNotificationChannel().then(
-          () => console.log('sss'),
-          Notifications.postLocalNotification({
-            body: remoteMessage.notification.body,
-            title: remoteMessage.notification.title,
-            silent: false,
-            category: 'joker',
-            userInfo: {},
-            fireDate: new Date(),
-          }),
-        );
+        PushNotificationIOS.addNotificationRequest({
+          title: remoteMessage.notification.title,
+          body: remoteMessage.notification.body,
+          id: remoteMessage.messageId,
+        });
       }
     });
 
-    const setNotificationChannel = async () => {
-      console.log('craetec chanal');
-      Notifications.setNotificationChannel(
-        {
-          channelId: 'joker',
-          name: 'joker',
-          importance: 4,
-          description: 'joker',
-          enableLights: true,
-          enableVibration: true,
-        },
-        created => console.log(`createChannel returned '${created}'`),
-      );
-    };
-
     messaging().setBackgroundMessageHandler(async remoteMessage => {
-      console.log('FCM Background:', remoteMessage);
+      console.log('Message handled in the background!', remoteMessage);
     });
 
-    messaging().onNotificationOpenedApp(async remoteMessage => {
-      console.log('App opned by clicking notification:', remoteMessage);
+    messaging().getInitialNotification(async remoteMessage => {
+      console.log('Message handled in the background!', remoteMessage);
     });
 
     return unsubscribe;
@@ -142,7 +112,35 @@ const App = () => {
       console.log(' else here');
     }
   }
+  function notificationConfig() {
+    PushNotification.configure({
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+      },
 
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
+      },
+
+      onAction: function (notification) {
+        console.log('ACTION:', notification.action);
+        console.log('NOTIFICATION:', notification);
+      },
+
+      onRegistrationError: function (err) {
+        console.error(err.message, err);
+      },
+
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true,
+      },
+      popInitialNotification: true,
+      requestPermissions: true,
+    });
+  }
   async function GetFcmToken() {
     try {
       let fcmToken = await messaging().getToken();
@@ -180,7 +178,6 @@ const App = () => {
         <Stack.Screen name="Fotp" component={Fotp} />
         <Stack.Screen name="ForgotP" component={ForgotP} />
         <Stack.Screen name="EditBoxD" component={EditBoxD} />
-        check_valuew
       </Stack.Navigator>
     </NavigationContainer>
   );
