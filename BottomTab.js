@@ -175,30 +175,6 @@ const BottomTab = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
-        // tabBarStyle: {
-        //     // position: 'absolute',
-        //     // bottom: wp(7),
-        //     // right: wp(4),
-        //     // left: wp(4),
-        //     // borderRadius: wp(3),
-        //     // backgroundColor: 'blue',
-        //     // alignSelf: 'center',
-        //     // alignItems: 'center',
-        //     // // flex: 1,
-        //     // justifyContent: 'center',
-        //     // // paddingVertical: hp(2)
-        // },
-        // tabBarStyle: {
-        //     // backgroundColor: 'blue',
-        //     height: Platform.OS === 'ios' ? 70 : 70,
-        //     paddingVertical: hp(2),
-        //     paddingBottom: Platform.OS === 'ios' ? 15 : 15,
-        //     bottom: wp(7),
-        //     right: wp(4),
-        //     left: wp(4),
-        //     borderRadius: wp(3),
-        //     position: 'absolute'
-        // },
       }}>
       {TabArr.map((item, index) => (
         <Tab.Screen
@@ -212,10 +188,8 @@ const BottomTab = () => {
               right: wp(4),
               left: wp(4),
               borderRadius: wp(3),
-              // backgroundColor: 'yellow',
               alignSelf: 'center',
               alignItems: 'center',
-              // flex: 1,
               justifyContent: 'center',
               height: hp(7),
               paddingBottom: hp(0.1),

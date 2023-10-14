@@ -61,6 +61,16 @@ const SlotTime = ({onStartTimeChange, onEndTimeChange, tor, data}) => {
                 ]}>
                 {item.time2}
               </Text>
+              <Text
+                style={[
+                  styles.timeText,
+                  {marginTop: hp(2), color: 'red'},
+                  slot.includes(item.id) && styles.selectedtext,
+                ]}>
+                {tor === false
+                  ? `₹ ${Math.trunc(item.price)}`
+                  : `₹ ${Math.trunc(item.tournament_price)}`}
+              </Text>
             </View>
           </TouchableOpacity>
         )}
@@ -175,7 +185,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: wp(0.3),
     borderColor: '#027850',
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   calView: {marginTop: hp(10)},
   con: {

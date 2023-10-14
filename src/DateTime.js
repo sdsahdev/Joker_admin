@@ -158,7 +158,7 @@ const DateTime = ({navigation, route}) => {
   };
 
   const csapi = () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     const apiUrl =
       'https://boxclub.in/Joker/Admin/index.php?what=checkMultipleSlot';
 
@@ -298,7 +298,7 @@ const DateTime = ({navigation, route}) => {
           <SlotTime
             onStartTimeChange={e => setStartTime(e)}
             onEndTimeChange={e => setEndTime(e)}
-            tor={handletor}
+            tor={false}
             data={data}
           />
         </View>
