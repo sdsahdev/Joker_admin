@@ -226,7 +226,7 @@ const Inbox = ({navigation}) => {
           <Text style={styles.textLeft}>{item.amount}</Text>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <Text style={styles.textLeft}>Amount</Text>
+          <Text style={styles.textLeft}>Booking Time</Text>
           <Text style={styles.textLeft}>{bookingTime}</Text>
         </View>
 
