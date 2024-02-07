@@ -31,8 +31,11 @@ const CancelReq = ({ navigation }) => {
     useEffect(() => {
         // Call the API when the component mounts
         //console.log("+++++++");
+        if(isFocused){
+
         fetchData();
         inboxapi();
+        }
     }, [isFocused]);
 
     const fetchData = async () => {
