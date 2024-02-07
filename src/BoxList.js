@@ -17,9 +17,11 @@ const BoxList = ({navigation}) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    if(useIsFocused){
     // Call the API when the component mounts
     console.log('+++++++');
     fetchBoxData();
+    }
   }, [useIsFocused]);
 
   const fetchBoxData = async () => {
