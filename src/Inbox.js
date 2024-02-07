@@ -39,7 +39,9 @@ const Inbox = ({navigation}) => {
   useEffect(() => {
     // Call the API when the component mounts
     //console.log("+++++++");
+    if(isFocused){
     inboxapi();
+    }
   }, [isFocused]);
 
   const inboxapi = async () => {
